@@ -35,25 +35,29 @@
                                     <table id="datatable-buttons" class="table table-striped table-bordered">
                                         <thead>
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Position</th>
-                                            <th>Office</th>
-                                            <th>Age</th>
-                                            <th>Start date</th>
-                                            <th>Salary</th>
+                                            <th>Title</th>
+                                            <th>Author</th>
+                                            <th>Category</th>
+                                            <th>Hit</th>
+                                            <th>Feedbacks</th>
+                                            <th>Created at</th>
+                                            <th>Updated at</th>
                                         </tr>
                                         </thead>
 
 
                                         <tbody>
-                                        <tr>
-                                            <td>Tiger Nixon</td>
-                                            <td>System Architect</td>
-                                            <td>Edinburgh</td>
-                                            <td>61</td>
-                                            <td>2011/04/25</td>
-                                            <td>$320,800</td>
-                                        </tr>
+                                        @foreach($blogs as $blog)
+                                            <tr>
+                                                <td>{{$blog->title}}</td>
+                                                <td>{{$blog->author}}</td>
+                                                <td>{{$blog->category}}</td>
+                                                <td>{{$blog->hit}}</td>
+                                                <td></td>
+                                                <td>{{$blog->created_at}}</td>
+                                                <td>{{$blog->updated_at}}</td>
+                                            </tr>
+                                        @endforeach
                                         </tbody>
                                     </table>
 
@@ -66,9 +70,10 @@
 
                                         <div class="form-group">
                                             <label
-                                                   class="control-label col-md-3 col-sm-3 col-xs-12">Photos</label>
+                                                class="control-label col-md-3 col-sm-3 col-xs-12">Photos</label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input type="file" name="photos[]" multiple class="form-control col-md-6 col-sm-6 col-xs-12">
+                                                <input type="file" name="photos[]" multiple
+                                                       class="form-control col-md-6 col-sm-6 col-xs-12">
                                             </div>
                                         </div>
 
@@ -232,7 +237,11 @@
         $(document).ready(function () {
             $('#blogForm').ajaxForm({
                 beforeSubmit: function () {
-
+                    Swal.fire({
+                        title: '<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>',
+                        text: 'Loading please wait!',
+                        showConfirmButton: false
+                    })
                 },
                 beforeSerialize: function () {
                     for (instance in CKEDITOR.instances) CKEDITOR.instances[instance].updateElement();

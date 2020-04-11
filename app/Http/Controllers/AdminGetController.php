@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Blog;
 use App\Settings;
 
 class AdminGetController extends AdminController
@@ -18,6 +19,7 @@ class AdminGetController extends AdminController
     }
     public function get_blog()
     {
-        return view('backend.blog');
+        $blogs = Blog::all();
+        return view('backend.blog')->with('blogs',$blogs);
     }
 }

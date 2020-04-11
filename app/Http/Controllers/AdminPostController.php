@@ -67,12 +67,10 @@ class AdminPostController extends AdminController
                 $photo_extention = $photo->getClientOriginalExtension();
                 $photo_name = $i . '.' . $photo_extention;
                 Storage::disk('uploads')->makeDirectory('img/blog/' . $slug);
-
-
+                Storage::disk('uploads')->put('img/blog/' . $slug . '/' . $photo_name, file_get_contents($photo));
                 $i++;
             }
         }
-
 
         try {
 

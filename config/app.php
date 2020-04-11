@@ -233,7 +233,6 @@ return [
 
 //        My added packets
         'Image' => Intervention\Image\Facades\Image::class,
-//        'Input' => Illuminate\Support\Facades\Input::class,
     ],
 
 ];
