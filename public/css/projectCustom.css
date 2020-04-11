@@ -1,0 +1,4 @@
+/*Sweet Alert size reset code*/
+.swal2-popup {
+    font-size: 1.6rem !important;
+}
