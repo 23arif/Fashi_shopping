@@ -55,32 +55,102 @@ class AdminPostController extends AdminController
 
     public function post_blog(Request $request)
     {
-        $date = Str::slug(Carbon::now());
-        $slug = Str::slug($request->title) . '-' . $date;
+//        Add Blog Section
 
-        $photos = $request->file('photos');
-        if (!empty($photos)) {
-
-            $i = 0;
-
-            foreach ($photos as $photo) {
-                $photo_extention = $photo->getClientOriginalExtension();
-                $photo_name = $i . '.' . $photo_extention;
-                Storage::disk('uploads')->makeDirectory('img/blog/' . $slug);
-                Storage::disk('uploads')->put('img/blog/' . $slug . '/' . $photo_name, file_get_contents($photo));
-                $i++;
+        if ($request->get('check') == 'blogForm') {
+            $validator = Validator::make($request->all(), [
+                'photos[]' => 'nullable|mimes:jpg,jpeg,png,gif',
+                'title' => 'required|max:250',
+                'description' => 'required',
+                'tags' => 'required|max:250',
+            ]);
+            if ($validator->fails()) {
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Fill the required blanks !']);
             }
+            $date = Str::slug(Carbon::now());
+            $slug = Str::slug($request->title) . '-' . $date;
+
+            $photos = $request->file('photos');
+            if (!empty($photos)) {
+
+                foreach ($photos as $photo) {
+                    $randName = rand(1, 9999) . rand(1, 9999) . rand(1, 9999);
+                    $photo_extention = $photo->getClientOriginalExtension();
+                    $photo_name = $randName . '.' . $photo_extention;
+                    Storage::disk('uploads')->makeDirectory('img/blog/' . $slug);
+                    Storage::disk('uploads')->put('img/blog/' . $slug . '/' . $photo_name, file_get_contents($photo));
+                }
+            }
+
+            try {
+
+                $request->merge(['slug' => $slug]);
+
+                Blog::create($request->all());
+                return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Blog added successfully !']);
+            } catch (\Exception $e) {
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Blog could not added !', $e]);
+            }
+
+
+        } else {
+
+//           Delete Blog Section
+
+//            try {
+            Blog::where('slug', $request->slug)->delete();
+            Storage::disk('uploads')->deleteDirectory('img/blog/' . $request->slug);
+            return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Blog deleted successfully !']);
+//            } catch (\Exception $e) {
+            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Blog could not deleted !', $e]);
+//            }
         }
 
-        try {
+    }
 
-            $request->merge(['slug' => $slug]);
+    public function post_edit_blog($slug, Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'photos[].' => 'image|mimes:jpg,jpeg,png,gif',
+            'title' => 'required|max:250',
+            'description' => 'required',
+            'tags' => 'required|max:250',
+        ]);
+        if ($validator->fails()) {
+            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Fill the required blanks !']);
+        }
+        if (isset($request->photo)) {
+            try {
+                Storage::disk('uploads')->delete($request->photo);
+                return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Image deleted successfully !']);
+            } catch (\Exception $e) {
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Image could not deleted !', 'error' => $e]);
+            }
 
-            Blog::create($request->all());
-            return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Blog added successfully !']);
+        } else {
+            $photos = $request->file('photos');
+            if (!empty($photos)) {
+                foreach ($photos as $photo) {
+                    $photo_extention = $photo->getClientOriginalExtension();
+                    $photo_name = rand(1, 9999) . rand(1, 9999) . rand(1, 9999) . '.' . $photo_extention;
+                    Storage::disk('uploads')->makeDirectory('img/blog/' . $slug);
+                    Storage::disk('uploads')->put('img/blog/' . $slug . '/' . $photo_name, file_get_contents($photo));
+                }
+            }
 
-        } catch (\Exception $e) {
-            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Blog could not added !', $e]);
+            try {
+                Blog::where('slug', $slug)->update([
+                    'title' => $request->title,
+                    'description' => $request->description,
+                    'tags' => $request->tags,
+                ]);
+                return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Blog updated successfully !']);
+
+            } catch (\Exception $e) {
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Blog could not updated !', 'error' => $e]);
+            }
+
+
         }
     }
 }

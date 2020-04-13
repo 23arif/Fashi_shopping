@@ -41,12 +41,17 @@
                                             <th>Hit</th>
                                             <th>Feedbacks</th>
                                             <th>Created at</th>
-                                            <th>Updated at</th>
+                                            <th>Delete</th>
+                                            <th>Edit</th>
                                         </tr>
                                         </thead>
 
 
                                         <tbody>
+                                        @php
+                                            $queue = 1;
+                                        @endphp
+
                                         @foreach($blogs as $blog)
                                             <tr>
                                                 <td>{{$blog->title}}</td>
@@ -55,25 +60,44 @@
                                                 <td>{{$blog->hit}}</td>
                                                 <td></td>
                                                 <td>{{$blog->created_at}}</td>
-                                                <td>{{$blog->updated_at}}</td>
+                                                <td>
+                                                    <form method="post" class="blogList" name="form">
+                                                        {{csrf_field()}}
+                                                        <input type="hidden" value="{{$blog->slug}}" name="slug">
+                                                        <input type="hidden" name="queue" class="queue"
+                                                               value="{{$queue}}">
+                                                        <button type="submit" class="btn btn-danger" value="delete">
+                                                            Delete
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                                <td>
+                                                    <a href="blog/edit-blog/{{$blog->slug}}" class="btn btn-primary">Edit</a>
+                                                </td>
                                             </tr>
+                                            @php
+                                                $queue++
+                                            @endphp
+
                                         @endforeach
                                         </tbody>
                                     </table>
-
+                                    <p id="test"></p>
                                 </div>
                                 <div role="tabpanel" class="tab-pane fade" id="add"
                                      aria-labelledby="add-tab">
                                     <form method="post" id="blogForm" data-parsley-validate
                                           class="form-horizontal form-label-left">
                                         {{csrf_field()}}
-
+                                        {{-- ////--}}
+                                        <input type="hidden" name="check" value="blogForm">
+                                        {{-- ///--}}
                                         <div class="form-group">
                                             <label
                                                 class="control-label col-md-3 col-sm-3 col-xs-12">Photos</label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                 <input type="file" name="photos[]" multiple
-                                                       class="form-control col-md-6 col-sm-6 col-xs-12">
+                                                       class="form-control col-md-6 col-sm-6 col-xs-12" required>
                                             </div>
                                         </div>
 
@@ -233,6 +257,31 @@
     {{--Sweet Alert--}}
     <script src="/js/jquery.form.min.js"></script>
     <script src="/js/sweetalert2.min.js"></script>
+
+    {{--  Sweet Alert  For blog list page--}}
+    <script>
+        $(document).ready(function () {
+            $('.blogList').ajaxForm({
+                success: function (response) {
+                    Swal.fire(
+                        response.processTitle,
+                        response.processDesc,
+                        response.processStatus
+                    )
+                    if (response.processStatus == 'success') {
+                        var form = document.getElementsByClassName('blogList');
+                        var queue = form.elements[2].value;
+                        document.getElementById('datatable-buttons').deleteRow(queue);
+                        document.getElementById('test').innerHTML = queue;
+                    }
+                }
+            })
+        })
+    </script>
+
+    {{--/ Sweet Alert  For blog list page--}}
+
+    {{--  Sweet Alert  For add blog page--}}
     <script>
         $(document).ready(function () {
             $('#blogForm').ajaxForm({
@@ -251,12 +300,17 @@
                         response.processTitle,
                         response.processDesc,
                         response.processStatus
-                    )
-
+                    ).then(() => {
+                        if (response.processStatus == "success") {
+                            location.reload();
+                        }
+                    })
                 }
             })
         })
     </script>
+    {{--/   For add blog page--}}
+
     {{--/Sweet Alert--}}
 
     {{--Ckeditor--}}

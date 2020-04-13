@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Blog;
 use App\Settings;
 
 class HomeGetController extends HomeController
@@ -26,13 +27,15 @@ class HomeGetController extends HomeController
     public function get_blog()
     {
         $settings = Settings::where('id', 1)->select('settings.*')->first();
-        return view('frontend.blog')->with('settings',$settings);;
+        $blogs = Blog::orderBy('id','desc')->get();
+        return view('frontend.blog')->with('settings',$settings)->with('blogs',$blogs);
     }
 
-    public function get_blog_details()
+    public function get_blog_content($slug)
     {
         $settings = Settings::where('id', 1)->select('settings.*')->first();
-        return view('frontend.blog-details')->with('settings', $settings);
+        $blogs = Blog::where('slug',$slug)->first();
+        return view('frontend.blog_details')->with('settings',$settings)->with('blogs',$blogs);
     }
 
     public function get_checkout()
