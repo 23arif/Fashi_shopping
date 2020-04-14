@@ -26,7 +26,7 @@ Route::get('/login', 'HomeGetController@get_login');
 Route::get('/register', 'HomeGetController@get_register');
 Route::get('/product', 'HomeGetController@get_product');
 
-Route::group(['prefix' => 'admin'], function () {
+Route::group(['prefix' => 'admin','middleware'=>'Admin'], function () {
     Route::get('/', 'AdminGetController@get_index');
     Route::get('/settings', 'AdminGetController@get_settings');
     Route::post('/settings', 'AdminPostController@post_settings');
@@ -42,3 +42,7 @@ Route::group(['prefix' => 'admin'], function () {
 });
 
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

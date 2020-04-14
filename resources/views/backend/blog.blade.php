@@ -94,25 +94,33 @@
                                         {{-- ///--}}
                                         <div class="form-group">
                                             <label
-                                                class="control-label col-md-3 col-sm-3 col-xs-12">Photos</label>
+                                                class="control-label col-md-3 col-sm-3 col-xs-12">Photos*</label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                 <input type="file" name="photos[]" multiple
                                                        class="form-control col-md-6 col-sm-6 col-xs-12" required>
                                             </div>
                                         </div>
 
-                                        {{Form::bsText('title','Title')}}
+                                        {{Form::bsText('title','Title*')}}
+
+                                       <div class="form-group">
+                                            <label for="shortContent"
+                                                   class="control-label col-md-3 col-sm-3 col-xs-12">Short Content</label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="text" id="shortContent" class="form-control col-md-6 col-sm-6 col-xs-12" name="short_content">
+                                            </div>
+                                        </div>
 
                                         <div class="form-group">
                                             <label for="description"
-                                                   class="control-label col-md-3 col-sm-3 col-xs-12">Description</label>
+                                                   class="control-label col-md-3 col-sm-3 col-xs-12">Description*</label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                 <textarea name="description" id="description" rows="5"
                                                           class="form-control col-md-6 col-sm-6 col-xs-12 ckeditor"></textarea>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Tags</label>
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Tags*</label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                 <input id="tags_1" type="text" class="tags form-control" name="tags"/>
                                             </div>

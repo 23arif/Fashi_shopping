@@ -35,7 +35,7 @@ class HomeGetController extends HomeController
     {
         $settings = Settings::where('id', 1)->select('settings.*')->first();
         $blogs = Blog::where('slug',$slug)->first();
-        return view('frontend.blog_details')->with('settings',$settings)->with('blogs',$blogs);
+        return view('frontend.blog-details')->with('settings',$settings)->with('blogs',$blogs);
     }
 
     public function get_checkout()

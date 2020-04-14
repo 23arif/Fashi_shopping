@@ -61,6 +61,7 @@ class AdminPostController extends AdminController
             $validator = Validator::make($request->all(), [
                 'photos[]' => 'nullable|mimes:jpg,jpeg,png,gif',
                 'title' => 'required|max:250',
+                'short_content' => 'max:250',
                 'description' => 'required',
                 'tags' => 'required|max:250',
             ]);
@@ -113,6 +114,7 @@ class AdminPostController extends AdminController
         $validator = Validator::make($request->all(), [
             'photos[].' => 'image|mimes:jpg,jpeg,png,gif',
             'title' => 'required|max:250',
+            'short_content' => 'max:250',
             'description' => 'required',
             'tags' => 'required|max:250',
         ]);
@@ -141,6 +143,7 @@ class AdminPostController extends AdminController
             try {
                 Blog::where('slug', $slug)->update([
                     'title' => $request->title,
+                    'short_content' => $request->short_content,
                     'description' => $request->description,
                     'tags' => $request->tags,
                 ]);

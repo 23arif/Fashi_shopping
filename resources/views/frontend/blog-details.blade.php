@@ -8,52 +8,44 @@
                 <div class="col-lg-12">
                     <div class="blog-details-inner">
                         <div class="blog-detail-title">
-                            <h2>The Personality Trait That Makes People Happier</h2>
-                            <p>travel <span>- May 19, 2019</span></p>
+                            <h2>{{$blogs->title}}</h2>
+                            <p>{{$blogs->tags}} <span>- {{$blogs->created_at->toDateString()}}</span></p>
                         </div>
                         <div class="blog-large-pic">
-                            <img src="/frontend/img/blog/blog-detail.jpg" alt="">
+                            @foreach($photos = Storage::disk('uploads')->files('img/blog/'.$blogs->slug) as $photo)
+                            @endforeach
+                            <img src="/uploads/{{$photo}}" alt="">
                         </div>
                         <div class="blog-detail-desc">
-                            <p>psum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                                labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                                laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure Lorem ipsum dolor sit
-                                amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                                magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                                aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.
-                            </p>
+                            <p>{!!$blogs->description!!}</p>
                         </div>
-                        <div class="blog-quote">
-                            <p>“ Technology is nothing. What's important is that you have a faith in people, that
-                                they're basically good and smart, and if you give them tools, they'll do wonderful
-                                things with them.” <span>- Steven Jobs</span></p>
-                        </div>
+                        {{--                        <div class="blog-quote">--}}
+                        {{--                            <p>{{$short_content}}</p>--}}
+                        {{--                        </div>--}}
+
+                        @if($blogs->short_content)
+                            <div class="blog-quote">
+                                <p>{{$blogs->short_content}}</p>
+                            </div>
+                        @endif
+
+
                         <div class="blog-more">
                             <div class="row">
-                                <div class="col-sm-4">
-                                    <img src="/frontend/img/blog/blog-detail-1.jpg" alt="">
-                                </div>
-                                <div class="col-sm-4">
-                                    <img src="/frontend/img/blog/blog-detail-2.jpg" alt="">
-                                </div>
-                                <div class="col-sm-4">
-                                    <img src="/frontend/img/blog/blog-detail-3.jpg" alt="">
-                                </div>
+                                @foreach($photos = Storage::disk('uploads')->files('img/blog/'.$blogs->slug) as $photo)
+                                    <div class="col-sm-4">
+                                        <img src="/uploads/{{$photo}}" alt="{{$blogs->title}}" height="203" width="358">
+                                    </div>
+                                @endforeach
                             </div>
                         </div>
-                        <p>Sum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
-                            et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                            nisi ut aliquip ex ea commodo consequat. Duis aute irure Lorem ipsum dolor sit amet,
-                            consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-                            aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                            ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.</p>
                         <div class="tag-share">
                             <div class="details-tag">
                                 <ul>
                                     <li><i class="fa fa-tags"></i></li>
-                                    <li>Travel</li>
-                                    <li>Beauty</li>
-                                    <li>Fashion</li>
+                                    @foreach (explode(',', $blogs->tags) as $tags)
+                                        <a href="#"><li>{{trim($tags)}}</li></a>
+                                    @endforeach
                                 </ul>
                             </div>
                             <div class="blog-share">

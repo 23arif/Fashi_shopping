@@ -39,7 +39,7 @@
                                         <a href="/blog/{{$blog->slug}}">
                                             <h4>{{$blog->title}}</h4>
                                         </a>
-                                        <p>{{$blog->tags}} <span>- {{$blog->created_at}}</span></p>
+                                        <p>{{$blog->tags}} <span>- {{$blog->created_at->toDateString()}}</span></p>
                                     </div>
                                 </div>
                             </div>

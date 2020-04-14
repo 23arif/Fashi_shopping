@@ -57,6 +57,15 @@
                                 {{Form::bsText('title','Title *',$blog->title)}}
 
                                 <div class="form-group">
+                                    <label for="shortContent"
+                                           class="control-label col-md-3 col-sm-3 col-xs-12">Short Content</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="text" id="shortContent"
+                                               class="form-control col-md-6 col-sm-6 col-xs-12" name="short_content" value="{{$blog->short_content}}">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
                                     <label for="description"
                                            class="control-label col-md-3 col-sm-3 col-xs-12">Description *</label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
@@ -75,7 +84,7 @@
                                 <div class="ln_solid"></div>
                                 <div class="form-group">
                                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                        <button type="submit" class="btn btn-success">Save blog
+                                        <button type="submit" class="btn btn-success">Update blog
                                         </button>
                                     </div>
                                 </div>

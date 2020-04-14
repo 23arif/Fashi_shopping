@@ -36,4 +36,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+//    Function for check users status.Is user admin or not?
+    public function status(){
+        return $this->status;
+    }
 }
