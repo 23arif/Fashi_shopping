@@ -20,7 +20,7 @@ Route::get('/contact', 'HomeGetController@get_contact');
 Route::get('/shop', 'HomeGetController@get_shop');
 Route::get('/shopping-cart', 'HomeGetController@get_shopping_cart');
 Route::get('/blog', 'HomeGetController@get_blog');
-Route::get('/blog/{slug}', 'HomeGetController@get_blog_content');
+Route::get('/blog/{slug}', 'HomeGetController@get_blog_content')->where('slug','^[a-zA-Z0-9-_\/]+$');
 Route::get('/check-out', 'HomeGetController@get_checkout');
 Route::get('/login', 'HomeGetController@get_login');
 Route::get('/register', 'HomeGetController@get_register');
@@ -37,8 +37,16 @@ Route::group(['prefix' => 'admin','middleware'=>'Admin'], function () {
         Route::post('/', 'AdminPostController@post_blog');
         Route::get('/edit-blog/{slug}', 'AdminGetController@get_edit_blog');
         Route::post('/edit-blog/{slug}', 'AdminPostController@post_edit_blog');
+    });
+
+    Route::group(['prefix' => 'category'], function () {
+        Route::get('/', 'AdminGetController@get_category');
+        Route::post('/', 'AdminPostController@post_category');
 
     });
+
+
+
 });
 
 

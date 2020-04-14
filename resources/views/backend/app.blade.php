@@ -54,6 +54,7 @@
                             <li><a href="/admin/"><i class="fa fa-home"></i> Home </a></li>
                             <li><a href="/admin/settings"><i class="fa fa-cog"></i> Settings </a></li>
                             <li><a href="/admin/blog"><i class="fa fa-newspaper-o"></i> Blog </a></li>
+                            <li><a href="/admin/category"><i class="fa fa-newspaper-o"></i> Category </a></li>
 
                         </ul>
                     </div>

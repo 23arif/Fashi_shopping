@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Blog;
+use App\Category;
 use App\Settings;
 
 class HomeGetController extends HomeController
@@ -27,15 +28,18 @@ class HomeGetController extends HomeController
     public function get_blog()
     {
         $settings = Settings::where('id', 1)->select('settings.*')->first();
-        $blogs = Blog::orderBy('id','desc')->get();
-        return view('frontend.blog')->with('settings',$settings)->with('blogs',$blogs);
+        $blogs = Blog::orderBy('id', 'desc')->get();
+        $categories = Category::where('up_category', '0')->get();
+        return view('frontend.blog')->with('settings', $settings)->with('blogs', $blogs)->with('categories',$categories);
     }
 
     public function get_blog_content($slug)
     {
+        $category = explode('/', $slug); //Explodes category slugs
         $settings = Settings::where('id', 1)->select('settings.*')->first();
-        $blogs = Blog::where('slug',$slug)->first();
-        return view('frontend.blog-details')->with('settings',$settings)->with('blogs',$blogs);
+//        $blogs = Blog::where('slug', $slug)->first();
+        $blogs = Blog::where('slug', $category[count($category)-1])->first();
+        return view('frontend.blog-details')->with('settings', $settings)->with('blogs', $blogs)->with('blogCategory',$category);
     }
 
     public function get_checkout()

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Blog;
+use App\Category;
 use App\Settings;
 
 class AdminGetController extends AdminController
@@ -20,13 +21,21 @@ class AdminGetController extends AdminController
 
     public function get_blog()
     {
+        $categories = Category::where('up_category','0')->get();
         $blogs = Blog::all();
-        return view('backend.blog')->with('blogs', $blogs);
+        return view('backend.blog')->with('blogs', $blogs)->with('categories',$categories);
     }
 
     public function get_edit_blog($slug)
     {
         $blog = Blog::where('slug', $slug)->first();
         return view('backend.edit-blog')->with('blog',$blog);
+    }
+
+    public function get_category()
+    {
+        $categories = Category::where('up_category','0')->get();
+        return view('backend.category')->with('categories',$categories);
+
     }
 }

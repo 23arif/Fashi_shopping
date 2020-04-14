@@ -9,10 +9,22 @@
     <div class="blog-catagory">
         <h4>Categories</h4>
         <ul>
-            <li><a href="#">Fashion</a></li>
-            <li><a href="#">Travel</a></li>
-            <li><a href="#">Picnic</a></li>
-            <li><a href="#">Model</a></li>
+            @foreach($categories as $category)
+                <li>
+                    <a href="/blog/{{$category->slug}}">{{$category->name}}</a>
+                </li>
+                @foreach($category->child as $secondary_category)
+                    <li>
+                        <a href="/blog/{{$category->slug}}/{{$secondary_category->slug}}">{{$secondary_category->name}}</a>
+                    </li>
+                    @foreach($secondary_category->child as $double_sec_category)
+                        <li>
+                            <a href="/blog/{{$category->slug}}/{{$secondary_category->slug}}/{{$double_sec_category}}">{{$double_sec_category->name}}</a>
+                        </li>
+                    @endforeach
+                @endforeach
+            @endforeach
+
         </ul>
     </div>
     <div class="recent-post">

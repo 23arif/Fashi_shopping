@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Blog;
+use App\Category;
 use App\Settings;
 use Carbon\Carbon;
 use Intervention\Image\Facades\Image;
@@ -117,6 +118,7 @@ class AdminPostController extends AdminController
             'short_content' => 'max:250',
             'description' => 'required',
             'tags' => 'required|max:250',
+            'category' => 'required',
         ]);
         if ($validator->fails()) {
             return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Fill the required blanks !']);
@@ -154,6 +156,37 @@ class AdminPostController extends AdminController
             }
 
 
+        }
+    }
+
+    public function post_category(Request $request)
+    {
+        if ($request->get('name')) {
+
+            $validator = Validator::make($request->all(), [
+                'name' => 'required| max:250',
+            ]);
+
+            if ($validator->fails()) {
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Please fill <u>Category Name</u> !']);
+            }
+            try {
+                $slug = str::slug($request->name);
+                $request->merge(['slug' => $slug]);
+                Category::create($request->all());
+                return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Category added successfully !']);
+
+            } catch (\Exception $e) {
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Category could not added !', 'error' => $e]);
+            }
+        }else{
+            try {
+                Category::where('id',$request->id)->delete();
+                return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Category deleted successfully !']);
+
+            } catch (\Exception $e) {
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Category could not deleted !', 'error' => $e]);
+            }
         }
     }
 }

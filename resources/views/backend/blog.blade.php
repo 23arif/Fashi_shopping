@@ -101,13 +101,43 @@
                                             </div>
                                         </div>
 
+                                        <div class="form-group">
+                                            <label for="shortContent"
+                                                   class="control-label col-md-3 col-sm-3 col-xs-12">Categories *</label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <select class="form-control" name="category">
+                                                    <option value="0" >Other category</option>
+                                                    @foreach($categories as $category)
+                                                        <option
+                                                            value="{{$category->id}}">{{$category->name}}</option>
+                                                        @foreach($category->child as $secondary_category)
+                                                            <option
+                                                                value="{{$secondary_category->id}}">{{$category->name}}
+                                                                -->{{$secondary_category->name}}</option>
+                                                            @foreach($secondary_category->child as $double_sec_category)
+                                                                <option
+                                                                    value="{{$double_sec_category->id}}">{{$category->name}}
+                                                                    -->{{$secondary_category->name}}
+                                                                    -->{{$double_sec_category->name}}</option>
+                                                            @endforeach
+                                                        @endforeach
+                                                    @endforeach
+
+                                                </select>
+                                            </div>
+                                        </div>
+
+
                                         {{Form::bsText('title','Title*')}}
 
-                                       <div class="form-group">
+                                        <div class="form-group">
                                             <label for="shortContent"
-                                                   class="control-label col-md-3 col-sm-3 col-xs-12">Short Content</label>
+                                                   class="control-label col-md-3 col-sm-3 col-xs-12">Short
+                                                Content</label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input type="text" id="shortContent" class="form-control col-md-6 col-sm-6 col-xs-12" name="short_content">
+                                                <input type="text" id="shortContent"
+                                                       class="form-control col-md-6 col-sm-6 col-xs-12"
+                                                       name="short_content">
                                             </div>
                                         </div>
 
@@ -275,7 +305,7 @@
                         response.processTitle,
                         response.processDesc,
                         response.processStatus
-                    )
+                        )
                     if (response.processStatus == 'success') {
                         var form = document.getElementsByClassName('blogList');
                         var queue = form.elements[2].value;
@@ -308,7 +338,7 @@
                         response.processTitle,
                         response.processDesc,
                         response.processStatus
-                    ).then(() => {
+                        ).then(() => {
                         if (response.processStatus == "success") {
                             location.reload();
                         }

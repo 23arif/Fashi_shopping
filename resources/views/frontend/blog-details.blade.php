@@ -7,6 +7,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="blog-details-inner">
+                        <p><a href="/">Home</a>/<a href="/blog">Blog</a>/{{implode('/',$blogCategory)}}</p>
                         <div class="blog-detail-title">
                             <h2>{{$blogs->title}}</h2>
                             <p>{{$blogs->tags}} <span>- {{$blogs->created_at->toDateString()}}</span></p>
@@ -17,7 +18,20 @@
                             <img src="/uploads/{{$photo}}" alt="">
                         </div>
                         <div class="blog-detail-desc">
-                            <p>{!!$blogs->description!!}</p>
+                            <p>
+{{--                                @if(isset($blog->parent))--}}
+{{--                                    {{$blog->parent->name}}--}}
+{{--                                    @php($primaryCategory=$blog->parent);--}}
+{{--                                    @if(isset($primaryCategory->parent))--}}
+{{--                                        {{$primaryCategory->parent->name}}--}}
+{{--                                        @php($doubleprimaryCategory= $blog->parent);--}}
+{{--                                        @if(isset($doubleprimaryCategory->parent))--}}
+{{--                                            {{$doubleprimaryCategory->parent->name}}--}}
+{{--                                        @endif--}}
+{{--                                    @endif--}}
+{{--                                @endif--}}
+                                {!!$blogs->description!!}
+                            </p>
                         </div>
                         {{--                        <div class="blog-quote">--}}
                         {{--                            <p>{{$short_content}}</p>--}}
@@ -44,7 +58,9 @@
                                 <ul>
                                     <li><i class="fa fa-tags"></i></li>
                                     @foreach (explode(',', $blogs->tags) as $tags)
-                                        <a href="#"><li>{{trim($tags)}}</li></a>
+                                        <a href="#">
+                                            <li>{{trim($tags)}}</li>
+                                        </a>
                                     @endforeach
                                 </ul>
                             </div>

@@ -274,7 +274,6 @@
 <script src="/frontend/js/jquery.slicknav.js"></script>
 <script src="/frontend/js/owl.carousel.min.js"></script>
 <script src="/frontend/js/main.js"></script>
-<script src="/js/projectCustom.js"></script>
 
 <script>
     document.onreadystatechange = function(){
