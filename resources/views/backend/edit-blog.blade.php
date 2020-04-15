@@ -4,8 +4,8 @@
 
     <div class="right_col" role="main">
         <div class="">
-            <div class="page-title">
-                <div class="title_left">
+            <div class="page-title" >
+                <div class="title">
                     <a href="/admin/blog"><h3 class="fa fa-arrow-circle-left"
                                               style="font-size: 25px;float: left;margin-right:10px"></h3></a>
                     <h3 style="float:left;">Edit &nbsp;<u><b>{{$blog->title}}</b></u>&nbsp; blog.</h3>
@@ -53,6 +53,38 @@
                                                class="form-control col-md-6 col-sm-6 col-xs-12">
                                     </div>
                                 </div>
+
+                                <div class="form-group">
+                                    <label for="shortContent"
+                                           class="control-label col-md-3 col-sm-3 col-xs-12">Categories *</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <select class="form-control" name="category">
+                                            <option value="0" >Other category</option>
+                                            @foreach($categories as $category)
+                                                <option
+                                                    value="{{$category->id}}">{{$category->name}}</option>
+                                                @foreach($category->child as $secondary_category)
+                                                    <option
+                                                        value="{{$secondary_category->id}}">{{$category->name}}
+                                                        -->{{$secondary_category->name}}</option>
+                                                    @foreach($secondary_category->child as $double_sec_category)
+                                                        <option
+                                                            value="{{$double_sec_category->id}}">{{$category->name}}
+                                                            -->{{$secondary_category->name}}
+                                                            -->{{$double_sec_category->name}}</option>
+                                                    @endforeach
+                                                @endforeach
+                                            @endforeach
+
+
+
+
+
+
+                                        </select>
+                                    </div>
+                                </div>
+
 
                                 {{Form::bsText('title','Title *',$blog->title)}}
 

@@ -10,11 +10,15 @@ class Category extends Model
     protected $fillable =['name','up_category','slug'];
 
     public function parent(){
-        return $this->belongsTo('App\Category', 'up_category');
-    }
+    return $this->belongsTo('App\Category', 'up_category');
+}
 
     public function child(){
         return $this->hasMany('App\Category', 'up_category');
+    }
+
+    public function classifiedBlogs(){
+        return $this->hasMany('App\Blog','category','id');
     }
 
 }

@@ -19,7 +19,7 @@
                     </li>
                     @foreach($secondary_category->child as $double_sec_category)
                         <li>
-                            <a href="/blog/{{$category->slug}}/{{$secondary_category->slug}}/{{$double_sec_category}}">{{$double_sec_category->name}}</a>
+                            <a href="/blog/{{$category->slug}}/{{$secondary_category->slug}}/{{$double_sec_category->slug}}">{{$double_sec_category->name}}</a>
                         </li>
                     @endforeach
                 @endforeach

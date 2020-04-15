@@ -28,8 +28,9 @@ class AdminGetController extends AdminController
 
     public function get_edit_blog($slug)
     {
+        $categories = Category::where('up_category','0')->get();
         $blog = Blog::where('slug', $slug)->first();
-        return view('backend.edit-blog')->with('blog',$blog);
+        return view('backend.edit-blog')->with('blog',$blog)->with('categories',$categories);
     }
 
     public function get_category()

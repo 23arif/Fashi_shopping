@@ -148,6 +148,7 @@ class AdminPostController extends AdminController
                     'short_content' => $request->short_content,
                     'description' => $request->description,
                     'tags' => $request->tags,
+                    'category' => $request->category,
                 ]);
                 return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Blog updated successfully !']);
 

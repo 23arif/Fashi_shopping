@@ -19,23 +19,9 @@
                         </div>
                         <div class="blog-detail-desc">
                             <p>
-{{--                                @if(isset($blog->parent))--}}
-{{--                                    {{$blog->parent->name}}--}}
-{{--                                    @php($primaryCategory=$blog->parent);--}}
-{{--                                    @if(isset($primaryCategory->parent))--}}
-{{--                                        {{$primaryCategory->parent->name}}--}}
-{{--                                        @php($doubleprimaryCategory= $blog->parent);--}}
-{{--                                        @if(isset($doubleprimaryCategory->parent))--}}
-{{--                                            {{$doubleprimaryCategory->parent->name}}--}}
-{{--                                        @endif--}}
-{{--                                    @endif--}}
-{{--                                @endif--}}
-                                {!!$blogs->description!!}
+                                {!! $blogs->description !!}
                             </p>
                         </div>
-                        {{--                        <div class="blog-quote">--}}
-                        {{--                            <p>{{$short_content}}</p>--}}
-                        {{--                        </div>--}}
 
                         @if($blogs->short_content)
                             <div class="blog-quote">

@@ -36,7 +36,7 @@
                                     </div>
 
                                     <div class="bi-text">
-                                        <a href="/blog/{{$blog->slug}}">
+                                        <a href="/blog/@if(isset($blog->parent))@php($primaryCategory=$blog->parent)@if(isset($primaryCategory->parent))@php($doubleprimaryCategory= $primaryCategory->parent)@if(isset($doubleprimaryCategory->parent)){{$doubleprimaryCategory->parent->slug}}/@endif{{$primaryCategory->parent->slug}}/@endif{{$blog->parent->slug}}/@endif{{$blog->slug}}">
                                             <h4>{{$blog->title}}</h4>
                                         </a>
                                         <p>{{$blog->tags}} <span>- {{$blog->created_at->toDateString()}}</span></p>
