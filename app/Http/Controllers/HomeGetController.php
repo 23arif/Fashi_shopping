@@ -56,11 +56,11 @@ class HomeGetController extends HomeController
         return view('frontend.check-out')->with('settings', $settings);
     }
 
-    public function get_login()
-    {
-        $settings = Settings::where('id', 1)->select('settings.*')->first();
-        return view('frontend.login')->with('settings', $settings);;
-    }
+//    public function get_login()
+//    {
+//        $settings = Settings::where('id', 1)->select('settings.*')->first();
+//        return view('frontend.login')->with('settings', $settings);;
+//    }
 
     public function get_product()
     {

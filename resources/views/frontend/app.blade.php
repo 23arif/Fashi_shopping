@@ -44,7 +44,16 @@
                 </div>
             </div>
             <div class="ht-right">
-                <a href="#" class="login-panel"><i class="fa fa-user"></i>Login</a>
+                @if(\Illuminate\Support\Facades\Auth::check())
+                    <a href="/admin" class="login-panel">
+                        <i class="fa fa-user"></i>{{ ucfirst(Auth::user()->name)}}
+                    </a>
+                @else
+                    <a href="/login" class="login-panel">
+                        <i class="fa fa-user"></i> Login
+                    </a>
+                @endif
+
                 <div class="lan-selector">
                     <select class="language_drop" name="countries" id="countries" style="width:300px;">
                         <option value='yt' data-image="/frontend/img/flag-1.jpg" data-imagecss="flag yt"
@@ -101,7 +110,8 @@
                                     <table>
                                         <tbody>
                                         <tr>
-                                            <td class="si-pic"><img src="/frontend/img/select-product-1.jpg" alt=""></td>
+                                            <td class="si-pic"><img src="/frontend/img/select-product-1.jpg" alt="">
+                                            </td>
                                             <td class="si-text">
                                                 <div class="product-selected">
                                                     <p>$60.00 x 1</p>
@@ -113,7 +123,8 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="si-pic"><img src="/frontend/img/select-product-2.jpg" alt=""></td>
+                                            <td class="si-pic"><img src="/frontend/img/select-product-2.jpg" alt="">
+                                            </td>
                                             <td class="si-text">
                                                 <div class="product-selected">
                                                     <p>$60.00 x 1</p>
@@ -251,7 +262,8 @@
                     <div class="copyright-text">
                         <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                         Copyright &copy;<script>document.write(new Date().getFullYear());</script>
-                        All rights reserved by <span style="color: #e7ab3c;font-weight: bold">{{$settings->title}}</span>
+                        All rights reserved by <span
+                            style="color: #e7ab3c;font-weight: bold">{{$settings->title}}</span>
                     </div>
                     <div class="payment-pic">
                         <img src="/frontend/img/payment-method.png" alt="">
@@ -276,15 +288,15 @@
 <script src="/frontend/js/main.js"></script>
 
 <script>
-    document.onreadystatechange = function(){
+    document.onreadystatechange = function () {
         var selected_parent;
-        if(document.readyState === 'interactive'){
+        if (document.readyState === 'interactive') {
             selected_parent = $('#spcMenu').children().find('a').filter('.active').parent('li').index();
-            jQuery.data( document.body, "selected_parent", selected_parent);
+            jQuery.data(document.body, "selected_parent", selected_parent);
         }
-        if(document.readyState === 'complete'){
-            var selected_parent = jQuery.data( document.body, "selected_parent" );
-            $('#spcMenu').children('li:eq('+selected_parent+')').children('a').addClass('active');
+        if (document.readyState === 'complete') {
+            var selected_parent = jQuery.data(document.body, "selected_parent");
+            $('#spcMenu').children('li:eq(' + selected_parent + ')').children('a').addClass('active');
         }
     }
 </script>

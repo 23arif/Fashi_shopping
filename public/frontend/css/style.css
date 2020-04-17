@@ -3359,6 +3359,7 @@ ol {
 
 .blog-details-inner .blog-more img {
     min-width: 100%;
+    margin-bottom: 32px;
 }
 
 .blog-details-inner p {

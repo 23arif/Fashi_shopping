@@ -12,4 +12,8 @@ class Blog extends Model
     public function parent(){
         return $this->belongsTo('App\Category', 'category','id');
     }
+
+    public function comments(){
+        return $this->hasMany('App\Comment','blog','slug');
+    }
 }
