@@ -33,16 +33,33 @@ class HomeGetController extends HomeController
         return view('frontend.blog')->with('settings', $settings)->with('blogs', $blogs)->with('categories', $categories);
     }
 
+    public function get_blog_author($authorName)
+    {
+        $y = explode('-', $authorName);
+        $settings = Settings::where('id', 1)->select('settings.*')->first();
+        $blogs = Blog::where('author', $y[count($y) - 1])->orderBy('id', 'desc')->get();
+        $categories = Category::where('up_category', '0')->get();
+        return view('frontend.blog')->with('settings', $settings)->with('blogs', $blogs)->with('categories', $categories);
+    }
+
+    public function get_blog_tags($tagName)
+    {
+        $settings = Settings::where('id', 1)->select('settings.*')->first();
+        $blogs = Blog::where('tags','LIKE','%'.$tagName.'%')->orderBy('id', 'desc')->get();
+        $categories = Category::where('up_category', '0')->get();
+        return view('frontend.blog')->with('settings', $settings)->with('blogs', $blogs)->with('categories', $categories);
+    }
+
     public function get_blog_content($slug)
     {
         $category = explode('/', $slug); //Explodes category slugs
         $settings = Settings::where('id', 1)->select('settings.*')->first();
         $blogs = Blog::where('slug', $category[count($category) - 1])->first();
-        if(isset($blogs)){
+        if (isset($blogs)) {
             return view('frontend.blog-details')->with('settings', $settings)->with('blogs', $blogs)->with('blogCategory', $category);
-        }else{
+        } else {
             $getLastCat = $category[count($category) - 1];
-            $getCat = Category::where('slug',$getLastCat)->get();
+            $getCat = Category::where('slug', $getLastCat)->get();
             $blogs = $getCat[0]->classifiedBlogs;
             return view('frontend.blog')->with('settings', $settings)->with('blogs', $blogs)->with('categories', $getCat);
 
@@ -55,12 +72,6 @@ class HomeGetController extends HomeController
         $settings = Settings::where('id', 1)->select('settings.*')->first();
         return view('frontend.check-out')->with('settings', $settings);
     }
-
-//    public function get_login()
-//    {
-//        $settings = Settings::where('id', 1)->select('settings.*')->first();
-//        return view('frontend.login')->with('settings', $settings);;
-//    }
 
     public function get_product()
     {

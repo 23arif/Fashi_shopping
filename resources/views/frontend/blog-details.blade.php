@@ -7,10 +7,29 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="blog-details-inner">
-                        <p><a href="/">Home</a>/<a href="/blog">Blog</a>/{{implode('/',$blogCategory)}}</p>
+                        <p><a href="/" class="href"><i class="fa fa-home"></i> Home</a> <i class="arrow_carrot-right"
+                                                                                           style="font-size: 16px;"></i>
+                            <a href="/blog" class="href">Blog</a> <i class="arrow_carrot-right"
+                                                                     style="font-size: 16px;"></i>
+
+                            @for($i= 0;$i<count($blogCategory)-1;$i++)
+                                <a href="/blog/@for($k= 0;$k<=$i;$k++){{$blogCategory[$k]}}/@endfor"
+                                   class="href">{{$blogCategory[$i]}}</a>
+                                <i class="arrow_carrot-right"
+                                   style="font-size: 16px;"></i>
+                            @endfor
+                            <a style="font-size: 16px">{{$blogs->slug}}</a>
+
+                        </p>
+                        <hr>
                         <div class="blog-detail-title">
                             <h2>{{$blogs->title}}</h2>
-                            <p>{{$blogs->tags}} <span>- {{$blogs->created_at->toDateString()}}</span></p>
+                            <p><i class="fa fa-tags"></i>
+                                @foreach(explode(',',$blogs->tags) as $tag)
+                                    <a href="/blog/tags/{{$tag}}" class="blogTags">{{$tag}}</a>
+                                @endforeach
+                                <span>- {{$blogs->created_at->formatLocalized('%d')}} {{$blogs->created_at->formatLocalized('%b')}},{{$blogs->created_at->formatLocalized('%Y')}}</span>
+                            </p>
                         </div>
                         <div class="blog-large-pic">
                             @foreach($photos = Storage::disk('uploads')->files('img/blog/'.$blogs->slug) as $photo)
@@ -92,8 +111,8 @@
                         </div>
                         <hr>
                         <div class="container">
+                            <div id="comments" style="margin-bottom: 25px"></div>
                             @foreach($blogs->comments->where('prime_comment','0') as $comment)
-                                <div id="comments" style="margin-bottom: 25px"></div>
                                 <div class="card" style="margin-bottom: 25px">
                                     <div class="card-body">
                                         <div class="row">
@@ -101,7 +120,8 @@
                                                 <img src="https://image.ibb.co/jw55Ex/def_face.jpg"
                                                      class="img img-rounded img-fluid"/>
                                                 <p class="text-secondary text-center" style="font-size: 13px"><i
-                                                        class="fa fa-clock-o"></i> {{$comment->created_at}}</p>
+                                                        class="fa fa-clock-o"></i> {{$comment->created_at->diffForHumans()}}
+                                                </p>
 
                                             </div>
                                             <div class="col-md-10">
@@ -127,7 +147,8 @@
 
                                         @foreach($comment->child->sortBy('id') as $reply)
                                             {{--                                            <div id="newReply" style="margin-bottom: 15px"></div>--}}
-                                            <div id="{{$reply->prime_comment}}" style="margin-bottom: 15px"></div>
+                                            <div id="{{$reply->prime_comment}}"
+                                                 style="margin-bottom: 15px"></div>
                                             <div class="card card-inner">
                                                 <div class="card-body">
                                                     <div class="row">
@@ -136,7 +157,7 @@
                                                                  class="img img-rounded img-fluid"/>
                                                             <p class="text-secondary text-center"
                                                                style="font-size: 13px"><i
-                                                                    class="fa fa-clock-o"></i> {{$reply->created_at}}
+                                                                    class="fa fa-clock-o"></i> {{$reply->created_at->diffForHumans()}}
                                                             </p>
                                                         </div>
                                                         <div class="col-md-10">
@@ -175,7 +196,8 @@
                                         </div>
                                     @endif
                                     <div class="col-lg-12">
-                                        <textarea placeholder="Comment *" name="content" id="content"></textarea>
+                                                <textarea placeholder="Comment *" name="content"
+                                                          id="content"></textarea>
                                         <button type="submit" class="site-btn">Send message</button>
                                     </div>
                                 </div>
@@ -236,6 +258,30 @@
         #content:focus {
             border: 2px solid #f39313;
         }
+
+        .href {
+            color: #252525;
+            font-size: 16px;
+            font-weight: 400;
+            transition: all .2s;
+
+        }
+
+        .href:hover, .href:focus {
+            color: #e7ab3c;
+            transition: all .1s;
+        }
+
+        .blogTags {
+            color: #e7ab3c;
+            transition: all .2s;
+        }
+
+        .blogTags:hover, .blogTags:focus {
+            color: #e7ab3c;
+            text-decoration: underline;
+            transition: all .2s;
+        }
     </style>
 @endsection
 
@@ -251,7 +297,13 @@
                 scrollTop: $(".leave-comment").offset().top
             },
                 'slow');
+            @if(\Illuminate\Support\Facades\Auth::check())
             $('#content').focus().css('border', '2px solid #f39313');
+            @else
+            $('#name').focus();
+            $('#name , #email , #content').css('border', '2px solid #f39313');
+            @endif
+
         }
 
         $(document).ready(function () {
@@ -313,7 +365,7 @@
                     }
                 }
             })
-        return;
+            return;
         })
     </script>
 @endsection

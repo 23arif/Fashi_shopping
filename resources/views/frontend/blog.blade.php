@@ -39,7 +39,20 @@
                                         <a href="/blog/@if(isset($blog->parent))@php($primaryCategory=$blog->parent)@if(isset($primaryCategory->parent))@php($doubleprimaryCategory= $primaryCategory->parent)@if(isset($doubleprimaryCategory->parent)){{$doubleprimaryCategory->parent->slug}}/@endif{{$primaryCategory->parent->slug}}/@endif{{$blog->parent->slug}}/@endif{{$blog->slug}}">
                                             <h4>{{$blog->title}}</h4>
                                         </a>
-                                        <p>{{$blog->tags}} <span>- {{$blog->created_at->toDateString()}}</span></p>
+                                        <p>
+                                            <i class="ti-user"></i> - <a
+                                                href="blog/author/{{$blog->user->slug}}-{{$blog->user->id}}"
+                                                class="href">{{$blog->user->name}}</a>&nbsp;
+                                            <i class="ti-comments"></i> - {{$blog->comments->count()}}
+                                            <span class="pull-right"><i
+                                                    class="fa fa-clock-o"></i> {{$blog->created_at->formatLocalized('%d')}} {{$blog->created_at->formatLocalized('%b')}},{{$blog->created_at->formatLocalized('%Y')}}</span>
+
+                                            <br>
+                                            <i class="fa fa-tags"></i>
+                                            @foreach(explode(',',$blog->tags) as $tag)
+                                                <a href="/blog/tags/{{$tag}}" class="href">{{$tag}}</a>
+                                            @endforeach
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -96,6 +109,18 @@
 @endsection
 
 @section('css')
+    <style>
+        .href {
+            color: #e7ab3c;
+            transition: all 0.2s;
+        }
+
+        .href:hover, .href:focus {
+            text-decoration: underline;
+            color: #e7ab3c;
+            transition: all 0.2s;
+        }
+    </style>
 @endsection
 
 @section('js')

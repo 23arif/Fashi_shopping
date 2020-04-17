@@ -16,4 +16,9 @@ class Blog extends Model
     public function comments(){
         return $this->hasMany('App\Comment','blog','slug');
     }
+    public function user(){
+        return $this->hasOne('App\User','id','author');
+    }
+
+
 }

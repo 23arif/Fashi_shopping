@@ -16,4 +16,6 @@ class Comment extends Model
     public function child(){
         return $this->hasMany('App\Comment', 'prime_comment');
     }
+
+
 }

@@ -20,6 +20,8 @@ Route::get('/contact', 'HomeGetController@get_contact');
 Route::get('/shop', 'HomeGetController@get_shop');
 Route::get('/shopping-cart', 'HomeGetController@get_shopping_cart');
 Route::get('/blog', 'HomeGetController@get_blog');
+Route::get('/blog/author/{authorName}', 'HomeGetController@get_blog_author');
+Route::get('/blog/tags/{tagName}', 'HomeGetController@get_blog_tags');
 Route::get('/blog/{slug}', 'HomeGetController@get_blog_content')->where('slug','^[a-zA-Z0-9-_\/]+$');
 Route::post('/blog/{slug}', 'HomePostController@post_blog_comment')->where('slug','^[a-zA-Z0-9-_\/]+$');
 Route::get('/check-out', 'HomeGetController@get_checkout');

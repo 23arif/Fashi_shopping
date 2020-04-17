@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Blog;
 use App\Category;
 use App\Settings;
+use App\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
 use Validator;
 use Illuminate\Http\Request;
@@ -71,6 +73,7 @@ class AdminPostController extends AdminController
             }
             $date = Str::slug(Carbon::now());
             $slug = Str::slug($request->title) . '-' . $date;
+            $author = Auth::id();
 
             $photos = $request->file('photos');
             if (!empty($photos)) {
@@ -87,6 +90,7 @@ class AdminPostController extends AdminController
             try {
 
                 $request->merge(['slug' => $slug]);
+                $request->merge(['author' => $author]);
 
                 Blog::create($request->all());
                 return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Blog added successfully !']);
@@ -180,9 +184,9 @@ class AdminPostController extends AdminController
             } catch (\Exception $e) {
                 return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Category could not added !', 'error' => $e]);
             }
-        }else{
+        } else {
             try {
-                Category::where('id',$request->id)->delete();
+                Category::where('id', $request->id)->delete();
                 return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Category deleted successfully !']);
 
             } catch (\Exception $e) {
