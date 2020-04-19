@@ -382,7 +382,6 @@ ol {
     color: #252525;
     display: inline-block;
     padding-left: 20px;
-    border-left: 1px solid #e5e5e5;
     padding-top: 18px;
     padding-bottom: 15px;
 }
@@ -396,7 +395,13 @@ ol {
     margin-top: 15px;
     margin-bottom: 13px;
 }
-
+.header-top .ht-right .top-welcome {
+    float: right;
+    padding:0 20px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-left: 1px solid #e5e5e5;
+}
 .header-top .ht-right .top-social {
     float: right;
     padding-right: 20px;
@@ -3712,7 +3717,7 @@ ol {
 -----------------------*/
 
 .faq-section {
-    padding-top: 80px;
+    padding-top: 50px;
     padding-bottom: 54px;
 }
 

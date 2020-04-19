@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Blog;
 use App\Category;
+use App\FAQs;
 use App\Settings;
 
 class AdminGetController extends AdminController
@@ -21,22 +22,32 @@ class AdminGetController extends AdminController
 
     public function get_blog()
     {
-        $categories = Category::where('up_category','0')->get();
+        $categories = Category::where('up_category', '0')->get();
         $blogs = Blog::all();
-        return view('backend.blog')->with('blogs', $blogs)->with('categories',$categories);
+        return view('backend.blog')->with('blogs', $blogs)->with('categories', $categories);
     }
 
     public function get_edit_blog($slug)
     {
-        $categories = Category::where('up_category','0')->get();
+        $categories = Category::where('up_category', '0')->get();
         $blog = Blog::where('slug', $slug)->first();
-        return view('backend.edit-blog')->with('blog',$blog)->with('categories',$categories);
+        return view('backend.edit-blog')->with('blog', $blog)->with('categories', $categories);
     }
 
     public function get_category()
     {
-        $categories = Category::where('up_category','0')->get();
-        return view('backend.category')->with('categories',$categories);
+        $categories = Category::where('up_category', '0')->get();
+        return view('backend.category')->with('categories', $categories);
 
+    }
+
+    public function get_faq()
+    {
+        $faqs = FAQs::all();
+        return view('backend.faq')->with('faqs',$faqs);
+    }
+    public function get_edit_faq($slug){
+        $topic = FAQs::where('slug',$slug)->first();
+        return view('backend.edit-faq')->with('topic',$topic);
     }
 }

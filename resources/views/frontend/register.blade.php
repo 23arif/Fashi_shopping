@@ -23,23 +23,47 @@
                 <div class="col-lg-6 offset-lg-3">
                     <div class="register-form">
                         <h2>Register</h2>
-                        <form action="#">
+                        <form method="POST" action="{{ route('register') }}">
+                            @csrf
                             <div class="group-input">
-                                <label for="username">Username or email address *</label>
-                                <input type="text" id="username">
+                                <label for="name">Name *</label>
+                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+
+                                @error('name')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
                             <div class="group-input">
-                                <label for="pass">Password *</label>
-                                <input type="text" id="pass">
+                                <label for="email">Email address *</label>
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+
+                                @error('email')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
                             <div class="group-input">
-                                <label for="con-pass">Confirm Password *</label>
-                                <input type="text" id="con-pass">
+                                <label for="password">Password *</label>
+                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+
+                                @error('password')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="group-input">
+                                <label for="password-confirm">Confirm Password *</label>
+                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+
                             </div>
                             <button type="submit" class="site-btn register-btn">REGISTER</button>
                         </form>
                         <div class="switch-login">
-                            <a href="./login.html" class="or-login">Or Login</a>
+                            <a href="/login" class="or-login">Or Login</a>
                         </div>
                     </div>
                 </div>

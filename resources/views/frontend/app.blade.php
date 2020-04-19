@@ -7,6 +7,7 @@
     <meta name="keywords" content="Fashi, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{csrf_token()}}">
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
@@ -20,6 +21,18 @@
     <link rel="stylesheet" href="/frontend/css/jquery-ui.min.css" type="text/css">
     <link rel="stylesheet" href="/frontend/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="/frontend/css/style.css" type="text/css">
+    <style>
+        .welcome {
+            color: #252525;
+            transition: all 0.1s;
+        }
+
+        .welcome:hover, .welcome:focus {
+            color: #e7ab3c;
+            transition: all 0.1s;
+            text-decoration: underline;
+        }
+    </style>
     @yield('css')
 </head>
 
@@ -45,14 +58,31 @@
             </div>
             <div class="ht-right">
                 @if(\Illuminate\Support\Facades\Auth::check())
-                    <a href="/admin" class="login-panel">
-                        <i class="fa fa-user"></i>{{ ucfirst(Auth::user()->name)}}
-                    </a>
+                    <a href="{{route('logout')}}" class="login-panel"
+                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i
+                            class="fa fa-sign-out pull-right"></i> Log Out</a>
+
+                    {{--Hidden form for logout.We need to change get to post with form--}}
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                    {{--/Hidden form for logout.We need to change get to post with form--}}
+
                 @else
                     <a href="/login" class="login-panel">
                         <i class="fa fa-user"></i> Login
                     </a>
                 @endif
+
+                @if(\Illuminate\Support\Facades\Auth::check())
+                    <div class="top-welcome">
+                        Welcome <b><a
+                                @if(\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->status()>0)
+                                href="/admin @endif"
+                                class="welcome">{{ucfirst(\Illuminate\Support\Facades\Auth::user()->name)}}</a></b>
+                    </div>
+                @endif
+
 
                 <div class="lan-selector">
                     <select class="language_drop" name="countries" id="countries" style="width:300px;">
@@ -178,16 +208,18 @@
                     <li><a href="/shop">Shop</a></li>
                     <li><a href="/blog">Blog</a></li>
                     <li><a href="/contact">Contact</a></li>
-                    <li><a href="#">Pages</a>
-                        <ul class="dropdown">
-                            <li><a href="/blog-details">Blog Details</a></li>
-                            <li><a href="/shopping-cart">Shopping Cart</a></li>
-                            <li><a href="/check-out">Checkout</a></li>
-                            <li><a href="./faq.html">Faq</a></li>
-                            <li><a href="/register">Register</a></li>
-                            <li><a href="/login">Login</a></li>
-                        </ul>
-                    </li>
+                    <li><a href="/faq">Faqs</a></li>
+
+                    {{--                    <li><a href="#">Pages</a>--}}
+{{--                        <ul class="dropdown">--}}
+{{--                            <li><a href="/blog-details">Blog Details</a></li>--}}
+{{--                            <li><a href="/shopping-cart">Shopping Cart</a></li>--}}
+{{--                            <li><a href="/check-out">Checkout</a></li>--}}
+{{--                            <li><a href="./faq.html">Faq</a></li>--}}
+{{--                            <li><a href="/register">Register</a></li>--}}
+{{--                            <li><a href="/login">Login</a></li>--}}
+{{--                        </ul>--}}
+{{--                    </li>--}}
                 </ul>
             </nav>
             <div id="mobile-menu-wrap"></div>

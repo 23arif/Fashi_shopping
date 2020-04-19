@@ -55,6 +55,7 @@
                             <li><a href="/admin/settings"><i class="fa fa-cog"></i> Settings </a></li>
                             <li><a href="/admin/blog"><i class="fa fa-newspaper-o"></i> Blog </a></li>
                             <li><a href="/admin/category"><i class="fa fa-newspaper-o"></i> Category </a></li>
+                            <li><a href="/admin/faq"><i class="fa fa-question-circle-o"></i> FAQs </a></li>
 
                         </ul>
                     </div>
@@ -105,6 +106,9 @@
                                     </a>
                                 </li>
                                 <li><a href="javascript:;">Help</a></li>
+                                <li>
+                                    <a href="/">Back to Web site</a>
+                                </li>
                                 <li>
                                     <a href="{{route('logout')}}"
                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i

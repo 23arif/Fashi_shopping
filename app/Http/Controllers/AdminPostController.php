@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Blog;
 use App\Category;
+use App\FAQs;
 use App\Settings;
 use App\User;
 use Carbon\Carbon;
@@ -89,8 +90,7 @@ class AdminPostController extends AdminController
 
             try {
 
-                $request->merge(['slug' => $slug]);
-                $request->merge(['author' => $author]);
+                $request->merge(['slug' => $slug, 'author' => $author]);
 
                 Blog::create($request->all());
                 return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Blog added successfully !']);
@@ -193,5 +193,50 @@ class AdminPostController extends AdminController
                 return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Category could not deleted !', 'error' => $e]);
             }
         }
+    }
+
+    public function post_faq(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required| max:250',
+            'short_content' => 'required| max:250',
+        ]);
+
+        if ($validator->fails()) {
+            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Please fill required blanks !']);
+        }
+        try {
+            $slug = str::slug($request->name);
+            $request->merge(['slug' => $slug]);
+            FAQs::create($request->all());
+            return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'FAQ title added successfully !']);
+
+        } catch (\Exception $e) {
+            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'FAQ title could not added !', 'error' => $e]);
+        }
+
+    }
+
+    public function post_edit_faq(Request $request, $slug)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required| max:250',
+            'short_content' => 'required| max:250',
+        ]);
+
+        if ($validator->fails()) {
+            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Please fill required blanks !']);
+        }
+        try {
+            $newSlug = Str::slug($request->name);
+            unset($request['_token']);
+            FAQs::where('slug', $slug)->update($request->all());
+
+            return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'FAQ title updated successfully !']);
+
+        } catch (\Exception $e) {
+            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'FAQ title could not updated !', 'error' => $e]);
+        }
+
     }
 }

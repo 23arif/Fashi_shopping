@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use App\Settings;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Auth;
@@ -37,6 +38,12 @@ class RegisterController extends Controller
      *
      * @return void
      */
+    public function showRegistrationForm()
+    {
+        $settings = Settings::where('id', 1)->select('settings.*')->first();
+        return view('frontend.register')->with('settings', $settings);;
+    }
+
     public function __construct()
     {
         $this->middleware('guest');
@@ -45,7 +52,7 @@ class RegisterController extends Controller
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param array $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
@@ -60,7 +67,7 @@ class RegisterController extends Controller
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
+     * @param array $data
      * @return \App\User
      */
     protected function create(array $data)
@@ -69,7 +76,7 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'slug' => strtolower($data['name']).'-'.rand(1,9999),
+            'slug' => strtolower($data['name']) . '-' . rand(1, 9999),
 
         ]);
     }

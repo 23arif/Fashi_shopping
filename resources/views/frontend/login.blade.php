@@ -23,29 +23,50 @@
                 <div class="col-lg-6 offset-lg-3">
                     <div class="login-form">
                         <h2>Login</h2>
-                        <form action="#">
+                        <form action="{{ route('login') }}" method="POST">
+                            @csrf
                             <div class="group-input">
-                                <label for="username">Username or email address *</label>
-                                <input type="text" id="username">
+                                <label for="username">Email address *</label>
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+
+                                @error('email')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
+
                             <div class="group-input">
                                 <label for="pass">Password *</label>
-                                <input type="text" id="pass">
+                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+
+                                @error('password')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
+
                             <div class="group-input gi-check">
                                 <div class="gi-more">
                                     <label for="save-pass">
                                         Save Password
-                                        <input type="checkbox" id="save-pass">
+                                        <input class="form-check-input" type="checkbox" name="remember" id="save-pass" {{ old('remember') ? 'checked' : '' }}>
                                         <span class="checkmark"></span>
                                     </label>
-                                    <a href="#" class="forget-pass">Forget your Password</a>
+
+                                    @if (Route::has('password.request'))
+                                        <a class="forget-pass" href="{{ route('password.request') }}">
+                                            {{ __('Forgot Your Password?') }}
+                                        </a>
+                                    @endif
                                 </div>
                             </div>
+
                             <button type="submit" class="site-btn login-btn">Sign In</button>
                         </form>
                         <div class="switch-login">
-                            <a href="./register.html" class="or-login">Or Create An Account</a>
+                            <a href="/register" class="or-login">Or Create An Account</a>
                         </div>
                     </div>
                 </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Settings;
 use Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
@@ -34,13 +35,14 @@ class LoginController extends Controller
      *
      * @return void
      */
+    public function showLoginForm()
+    {
+        $settings = Settings::where('id', 1)->select('settings.*')->first();
+        return view('frontend.login')->with('settings', $settings);;
+    }
+
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
     }
-
-//    public function logout(Request $request) {
-//        Auth::logout();
-//        return redirect('/login');
-//    }
 }
