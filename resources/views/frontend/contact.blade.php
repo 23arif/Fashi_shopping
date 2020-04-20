@@ -50,7 +50,9 @@
                             </div>
                             <div class="ci-text">
                                 <span>Address:</span>
-                                <p>{{$settings->address}}</p>
+                                <p>
+                                    {{$settings[0]->address}}
+                                </p>
                             </div>
                         </div>
                         <div class="cw-item">
@@ -59,7 +61,9 @@
                             </div>
                             <div class="ci-text">
                                 <span>Phone:</span>
-                                <p>{{$settings->phone}}</p>
+                                <p>
+                                    {{$settings[0]->phone}}
+                                </p>
                             </div>
                         </div>
                         <div class="cw-item">
@@ -68,7 +72,7 @@
                             </div>
                             <div class="ci-text">
                                 <span>Email:</span>
-                                <p>{{$settings->mail}}</p>
+                                <p>{{$settings[0]->mail}}</p>
                             </div>
                         </div>
                         <div class="cw-item">
@@ -77,7 +81,7 @@
                             </div>
                             <div class="ci-text">
                                 <span>Facebook:</span>
-                                <p>{{$settings->facebook}}</p>
+                                <p>{{$settings[0]->facebook}}</p>
                             </div>
 
                             <div class="ci-icon">
@@ -85,14 +89,14 @@
                             </div>
                             <div class="ci-text">
                                 <span>Instagram:</span>
-                                <p>{{$settings->instagram}}</p>
+                                <p>{{$settings[0]->instagram}}</p>
                             </div>
                             <div class="ci-icon">
                                 <i class="ti-youtube"></i>
                             </div>
                             <div class="ci-text">
                                 <span>Youtube:</span>
-                                <p>{{$settings->youtube}}</p>
+                                <p>{{$settings[0]->youtube}}</p>
                             </div>
                         </div>
                     </div>
@@ -132,4 +136,4 @@
 
 @section('js')
 @endsection
- 
+

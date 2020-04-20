@@ -16,8 +16,7 @@ class AdminGetController extends AdminController
 
     public function get_settings()
     {
-        $settings = Settings::where('id', 1)->select('settings.*')->first();
-        return view('backend.settings')->with('settings', $settings);
+        return view('backend.settings');
     }
 
     public function get_blog()

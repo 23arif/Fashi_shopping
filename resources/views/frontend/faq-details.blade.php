@@ -85,7 +85,8 @@
 
                         <div class="container">
                             <div id="comments" style="margin-bottom: 25px"></div>
-                            @foreach($question->faqComments->where('primary_comment','0')->sortByDesc('id') as $comment)
+                            @php($q = $question->faqComments()->latest()->paginate(5))
+                            @foreach($q->where('primary_comment','0') as $comment)
                                 <div class="card" style="margin-bottom: 25px">
                                     <div class="card-body">
                                         <div class="row">
@@ -144,6 +145,8 @@
                                     </div>
                                 </div>
                             @endforeach
+                            {{$q->links()}}
+
                         </div>
                         @if(\Illuminate\Support\Facades\Auth::check())
                             <div class="leave-comment">

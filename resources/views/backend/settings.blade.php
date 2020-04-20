@@ -67,7 +67,7 @@
                                             <div class="form-group">
                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Current Logo</label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <img src="/uploads/img/{{$settings->logo}}" alt="">
+                                                    <img src="/uploads/img/{{$settings[0]->logo}}" alt="">
                                                 </div>
                                             </div>
 
@@ -77,197 +77,45 @@
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                                     <input type="file" id="logo" name="logo"
                                                            class="form-control col-md-7 col-xs-12">
-                                                    <input type="hidden" name="prevLogo" value="{{$settings->logo}}">
+                                                    <input type="hidden" name="prevLogo" value="{{$settings[0]->logo}}">
                                                 </div>
                                             </div>
-
-                                            {{--                                            <div class="form-group">--}}
-                                            {{--                                                <label class="control-label col-md-3 col-sm-3 col-xs-12"--}}
-                                            {{--                                                       for="title">Web Page Title </label>--}}
-                                            {{--                                                <div class="col-md-6 col-sm-6 col-xs-12">--}}
-                                            {{--                                                    <input type="text" id="title" name="title"--}}
-                                            {{--                                                           class="form-control col-md-7 col-xs-12">--}}
-                                            {{--                                                </div>--}}
-                                            {{--                                            </div>--}}
-                                            {{Form::bsText('title','Web Page Title',$settings->title)}}
-
-                                            {{--                                            <div class="form-group">--}}
-                                            {{--                                                <label class="control-label col-md-3 col-sm-3 col-xs-12"--}}
-                                            {{--                                                       for="keywords">Keywords--}}
-                                            {{--                                                </label>--}}
-                                            {{--                                                <div class="col-md-6 col-sm-6 col-xs-12">--}}
-                                            {{--                                                    <input type="text" id="keywords" name="keywords"--}}
-                                            {{--                                                           class="form-control col-md-7 col-xs-12">--}}
-                                            {{--                                                </div>--}}
-                                            {{--                                            </div>--}}
-                                            {{Form::bsText('keywords','Keywords',$settings->keywords)}}
-
-                                            {{--                                            <div class="form-group">--}}
-                                            {{--                                                <label for="description"--}}
-                                            {{--                                                       class="control-label col-md-3 col-sm-3 col-xs-12">Description</label>--}}
-                                            {{--                                                <div class="col-md-6 col-sm-6 col-xs-12">--}}
-                                            {{--                                                    <input id="description" class="form-control col-md-7 col-xs-12"--}}
-                                            {{--                                                           type="text" name="description">--}}
-                                            {{--                                                </div>--}}
-                                            {{--                                            </div>--}}
-                                            {{Form::bsText('description','Description',$settings->description)}}
-
-                                            {{--                                            <div class="form-group">--}}
-                                            {{--                                                <label for="url"--}}
-                                            {{--                                                       class="control-label col-md-3 col-sm-3 col-xs-12">Url</label>--}}
-                                            {{--                                                <div class="col-md-6 col-sm-6 col-xs-12">--}}
-                                            {{--                                                    <input id="url" class="form-control col-md-7 col-xs-12"--}}
-                                            {{--                                                           type="text" name="url">--}}
-                                            {{--                                                </div>--}}
-                                            {{--                                            </div>--}}
-                                            {{Form::bsText('url','Url',$settings->url)}}
+                                            {{Form::bsText('title','Web Page Title',$settings[0]->title)}}
+                                            {{Form::bsText('keywords','Keywords',$settings[0]->keywords)}}
+                                            {{Form::bsText('description','Description',$settings[0]->description)}}
+                                            {{Form::bsText('url','Url',$settings[0]->url)}}
 
                                         </div>
 
                                         <div role="tabpanel" class="tab-pane fade" id="tab_contact"
                                              aria-labelledby="contact-tab">
-
-
-                                            {{--                                            <div class="form-group">--}}
-                                            {{--                                                <label class="control-label col-md-3 col-sm-3 col-xs-12"--}}
-                                            {{--                                                       for="phone">Phone </label>--}}
-                                            {{--                                                <div class="col-md-6 col-sm-6 col-xs-12">--}}
-                                            {{--                                                    <input type="phone" id="title" name="phone"--}}
-                                            {{--                                                           class="form-control col-md-7 col-xs-12">--}}
-                                            {{--                                                </div>--}}
-                                            {{--                                            </div>--}}
-                                            {{Form::bsText('phone','Phone',$settings->phone)}}
-
-                                            {{--                                            <div class="form-group">--}}
-                                            {{--                                                <label class="control-label col-md-3 col-sm-3 col-xs-12"--}}
-                                            {{--                                                       for="gsm">Gsm--}}
-                                            {{--                                                </label>--}}
-                                            {{--                                                <div class="col-md-6 col-sm-6 col-xs-12">--}}
-                                            {{--                                                    <input type="text" id="gsm" name="gsm"--}}
-                                            {{--                                                           class="form-control col-md-7 col-xs-12">--}}
-                                            {{--                                                </div>--}}
-                                            {{--                                            </div>--}}
-                                            {{Form::bsText('mail','Mail',$settings->mail)}}
-
-                                            {{Form::bsText('gsm','Gsm',$settings->gsm)}}
-
-                                            {{--                                            <div class="form-group">--}}
-                                            {{--                                                <label for="faks"--}}
-                                            {{--                                                       class="control-label col-md-3 col-sm-3 col-xs-12">Faks</label>--}}
-                                            {{--                                                <div class="col-md-6 col-sm-6 col-xs-12">--}}
-                                            {{--                                                    <input id="faks" class="form-control col-md-7 col-xs-12"--}}
-                                            {{--                                                           type="text" name="faks">--}}
-                                            {{--                                                </div>--}}
-                                            {{--                                            </div>--}}
-                                            {{Form::bsText('faks','Faks',$settings->faks)}}
-
-                                            {{--                                            <div class="form-group">--}}
-                                            {{--                                                <label for="address"--}}
-                                            {{--                                                       class="control-label col-md-3 col-sm-3 col-xs-12">Address</label>--}}
-                                            {{--                                                <div class="col-md-6 col-sm-6 col-xs-12">--}}
-                                            {{--                                                    <input id="address" class="form-control col-md-7 col-xs-12"--}}
-                                            {{--                                                           type="text" name="address">--}}
-                                            {{--                                                </div>--}}
-                                            {{--                                            </div>--}}
-                                            {{Form::bsText('address','Address',$settings->address)}}
+                                            {{Form::bsText('phone','Phone',$settings[0]->phone)}}
+                                            {{Form::bsText('mail','Mail',$settings[0]->mail)}}
+                                            {{Form::bsText('gsm','Gsm',$settings[0]->gsm)}}
+                                            {{Form::bsText('faks','Faks',$settings[0]->faks)}}
+                                            {{Form::bsText('address','Address',$settings[0]->address)}}
 
                                         </div>
 
                                         <div role="tabpanel" class="tab-pane fade" id="tab_sm"
                                              aria-labelledby="sm-tab">
-
-
-                                            {{--                                            <div class="form-group">--}}
-                                            {{--                                                <label class="control-label col-md-3 col-sm-3 col-xs-12"--}}
-                                            {{--                                                       for="facebook">Facebook </label>--}}
-                                            {{--                                                <div class="col-md-6 col-sm-6 col-xs-12">--}}
-                                            {{--                                                    <input type="facebook" id="title" name="facebook"--}}
-                                            {{--                                                           class="form-control col-md-7 col-xs-12">--}}
-                                            {{--                                                </div>--}}
-                                            {{--                                            </div>--}}
-                                            {{Form::bsText('facebook','Facebook',$settings->facebook)}}
-
-                                            {{--                                            <div class="form-group">--}}
-                                            {{--                                                <label class="control-label col-md-3 col-sm-3 col-xs-12"--}}
-                                            {{--                                                       for="twitter">Twitter--}}
-                                            {{--                                                </label>--}}
-                                            {{--                                                <div class="col-md-6 col-sm-6 col-xs-12">--}}
-                                            {{--                                                    <input type="text" id="twitter" name="twitter"--}}
-                                            {{--                                                           class="form-control col-md-7 col-xs-12">--}}
-                                            {{--                                                </div>--}}
-                                            {{--                                            </div>--}}
-                                            {{Form::bsText('twitter','Twitter',$settings->twitter)}}
-
-                                            {{--                                            <div class="form-group">--}}
-                                            {{--                                                <label for="instagram"--}}
-                                            {{--                                                       class="control-label col-md-3 col-sm-3 col-xs-12">Instagram</label>--}}
-                                            {{--                                                <div class="col-md-6 col-sm-6 col-xs-12">--}}
-                                            {{--                                                    <input id="instagram" class="form-control col-md-7 col-xs-12"--}}
-                                            {{--                                                           type="text" name="instagram">--}}
-                                            {{--                                                </div>--}}
-                                            {{--                                            </div>--}}
-                                            {{Form::bsText('instagram','Instagram',$settings->instagram)}}
-
-                                            {{--                                            <div class="form-group">--}}
-                                            {{--                                                <label for="youtube"--}}
-                                            {{--                                                       class="control-label col-md-3 col-sm-3 col-xs-12">Youtube</label>--}}
-                                            {{--                                                <div class="col-md-6 col-sm-6 col-xs-12">--}}
-                                            {{--                                                    <input id="youtube" class="form-control col-md-7 col-xs-12"--}}
-                                            {{--                                                           type="text" name="youtube">--}}
-                                            {{--                                                </div>--}}
-                                            {{--                                            </div>--}}
-                                            {{Form::bsText('youtube','Youtube',$settings->youtube)}}
-
+                                            {{Form::bsText('facebook','Facebook',$settings[0]->facebook)}}
+                                            {{Form::bsText('twitter','Twitter',$settings[0]->twitter)}}
+                                            {{Form::bsText('instagram','Instagram',$settings[0]->instagram)}}
+                                            {{Form::bsText('youtube','Youtube',$settings[0]->youtube)}}
                                         </div>
 
                                         <div role="tabpanel" class="tab-pane fade" id="tab_google"
                                              aria-labelledby="google-tab">
-
-                                            {{--                                            <div class="form-group">--}}
-                                            {{--                                                <label for="recapctha"--}}
-                                            {{--                                                       class="control-label col-md-3 col-sm-3 col-xs-12">Recapctha</label>--}}
-                                            {{--                                                <div class="col-md-6 col-sm-6 col-xs-12">--}}
-                                            {{--                                                    <input id="recapctha" class="form-control col-md-7 col-xs-12"--}}
-                                            {{--                                                           type="text" name="recapctha">--}}
-                                            {{--                                                </div>--}}
-                                            {{--                                            </div>--}}
-                                            {{Form::bsText('recapctha','Recapctha',$settings->recapctha)}}
-
-                                            {{--                                            <div class="form-group">--}}
-                                            {{--                                                <label for="maps"--}}
-                                            {{--                                                       class="control-label col-md-3 col-sm-3 col-xs-12">Maps</label>--}}
-                                            {{--                                                <div class="col-md-6 col-sm-6 col-xs-12">--}}
-                                            {{--                                                    <input id="maps" class="form-control col-md-7 col-xs-12"--}}
-                                            {{--                                                           type="text" name="map">--}}
-                                            {{--                                                </div>--}}
-                                            {{--                                            </div>--}}
-                                            {{Form::bsText('map','Map',$settings->map)}}
-
-                                            {{--                                            <div class="form-group">--}}
-                                            {{--                                                <label for="analystic"--}}
-                                            {{--                                                       class="control-label col-md-3 col-sm-3 col-xs-12">Analystic</label>--}}
-                                            {{--                                                <div class="col-md-6 col-sm-6 col-xs-12">--}}
-                                            {{--                                                    <input id="analystic" class="form-control col-md-7 col-xs-12"--}}
-                                            {{--                                                           type="text" name="analystic">--}}
-                                            {{--                                                </div>--}}
-                                            {{--                                            </div>--}}
-                                            {{Form::bsText('analystic','Analystic',$settings->analystic)}}
-
+                                            {{Form::bsText('recapctha','Recapctha',$settings[0]->recapctha)}}
+                                            {{Form::bsText('map','Map',$settings[0]->map)}}
+                                            {{Form::bsText('analystic','Analystic',$settings[0]->analystic)}}
                                         </div>
 
                                         <div role="tabpanel" class="tab-pane fade" id="tab_mail"
                                              aria-labelledby="mail-tab">
 
-                                            {{--                                            <div class="form-group">--}}
-                                            {{--                                                <label for="smtp_user"--}}
-                                            {{--                                                       class="control-label col-md-3 col-sm-3 col-xs-12">User--}}
-                                            {{--                                                    name</label>--}}
-                                            {{--                                                <div class="col-md-6 col-sm-6 col-xs-12">--}}
-                                            {{--                                                    <input id="smtp_user" class="form-control col-md-7 col-xs-12"--}}
-                                            {{--                                                           type="text" name="smtp_user">--}}
-                                            {{--                                                </div>--}}
-                                            {{--                                            </div>--}}
-                                            {{Form::bsText('smtp_user','Smtp User',$settings->smtp_user)}}
+                                            {{Form::bsText('smtp_user','Smtp User',$settings[0]->smtp_user)}}
 
                                             <div class="form-group">
                                                 <label for="smtp_password"
@@ -275,31 +123,13 @@
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                                     <input id="smtp_password" class="form-control col-md-7 col-xs-12"
                                                            type="password" name="smtp_password"
-                                                           value="{{$settings->smtp_password}}">
+                                                           value="{{$settings[0]->smtp_password}}">
                                                 </div>
                                             </div>
 
-                                            {{--                                            <div class="form-group">--}}
-                                            {{--                                                <label for="smtp_host"--}}
-                                            {{--                                                       class="control-label col-md-3 col-sm-3 col-xs-12">SMTP--}}
-                                            {{--                                                    Host</label>--}}
-                                            {{--                                                <div class="col-md-6 col-sm-6 col-xs-12">--}}
-                                            {{--                                                    <input id="smtp_host" class="form-control col-md-7 col-xs-12"--}}
-                                            {{--                                                           type="text" name="smtp_host">--}}
-                                            {{--                                                </div>--}}
-                                            {{--                                            </div>--}}
-                                            {{Form::bsText('smtp_host','Smtp Host',$settings->smtp_host)}}
 
-                                            {{--                                            <div class="form-group">--}}
-                                            {{--                                                <label for="smtp_port"--}}
-                                            {{--                                                       class="control-label col-md-3 col-sm-3 col-xs-12">SMTP--}}
-                                            {{--                                                    Port</label>--}}
-                                            {{--                                                <div class="col-md-6 col-sm-6 col-xs-12">--}}
-                                            {{--                                                    <input id="smtp_port" class="form-control col-md-7 col-xs-12"--}}
-                                            {{--                                                           type="text" name="smtp_port">--}}
-                                            {{--                                                </div>--}}
-                                            {{--                                            </div>--}}
-                                            {{Form::bsText('smtp_port','Smtp Port',$settings->smtp_port)}}
+                                            {{Form::bsText('smtp_host','Smtp Host',$settings[0]->smtp_host)}}
+                                            {{Form::bsText('smtp_port','Smtp Port',$settings[0]->smtp_port)}}
 
                                         </div>
                                     </div>

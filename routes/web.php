@@ -1,5 +1,7 @@
 <?php
 
+use App\Settings;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,6 +14,10 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+view()->composer('*', function ($view) {
+    $view->with('settings', $settings = Settings::all());
+});
+
 
 Route::get('/', 'HomeGetController@get_index');
 Route::get('/index', 'HomeGetController@get_index_yonlendir');

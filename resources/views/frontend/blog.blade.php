@@ -59,12 +59,7 @@
                         @endforeach
 
                         <div class="col-lg-12">
-                            <div class="loading-more">
-                                <i class="icon_loading"></i>
-                                <a href="#">
-                                    Loading More
-                                </a>
-                            </div>
+                            {{$blogs->links()}}
                         </div>
                     </div>
                 </div>

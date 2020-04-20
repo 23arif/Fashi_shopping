@@ -49,11 +49,11 @@
             <div class="ht-left">
                 <div class="mail-service">
                     <i class=" fa fa-envelope"></i>
-                    hello.fashi@fashi.com
+                    {{$settings[0]->mail}}
                 </div>
                 <div class="phone-service">
                     <i class=" fa fa-phone"></i>
-                    +(23) 23-23-233
+                    + {{$settings[0]->phone}}
                 </div>
             </div>
             <div class="ht-right">
@@ -108,8 +108,8 @@
             <div class="row">
                 <div class="col-lg-2 col-md-2">
                     <div class="logo">
-                        <a href="./index.html">
-                            <img src="/frontend/img/logo.png" alt="">
+                        <a href="/">
+                            <img src="/uploads/img/{{$settings[0]->logo}}" alt="">
                         </a>
                     </div>
                 </div>
@@ -211,15 +211,15 @@
                     <li><a href="/faq">Faqs</a></li>
 
                     {{--                    <li><a href="#">Pages</a>--}}
-{{--                        <ul class="dropdown">--}}
-{{--                            <li><a href="/blog-details">Blog Details</a></li>--}}
-{{--                            <li><a href="/shopping-cart">Shopping Cart</a></li>--}}
-{{--                            <li><a href="/check-out">Checkout</a></li>--}}
-{{--                            <li><a href="./faq.html">Faq</a></li>--}}
-{{--                            <li><a href="/register">Register</a></li>--}}
-{{--                            <li><a href="/login">Login</a></li>--}}
-{{--                        </ul>--}}
-{{--                    </li>--}}
+                    {{--                        <ul class="dropdown">--}}
+                    {{--                            <li><a href="/blog-details">Blog Details</a></li>--}}
+                    {{--                            <li><a href="/shopping-cart">Shopping Cart</a></li>--}}
+                    {{--                            <li><a href="/check-out">Checkout</a></li>--}}
+                    {{--                            <li><a href="./faq.html">Faq</a></li>--}}
+                    {{--                            <li><a href="/register">Register</a></li>--}}
+                    {{--                            <li><a href="/login">Login</a></li>--}}
+                    {{--                        </ul>--}}
+                    {{--                    </li>--}}
                 </ul>
             </nav>
             <div id="mobile-menu-wrap"></div>
@@ -241,9 +241,9 @@
                         <a href="#"><img src="/frontend/img/footer-logo.png" alt=""></a>
                     </div>
                     <ul>
-                        <li>Address: {{$settings->address}}</li>
-                        <li>Phone: +{{$settings->phone}}</li>
-                        <li>Email: {{$settings->mail}}</li>
+                        <li>Address: {{$settings[0]->address}}</li>
+                        <li>Phone: +{{$settings[0]->phone}}</li>
+                        <li>Email: {{$settings[0]->mail}}</li>
                     </ul>
                     <div class="footer-social">
                         <a href="#"><i class="fa fa-facebook"></i></a>
@@ -295,7 +295,7 @@
                         <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                         Copyright &copy;<script>document.write(new Date().getFullYear());</script>
                         All rights reserved by <span
-                            style="color: #e7ab3c;font-weight: bold">{{$settings->title}}</span>
+                            style="color: #e7ab3c;font-weight: bold">{{$settings[0]->title}}</span>
                     </div>
                     <div class="payment-pic">
                         <img src="/frontend/img/payment-method.png" alt="">

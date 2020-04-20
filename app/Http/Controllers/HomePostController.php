@@ -81,29 +81,34 @@ class HomePostController extends HomeController
 
     }
 
-    public function post_delete_faq(Request $request){
-        $status = $request->status;
-        if($status == 'delete'){
-            try {
-                FaqTopic::where('id', $request->id)->delete();
-                return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Question deleted successfully !']);
-            } catch (\Exception $e) {
-                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Question could not deleted !', 'error' => $e]);
-            }
-        }elseif($status == 'hide'){
-            try {
-                FaqTopic::where('id',$request->id)->update(['show_hide'=>'0']);
-                return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Question hidded successfully !']);
-            } catch (\Exception $e) {
-                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Question could not hidded !', 'error' => $e]);
+    public function post_delete_faq(Request $request)
+    {
+        if (Auth::check() && Auth::user()->status() > 0) {
+            $status = $request->status;
+            if ($status == 'delete') {
+                try {
+                    FaqTopic::where('id', $request->id)->delete();
+                    return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Question deleted successfully !']);
+                } catch (\Exception $e) {
+                    return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Question could not deleted !', 'error' => $e]);
+                }
+            } elseif ($status == 'hide') {
+                try {
+                    FaqTopic::where('id', $request->id)->update(['show_hide' => '0']);
+                    return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Question hidded successfully !']);
+                } catch (\Exception $e) {
+                    return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Question could not hidded !', 'error' => $e]);
+                }
+            } else {
+                try {
+                    FaqTopic::where('id', $request->id)->update(['show_hide' => '1']);
+                    return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Question showed successfully !']);
+                } catch (\Exception $e) {
+                    return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Question could not showed !', 'error' => $e]);
+                }
             }
         }else{
-            try {
-                FaqTopic::where('id',$request->id)->update(['show_hide'=>'1']);
-                return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Question showed successfully !']);
-            } catch (\Exception $e) {
-                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Question could not showed !', 'error' => $e]);
-            }
+            return redirect('/login');
         }
     }
 }

@@ -262,56 +262,54 @@
 @endsection
 
 @section('js')
+    @if(\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->status()>0)
+        <script src="/js/jquery.form.min.js"></script>
+        <script src="/js/sweetalert2.min.js"></script>
 
-    <script src="/js/jquery.form.min.js"></script>
-    <script src="/js/sweetalert2.min.js"></script>
+        <script>
+            function deleteQuestion(status, id) {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    cancelButtonText: 'Cancel',
+                    confirmButtonText: 'Yes !'
+                }).then(function (result) {
+                    if (result.value) {
+                        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                        $.ajax({
+                            type: "POST",
+                            url: '/faq/delete-faq',
+                            data: {
+                                'id': id,
+                                'status': status,
+                                '_token': CSRF_TOKEN
+                            },
+                            beforeSubmit: function () {
+                                Swal.fire({
+                                    title: '<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>',
+                                    text: 'Loading please wait!',
+                                    showConfirmButton: false
+                                })
+                            },
+                            success: function (response) {
+                                Swal.fire(
+                                    response.processTitle,
+                                    response.processDesc,
+                                    response.processStatus
+                                    ).then(() => {
+                                    if (response.processStatus == "success") {
+                                        location.reload();
+                                    }
+                                })
+                            }
+                        })
+                    }
+                })
+            }
 
-    <script>
-
-        function deleteQuestion(status, id) {
-            Swal.fire({
-                title: 'Are you sure?',
-                // text: "Do you want to do this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                cancelButtonText: 'Cancel',
-                confirmButtonText: 'Yes !'
-            }).then(function (result) {
-                if (result.value) {
-                    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-                    $.ajax({
-                        type: "POST",
-                        url: '/faq/delete-faq',
-                        data: {
-                            'id': id,
-                            'status': status,
-                            '_token': CSRF_TOKEN
-                        },
-                        beforeSubmit: function () {
-                            Swal.fire({
-                                title: '<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>',
-                                text: 'Loading please wait!',
-                                showConfirmButton: false
-                            })
-                        },
-                        success: function (response) {
-                            Swal.fire(
-                                response.processTitle,
-                                response.processDesc,
-                                response.processStatus
-                                ).then(() => {
-                                if (response.processStatus == "success") {
-                                    location.reload();
-                                }
-                            })
-                        }
-                    })
-                }
-            })
-        }
-
-    </script>
-
+        </script>
+    @endif
 @endsection

@@ -11,10 +11,10 @@ use App\User;
 
 class HomeGetController extends HomeController
 {
+
     public function get_index()
     {
-        $settings = Settings::where('id', 1)->select('settings.*')->first();
-        return view('frontend.index')->with('settings', $settings);
+        return view('frontend.index');
     }
 
     public function get_index_yonlendir()
@@ -24,47 +24,42 @@ class HomeGetController extends HomeController
 
     public function get_contact()
     {
-        $settings = Settings::where('id', 1)->select('settings.*')->first();
-        return view('frontend.contact')->with('settings', $settings);
+        return view('frontend.contact');
     }
 
     public function get_blog()
     {
-        $settings = Settings::where('id', 1)->select('settings.*')->first();
-        $blogs = Blog::orderBy('id', 'desc')->get();
+        $blogs = Blog::orderBy('id', 'desc')->paginate(6);
         $categories = Category::where('up_category', '0')->get();
-        return view('frontend.blog')->with('settings', $settings)->with('blogs', $blogs)->with('categories', $categories);
+        return view('frontend.blog')->with('blogs', $blogs)->with('categories', $categories);
     }
 
     public function get_blog_author($authorName)
     {
         $y = explode('-', $authorName);
-        $settings = Settings::where('id', 1)->select('settings.*')->first();
         $blogs = Blog::where('author', $y[count($y) - 1])->orderBy('id', 'desc')->get();
         $categories = Category::where('up_category', '0')->get();
-        return view('frontend.blog')->with('settings', $settings)->with('blogs', $blogs)->with('categories', $categories);
+        return view('frontend.blog')->with('blogs', $blogs)->with('categories', $categories);
     }
 
     public function get_blog_tags($tagName)
     {
-        $settings = Settings::where('id', 1)->select('settings.*')->first();
         $blogs = Blog::where('tags', 'LIKE', '%' . $tagName . '%')->orderBy('id', 'desc')->get();
         $categories = Category::where('up_category', '0')->get();
-        return view('frontend.blog')->with('settings', $settings)->with('blogs', $blogs)->with('categories', $categories);
+        return view('frontend.blog')->with('blogs', $blogs)->with('categories', $categories);
     }
 
     public function get_blog_content($slug)
     {
         $category = explode('/', $slug); //Explodes category slugs
-        $settings = Settings::where('id', 1)->select('settings.*')->first();
         $blogs = Blog::where('slug', $category[count($category) - 1])->first();
         if (isset($blogs)) {
-            return view('frontend.blog-details')->with('settings', $settings)->with('blogs', $blogs)->with('blogCategory', $category);
+            return view('frontend.blog-details')->with('blogs', $blogs)->with('blogCategory', $category);
         } else {
             $getLastCat = $category[count($category) - 1];
             $getCat = Category::where('slug', $getLastCat)->get();
             $blogs = $getCat[0]->classifiedBlogs;
-            return view('frontend.blog')->with('settings', $settings)->with('blogs', $blogs)->with('categories', $getCat);
+            return view('frontend.blog')->with('blogs', $blogs)->with('categories', $getCat);
 
         }
 
@@ -72,41 +67,35 @@ class HomeGetController extends HomeController
 
     public function get_checkout()
     {
-        $settings = Settings::where('id', 1)->select('settings.*')->first();
-        return view('frontend.check-out')->with('settings', $settings);
+        return view('frontend.check-out');
     }
 
     public function get_product()
     {
-        $settings = Settings::where('id', 1)->select('settings.*')->first();
-        return view('frontend.product')->with('settings', $settings);;
+        return view('frontend.product');;
     }
 
     public function get_shop()
     {
-        $settings = Settings::where('id', 1)->select('settings.*')->first();
-        return view('frontend.shop')->with('settings', $settings);;
+        return view('frontend.shop');
     }
 
     public function get_shopping_cart()
     {
-        $settings = Settings::where('id', 1)->select('settings.*')->first();
-        return view('frontend.shopping-cart')->with('settings', $settings);;
+        return view('frontend.shopping-cart');
     }
 
     public function get_faq()
     {
         $faqTopics = FaqTopic::orderBy('id', 'desc')->get();
         $prime_titles = FAQs::all();
-        $settings = Settings::where('id', 1)->select('settings.*')->first();
-        return view('frontend.faq')->with('settings', $settings)->with('prime_titles', $prime_titles)->with('faqTopics', $faqTopics);
+        return view('frontend.faq')->with('prime_titles', $prime_titles)->with('faqTopics', $faqTopics);
     }
 
     public function get_add_faq()
     {
         $topics = FAQs::all();
-        $settings = Settings::where('id', 1)->select('settings.*')->first();
-        return view('frontend.add-faq')->with('settings', $settings)->with('topics', $topics);
+        return view('frontend.add-faq')->with('topics', $topics);
 
     }
 
@@ -115,23 +104,20 @@ class HomeGetController extends HomeController
         $s = explode('-', $slug);
         $author = User::where('id', $s[count($s) - 1])->first();
         $questions = FaqTopic::where('author', $s[count($s) - 1])->orderBy('id', 'desc')->get();
-        $settings = Settings::where('id', 1)->select('settings.*')->first();
-        return view('frontend.faq-author')->with('settings', $settings)->with('questions', $questions)->with('author', $author);
+        return view('frontend.faq-author')->with('questions', $questions)->with('author', $author);
     }
 
     public function get_faq_tags($slug)
     {
         $tags = FaqTopic::where('tags', 'LIKE', '%' . $slug . '%')->orderBy('id', 'desc')->get();
-        $settings = Settings::where('id', 1)->select('settings.*')->first();
-        return view('frontend.faq-tags')->with('settings', $settings)->with('tags', $tags)->with('slug', $slug);
+        return view('frontend.faq-tags')->with('tags', $tags)->with('slug', $slug);
     }
 
     public function get_faq_question_details($topic, $slug)
     {
 
-        $settings = Settings::where('id', 1)->select('settings.*')->first();
         $question = FaqTopic::where('slug', $slug)->first();
-        return view('frontend.faq-details')->with('settings', $settings)->with('question', $question)->with('topic', $topic);
+        return view('frontend.faq-details')->with('question', $question)->with('topic', $topic);
     }
 
     public function get_faq_title($faqTitle)

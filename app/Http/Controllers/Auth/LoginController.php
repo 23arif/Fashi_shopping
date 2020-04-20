@@ -37,8 +37,7 @@ class LoginController extends Controller
      */
     public function showLoginForm()
     {
-        $settings = Settings::where('id', 1)->select('settings.*')->first();
-        return view('frontend.login')->with('settings', $settings);;
+        return view('frontend.login');;
     }
 
     public function __construct()
