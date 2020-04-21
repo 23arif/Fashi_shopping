@@ -7,8 +7,10 @@ use App\FaqComment;
 use App\FaqTopic;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+//use Session;
 use Validator;
 
 
@@ -111,4 +113,9 @@ class HomePostController extends HomeController
             return redirect('/login');
         }
     }
+    public function post_locale(Request $request){
+        session()->put(['locale'=> $request->input('locale')]);
+        App::setLocale(session()->get('locale'));;
+    }
+
 }

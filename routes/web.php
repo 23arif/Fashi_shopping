@@ -1,7 +1,7 @@
 <?php
 
 use App\Settings;
-use Illuminate\Contracts\View\View;
+use App\Locale;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,12 +15,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 view()->composer('*', function ($view) {
-    $view->with('settings', $settings = Settings::all());
+    $locale = Locale::all();
+    $view->with(['settings' => $settings = Settings::all(),'locale'=> $locale]);
 });
 
 
 Route::get('/', 'HomeGetController@get_index');
 Route::get('/index', 'HomeGetController@get_index_yonlendir');
+Route::post('/locale', 'HomePostController@post_locale');
 Route::get('/home', 'HomeGetController@get_index_yonlendir');
 Route::get('/contact', 'HomeGetController@get_contact');
 Route::get('/shop', 'HomeGetController@get_shop');
