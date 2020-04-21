@@ -1,52 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fe062701-2626-4d36-af83-5f16dc064468" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/uploads/img/blog/blog-1-2020-04-11-151158/0.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/uploads/img/blog/blog-1-2020-04-11-151158/1.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/uploads/img/blog/blog-1-2020-04-11-151158/2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/uploads/img/blog/blog-1-2020-04-11-151158/3.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/uploads/img/blog/blog-1-2020-04-11-152200/0.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/uploads/img/blog/blog-1-2020-04-11-152200/1.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/uploads/img/blog/blog-1-2020-04-11-152200/2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/uploads/img/blog/blog-1-2020-04-11-152200/3.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/uploads/img/blog/blog-3-2020-04-11-152536/0.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/uploads/img/blog/blog-3-2020-04-11-152536/1.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/uploads/img/blog/blog-3-2020-04-11-152536/2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/uploads/img/blog/blog-3-2020-04-11-152536/3.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/uploads/img/blog/blog2-2020-04-11-152332/0.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/uploads/img/blog/blog2-2020-04-11-152332/1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/uploads/img/blog/blog2-2020-04-11-152332/2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/uploads/img/blog/blog2-2020-04-11-152332/3.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/uploads/img/blog/blog2-2020-04-11-152352/0.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/uploads/img/blog/blog2-2020-04-11-152352/1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/uploads/img/blog/blog2-2020-04-11-152352/2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/uploads/img/blog/blog2-2020-04-11-152352/3.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/uploads/img/blog/blog2-2020-04-11-152502/0.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/uploads/img/blog/blog2-2020-04-11-152502/1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/uploads/img/blog/blog2-2020-04-11-152502/2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/uploads/img/blog/blog2-2020-04-11-152502/3.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/AdminGetController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/AdminGetController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/AdminPostController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/AdminPostController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/app.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/app.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/uploads/img/logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/public/uploads/img/logo.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/backend/blog.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/blog.blade.php" afterDir="false" />
+    <list default="true" id="fe062701-2626-4d36-af83-5f16dc064468" name="Default Changelist" comment="Laravel localization.">
+      <change afterPath="$PROJECT_DIR$/resources/views/vendor/pagination/bootstrap-4.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/vendor/pagination/default.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/vendor/pagination/semantic-ui.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/vendor/pagination/simple-bootstrap-4.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/vendor/pagination/simple-default.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/HomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/HomeController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/app.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/frontend/blog.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/frontend/blog.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+    </list>
+    <list id="2cacdfa3-1e9a-4735-ad48-a8df3c478bb8" name="Laravel localization." comment="">
+      <change afterPath="$PROJECT_DIR$/app/Http/Middleware/Locale.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Locale.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/frontend/img/az.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/lang/aze/giris.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/lang/en/giris.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Fashi_shopping.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Fashi_shopping.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/HomePostController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/HomePostController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Kernel.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Kernel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/frontend/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/frontend/css/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/frontend/app.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/frontend/app.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/frontend/faq.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/frontend/faq.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/frontend/login.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/frontend/login.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
+  <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
     <execution>
       <executable />
     </execution>
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Laravel blade" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="LineStatusTrackerManager">
+    <file path="$PROJECT_DIR$/routes/web.php">
+      <ranges>
+        <range start1="3" end1="4" start2="3" end2="4" changelist="2cacdfa3-1e9a-4735-ad48-a8df3c478bb8" />
+        <range start1="17" end1="18" start2="17" end2="19" changelist="2cacdfa3-1e9a-4735-ad48-a8df3c478bb8" />
+        <range start1="23" end1="23" start2="24" end2="25" changelist="2cacdfa3-1e9a-4735-ad48-a8df3c478bb8" />
+        <range start1="83" end1="84" start2="85" end2="86" changelist="fe062701-2626-4d36-af83-5f16dc064468" />
+      </ranges>
+    </file>
+  </component>
+  <component name="PackageJsonUpdateNotifier">
+    <dismissed value="$PROJECT_DIR$/package.json" />
   </component>
   <component name="PhpWorkspaceProjectConfiguration">
     <include_path>
@@ -92,8 +109,6 @@
       <path value="$PROJECT_DIR$/vendor/guzzlehttp/guzzle" />
       <path value="$PROJECT_DIR$/vendor/guzzlehttp/psr7" />
       <path value="$PROJECT_DIR$/vendor/opis/closure" />
-      <path value="$PROJECT_DIR$/vendor/jakub-onderka/php-console-color" />
-      <path value="$PROJECT_DIR$/vendor/jakub-onderka/php-console-highlighter" />
       <path value="$PROJECT_DIR$/vendor/hamcrest/hamcrest-php" />
       <path value="$PROJECT_DIR$/vendor/phpspec/prophecy" />
       <path value="$PROJECT_DIR$/vendor/voku/portable-ascii" />
@@ -147,20 +162,37 @@
       <path value="$PROJECT_DIR$/vendor/phar-io/manifest" />
       <path value="$PROJECT_DIR$/vendor/phar-io/version" />
       <path value="$PROJECT_DIR$/vendor/ralouphie/getallheaders" />
+      <path value="$PROJECT_DIR$/vendor/laravel/ui" />
     </include_path>
   </component>
   <component name="ProjectId" id="1aPSDzvPfK8gfhfc12R0GO2sOeP" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/lang" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="editing.templates" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="A:\wamp64\www\Laravel\Fashi_shopping\resources\lang" />
+      <recent name="A:\wamp64\www\Laravel\Fashi_shopping\resources\views\backend" />
+      <recent name="A:\wamp64\www\Laravel\Fashi_shopping\app" />
+      <recent name="A:\wamp64\www\Laravel\Fashi_shopping\resources\views\frontend" />
+      <recent name="A:\wamp64\www\Laravel\Fashi_shopping\database\migrations" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration name="phpunit.xml" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
@@ -186,15 +218,206 @@
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="fe062701-2626-4d36-af83-5f16dc064468" name="Default Changelist" comment="" />
+      <changelist id="2cacdfa3-1e9a-4735-ad48-a8df3c478bb8" name="Laravel localization." comment="" />
       <created>1586635619889</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1586635619889</updated>
-      <workItem from="1586635623098" duration="549000" />
+      <workItem from="1586635623098" duration="1159000" />
+      <workItem from="1586637215332" duration="6400000" />
+      <workItem from="1586693371963" duration="1906000" />
+      <workItem from="1586698592090" duration="2909000" />
+      <workItem from="1586728374151" duration="4502000" />
+      <workItem from="1586770063235" duration="453000" />
+      <workItem from="1586773591131" duration="17618000" />
+      <workItem from="1586806917426" duration="11621000" />
+      <workItem from="1586822887512" duration="158000" />
+      <workItem from="1586860675557" duration="18912000" />
+      <workItem from="1586944406229" duration="9290000" />
+      <workItem from="1586957093996" duration="8400000" />
+      <workItem from="1587050334300" duration="27203000" />
+      <workItem from="1587116230685" duration="34451000" />
+      <workItem from="1587207660054" duration="30913000" />
+      <workItem from="1587295659329" duration="26006000" />
+      <workItem from="1587382614109" duration="14224000" />
+      <workItem from="1587414960047" duration="8918000" />
+      <workItem from="1587470698689" duration="2978000" />
+      <workItem from="1587473877762" duration="4209000" />
+      <workItem from="1587483605288" duration="7071000" />
     </task>
+    <task id="LOCAL-00001" summary="insert : category.blade.php">
+      <created>1586637432428</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1586637432428</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Fixing sweet alert and validation of add blog delete blog pages.Inserting datas to blog.blade.php.">
+      <created>1586807421317</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1586807421317</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Auth systems.Log in / Register pages.">
+      <created>1586822967296</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1586822967296</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Creating of category page. Showing the categories list on blog page.Creating new style route with category names and slugs">
+      <created>1586903977630</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1586903977630</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Creating new routes with categories and slug for category side bar.Some fixes about categories">
+      <created>1586986311472</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1586986311473</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Creating Login And Logout buttons on front and back pages. Creating comments for blogs. Some designs and fixes on it.">
+      <created>1587082425438</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1587082425438</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Date and time changed for comments and blogs. Added author, numbers of comments and tags for each blog on blogs page. Added new slug table to user table in database">
+      <created>1587137203754</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1587137203754</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Changed default login/register pages to special pages.FAQs pages-&gt; faqDescription,faqList,faqDelete,faqEdit and other touches on FAQs page">
+      <created>1587335278583</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1587335278583</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Settings table shared on all views with the help of View::share. Paignation for blogs page and FAQs comments.">
+      <created>1587397981824</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1587397981824</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Laravel localization.">
+      <created>1587483348358</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1587483348359</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="insert : category.blade.php" />
+    <MESSAGE value="Fixing sweet alert and validation of add blog delete blog pages.Inserting datas to blog.blade.php." />
+    <MESSAGE value="Auth systems.Log in / Register pages." />
+    <MESSAGE value="Creating of category page. Showing the categories list on blog page.Creating new style route with category names and slugs" />
+    <MESSAGE value="Creating new routes with categories and slug for category side bar.Some fixes about categories" />
+    <MESSAGE value="Creating Login And Logout buttons on front and back pages. Creating comments for blogs. Some designs and fixes on it." />
+    <MESSAGE value="Date and time changed for comments and blogs. Added author, numbers of comments and tags for each blog on blogs page. Added new slug table to user table in database" />
+    <MESSAGE value="Changed default login/register pages to special pages.FAQs pages-&gt; faqDescription,faqList,faqDelete,faqEdit and other touches on FAQs page" />
+    <MESSAGE value="Settings table shared on all views with the help of View::share. Paignation for blogs page and FAQs comments." />
+    <MESSAGE value="Laravel localization." />
+    <option name="LAST_COMMIT_MESSAGE" value="Laravel localization." />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="275" y="26" key="#Inspections" timestamp="1586872388616">
+      <screen x="0" y="0" width="1366" height="738" />
+    </state>
+    <state x="275" y="26" key="#Inspections/0.0.1366.738/1366.-159.1920.1050@0.0.1366.738" timestamp="1586872388616" />
+    <state x="1918" y="23" key="#JSHint" timestamp="1586956916782">
+      <screen x="1366" y="-159" width="1920" height="1050" />
+    </state>
+    <state x="1918" y="23" key="#JSHint/0.0.1366.738/1366.-159.1920.1050@1366.-159.1920.1050" timestamp="1586956916782" />
+    <state x="399" y="221" key="#com.intellij.codeInsight.template.impl.EditVariableDialog" timestamp="1587213149457">
+      <screen x="0" y="0" width="1366" height="738" />
+    </state>
+    <state x="399" y="221" key="#com.intellij.codeInsight.template.impl.EditVariableDialog/0.0.1366.738/1366.-159.1920.1050@0.0.1366.738" timestamp="1587213149457" />
+    <state x="413" y="122" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1587393545570">
+      <screen x="0" y="0" width="1366" height="738" />
+    </state>
+    <state x="413" y="122" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.738/1366.-159.1920.1050@0.0.1366.738" timestamp="1587393545570" />
+    <state x="0" y="58" key="CommitChangelistDialog2" timestamp="1587483643063">
+      <screen x="0" y="0" width="1366" height="738" />
+    </state>
+    <state x="0" y="58" key="CommitChangelistDialog2/0.0.1366.738/1366.-159.1920.1050@0.0.1366.738" timestamp="1587483643063" />
+    <state x="129" y="54" key="DiffContextDialog" timestamp="1587483249472">
+      <screen x="0" y="0" width="1366" height="738" />
+    </state>
+    <state x="129" y="54" key="DiffContextDialog/0.0.1366.738/1366.-159.1920.1050@0.0.1366.738" timestamp="1587483249472" />
+    <state x="433" y="182" key="NewPhpClassDialog" timestamp="1587420282797">
+      <screen x="0" y="0" width="1366" height="738" />
+    </state>
+    <state x="433" y="182" key="NewPhpClassDialog/0.0.1366.738/1366.-159.1920.1050@0.0.1366.738" timestamp="1587420282797" />
+    <state x="518" y="291" key="NewPhpFileDialog" timestamp="1587420066222">
+      <screen x="0" y="0" width="1366" height="738" />
+    </state>
+    <state x="518" y="291" key="NewPhpFileDialog/0.0.1366.738/1366.-159.1920.1050@0.0.1366.738" timestamp="1587420066222" />
+    <state x="184" y="0" key="SettingsEditor" timestamp="1587213195452">
+      <screen x="0" y="0" width="1366" height="738" />
+    </state>
+    <state x="184" y="0" key="SettingsEditor/0.0.1366.738/1366.-159.1920.1050@0.0.1366.738" timestamp="1587213195452" />
+    <state width="498" height="446" key="SwitcherDM" timestamp="1587297251912">
+      <screen x="0" y="0" width="1366" height="738" />
+    </state>
+    <state width="498" height="446" key="SwitcherDM/0.0.1366.738/1366.-159.1920.1050@0.0.1366.738" timestamp="1587297251912" />
+    <state x="530" y="283" key="VCS.ChangelistChooser" timestamp="1587483551510">
+      <screen x="0" y="0" width="1366" height="738" />
+    </state>
+    <state x="530" y="283" key="VCS.ChangelistChooser/0.0.1366.738/1366.-159.1920.1050@0.0.1366.738" timestamp="1587483551510" />
+    <state x="275" y="100" key="Vcs.Push.Dialog.v2" timestamp="1587483351290">
+      <screen x="0" y="0" width="1366" height="738" />
+    </state>
+    <state x="275" y="100" key="Vcs.Push.Dialog.v2/0.0.1366.738/1366.-159.1920.1050@0.0.1366.738" timestamp="1587483351290" />
+    <state x="193" y="0" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1587396678526">
+      <screen x="0" y="0" width="1366" height="738" />
+    </state>
+    <state x="193" y="0" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1366.738/1366.-159.1920.1050@0.0.1366.738" timestamp="1587396678526" />
+    <state x="329" y="90" width="606" height="536" key="find.popup" timestamp="1587503374566">
+      <screen x="0" y="0" width="1366" height="738" />
+    </state>
+    <state x="329" y="90" width="606" height="536" key="find.popup/0.0.1366.738/1366.-159.1920.1050@0.0.1366.738" timestamp="1587503374566" />
+    <state x="1900" y="-15" width="852" height="763" key="find.popup/0.0.1366.738/1366.-159.1920.1050@1366.-159.1920.1050" timestamp="1586955655376" />
+    <state x="324" y="83" width="700" height="530" key="recent.locations.popup" timestamp="1587238381607">
+      <screen x="0" y="0" width="1366" height="738" />
+    </state>
+    <state x="324" y="83" width="700" height="530" key="recent.locations.popup/0.0.1366.738/1366.-159.1920.1050@0.0.1366.738" timestamp="1587238381607" />
+    <state x="339" y="159" width="672" height="677" key="run.anything.popup" timestamp="1587471375656">
+      <screen x="0" y="0" width="1366" height="738" />
+    </state>
+    <state x="339" y="159" width="672" height="677" key="run.anything.popup/0.0.1366.738/1366.-159.1920.1050@0.0.1366.738" timestamp="1587471375656" />
+    <state x="346" y="59" width="672" height="678" key="search.everywhere.popup" timestamp="1587397455833">
+      <screen x="0" y="0" width="1366" height="738" />
+    </state>
+    <state x="346" y="59" width="672" height="678" key="search.everywhere.popup/0.0.1366.738/1366.-159.1920.1050@0.0.1366.738" timestamp="1587397455833" />
+    <state x="1852" y="-75" width="945" height="965" key="search.everywhere.popup/0.0.1366.738/1366.-159.1920.1050@1366.-159.1920.1050" timestamp="1586955560816" />
   </component>
 </project>

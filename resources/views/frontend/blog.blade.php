@@ -59,7 +59,7 @@
                         @endforeach
 
                         <div class="col-lg-12">
-                            {{$blogs->links()}}
+                            {{$blogs->links('vendor.pagination.bootstrap-4')}}
                         </div>
                     </div>
                 </div>
@@ -116,6 +116,7 @@
             transition: all 0.2s;
         }
     </style>
+
 @endsection
 
 @section('js')
