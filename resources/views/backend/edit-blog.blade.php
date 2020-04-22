@@ -4,7 +4,7 @@
 
     <div class="right_col" role="main">
         <div class="">
-            <div class="page-title" >
+            <div class="page-title">
                 <div class="title">
                     <a href="/admin/blog"><h3 class="fa fa-arrow-circle-left"
                                               style="font-size: 25px;float: left;margin-right:10px"></h3></a>
@@ -18,27 +18,28 @@
                         <div class="x_content">
                             <div class="row">
                                 @foreach($photos = Storage::disk('uploads')->files('img/blog/'.$blog->slug) as $photo)
-                                    <div class="col-md-55">
-                                        <div class="thumbnail">
-                                            <div class="image view view-first">
-                                                <img style="width: 100%; display: block;" src="/uploads/{{$photo}}"
-                                                     alt="image"/>
-                                                <div class="mask">
-                                                    <p></p>
-                                                    <div class="tools tools-bottom">
-                                                        <form action="" method="post" id="deleteImage"
-                                                              class="deleteImage">
-                                                            {{csrf_field()}}
-                                                            <input type="hidden" name="photo" value="{{$photo}}">
-                                                            <button type="submit" class="btn btn-danger btn-sm"><i
-                                                                    class="fa fa-times"></i></button>
-                                                        </form>
-                                                    </div>
+
+                                    <div class="col-md-55" style="height: 150px">
+                                        <div class="image view view-first" style="height: 150px">
+                                            <img style="width: 100%; height: 100%; display: block;"
+                                                 src="/uploads/{{$photo}}"
+                                                 alt="image"/>
+                                            <div class="mask" style="height: 100%">
+                                                <p></p>
+                                                <div class="tools tools-bottom" style="bottom: -30px!important;">
+                                                    <form action="" method="post"
+                                                          class="deleteImage">
+                                                        {{csrf_field()}}
+                                                        <input type="hidden" name="photo" value="{{$photo}}">
+                                                        <button type="submit" class="btn btn-danger btn-sm"><i
+                                                                class="fa fa-times"></i></button>
+                                                    </form>
                                                 </div>
                                             </div>
-
                                         </div>
                                     </div>
+
+
                                 @endforeach
                             </div>
 
@@ -59,7 +60,7 @@
                                            class="control-label col-md-3 col-sm-3 col-xs-12">Categories *</label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <select class="form-control" name="category">
-                                            <option value="0" >Other category</option>
+                                            <option value="0">Other category</option>
                                             @foreach($categories as $category)
                                                 <option
                                                     value="{{$category->id}}">{{$category->name}}</option>
@@ -77,10 +78,6 @@
                                             @endforeach
 
 
-
-
-
-
                                         </select>
                                     </div>
                                 </div>
@@ -93,7 +90,8 @@
                                            class="control-label col-md-3 col-sm-3 col-xs-12">Short Content</label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <input type="text" id="shortContent"
-                                               class="form-control col-md-6 col-sm-6 col-xs-12" name="short_content" value="{{$blog->short_content}}">
+                                               class="form-control col-md-6 col-sm-6 col-xs-12" name="short_content"
+                                               value="{{$blog->short_content}}">
                                     </div>
                                 </div>
 
@@ -157,8 +155,7 @@
                         response.processTitle,
                         response.processDesc,
                         response.processStatus
-                    )
-
+                        )
                 }
             })
         })
@@ -182,7 +179,7 @@
                         response.processTitle,
                         response.processDesc,
                         response.processStatus
-                    ).then(() => {
+                        ).then(() => {
                         if (response.processStatus == "success") {
                             location.href = '/admin/blog';
                         }

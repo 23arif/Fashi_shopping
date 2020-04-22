@@ -112,7 +112,8 @@
                         <hr>
                         <div class="container">
                             <div id="comments" style="margin-bottom: 25px"></div>
-                            @foreach($blogs->comments->where('prime_comment','0') as $comment)
+                            @php($comments = $blogs->comments()->latest()->paginate(10))
+                            @foreach($comments->where('prime_comment','0') as $comment)
                                 <div class="card" style="margin-bottom: 25px">
                                     <div class="card-body">
                                         <div class="row">
@@ -179,6 +180,7 @@
                                     </div>
                                 </div>
                             @endforeach
+                            {{$comments->links()}}
                         </div>
 
                         <div class="leave-comment">
@@ -314,12 +316,21 @@
                         response.processDesc,
                         response.processStatus
                         )
-                    // .then(function () {
-                    //     $('html,body').animate({
-                    //         scrollTop: $("#comments").offset().top
-                    //     },
-                    //         'slow');
-                    // })
+                    .then(function () {
+                        var repliedComment = $('#reply input').val();
+
+                        if ($('#reply input').attr('name') == 'prime_comment') {
+                            $('html,body').animate({
+                                scrollTop: $('#' + repliedComment).offset().top
+                            },
+                                'slow');
+                        } else {
+                            $('html,body').animate({
+                                scrollTop: $("#comments").offset().top
+                            },
+                                'slow');
+                        }
+                    })
                     if (response.processStatus == 'success') {
                         var content = document.getElementById('content').value;
                         if ($('#reply input').attr('name') == 'prime_comment') {

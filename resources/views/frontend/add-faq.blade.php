@@ -102,7 +102,8 @@
                         response.processTitle,
                         response.processDesc,
                         response.processStatus
-                        ).then(() => {
+                        )
+                        .then(() => {
                         if (response.processStatus == "success") {
                             location.href='/faq';
                         }

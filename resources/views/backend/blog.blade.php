@@ -35,6 +35,7 @@
                                     <table id="datatable-buttons" class="table table-striped table-bordered">
                                         <thead>
                                         <tr>
+                                            <th>#</th>
                                             <th>Title</th>
                                             <th>Author</th>
                                             <th>Category</th>
@@ -52,8 +53,9 @@
                                             $queue = 1;
                                         @endphp
 
-                                        @foreach($blogs as $blog)
+                                        @foreach($blogs->sortByDesc('id') as $blog)
                                             <tr>
+                                                <td>{{$blog->id}}</td>
                                                 <td>{{$blog->title}}</td>
                                                 <td>{{$blog->author}}</td>
                                                 <td>{{$blog->category}}</td>

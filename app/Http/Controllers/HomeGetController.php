@@ -8,6 +8,7 @@ use App\FAQs;
 use App\FaqTopic;
 use App\Settings;
 use App\User;
+use Illuminate\Support\Facades\Auth;
 
 class HomeGetController extends HomeController
 {
@@ -94,8 +95,12 @@ class HomeGetController extends HomeController
 
     public function get_add_faq()
     {
-        $topics = FAQs::all();
-        return view('frontend.add-faq')->with('topics', $topics);
+        if(Auth::check() && Auth::user()->status()>0){
+            $topics = FAQs::all();
+            return view('frontend.add-faq')->with('topics', $topics);
+        }else{
+            return redirect('/faq');
+        }
 
     }
 

@@ -11,11 +11,14 @@
                         <a href="#"><i class="fa fa-home"></i> Home</a>
                         <span>FAQs</span>
                     </div>
-                    <div class="col-md-5 col-sm-5 col-5  btn-faq-container">
-                        <div class="pull-right btn btn-faq"><a href="/faq/add-faq"><b>+ Add new FAQ</b></a></div>
-                    </div>
+                    @if(\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->status()>0)
+                        <div class="col-md-5 col-sm-5 col-5  btn-faq-container">
+                            <div class="pull-right btn btn-faq"><a href="/faq/add-faq"><b>+ Add new FAQ</b></a></div>
+                        </div>
+                    @endif
                 </div>
             </div>
+            <hr>
         </div>
     </div>
     <!-- Breadcrumb Section Begin -->
@@ -51,9 +54,17 @@
                                          class="collapse" data-parent="#accordionExample">
                                         @foreach($faqTopics->where('prime_title',$prime_title->id) as $faqTopic)
                                             @if(($faqTopic->show_hide == '1')  || (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->status()>'0'))
-                                                <div class="card text-center">
+
+                                                <div class="card text-center" style="border:1px solid #eee">
                                                     <div class="card-header text-left h3">
-                                                        <a href="/faq/{{$faqTopic->primeTitle->slug}}/{{$faqTopic->slug}}">{{$faqTopic->title}}</a>
+                                                        <a @if($faqTopic->show_hide=='1')
+                                                           href="/faq/{{$faqTopic->primeTitle->slug}}/{{$faqTopic->slug}}"
+                                                        @endif
+                                                        @if($faqTopic->show_hide == '0') class="unPoint" @endif>{{$faqTopic->title}}</a>
+                                                        @if($faqTopic->show_hide == '0')
+                                                            <span
+                                                                class="pull-right"><h6><u>Disabled question</u></h6></span>
+                                                        @endif
                                                     </div>
                                                     <div class="card-body">
                                                         <div class="row">
@@ -87,8 +98,8 @@
                                                                        class="specialLink">{{$tag}}</a>
                                                                 @endforeach
                                                             </div>
-                                                            <div class="footerItems"><i class="ti-comments "></i> 12
-                                                                Comments
+                                                            <div class="footerItems"><i class="ti-comments "></i>
+                                                                {{count($faqTopic->faqComments)}} Comments
                                                             </div>
                                                             @if(\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->status()>0)
                                                                 <div class="footerItems"><i class="ti-trash "></i>
@@ -115,6 +126,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
+
                                             @endif
                                         @endforeach
                                     </div>
@@ -255,6 +267,9 @@
         .btn-faq a:hover {
             color: #000;
             transition: all .2s;
+        }
+        .unPoint{
+            cursor: not-allowed ;
         }
     </style>
 

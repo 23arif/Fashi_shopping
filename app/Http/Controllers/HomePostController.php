@@ -50,22 +50,26 @@ class HomePostController extends HomeController
             'title' => 'required| max:250',
             'content' => 'required',
         ]);
-
+        $length = strlen($request->title);
+        if ($length > 250) {
+            return response(['processStatus' => 'warning', 'processTitle' => 'Warning', 'processDesc' => 'Question title have to be less than 250 character']);
+        }
         if ($validator->fails()) {
             return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Please fill required blanks !']);
         }
-        try {
-            $author = Auth::user()->id;
-            $date = Str::slug(Carbon::now());
-            $slug = Str::slug($request->title) . '-' . $date;
-            $request->merge(['slug' => $slug, 'author' => $author]);
-            FaqTopic::create($request->all());
-            return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Question added successfully !']);
 
-        } catch (\Exception $e) {
-            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Question could not added !', 'error' => $e]);
+            try {
+                $author = Auth::user()->id;
+                $date = Str::slug(Carbon::now());
+                $slug = Str::slug($request->title) . '-' . $date;
+                $request->merge(['slug' => $slug, 'author' => $author]);
+                FaqTopic::create($request->all());
+                return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Question added successfully !']);
+
+            } catch (\Exception $e) {
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Question could not added !', 'error' => $e]);
+            }
         }
-    }
 
     public function post_faq_question_comments(Request $request, $topic, $question_details)
     {
@@ -109,12 +113,14 @@ class HomePostController extends HomeController
                     return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Question could not showed !', 'error' => $e]);
                 }
             }
-        }else{
+        } else {
             return redirect('/login');
         }
     }
-    public function post_locale(Request $request){
-        session()->put(['locale'=> $request->input('locale')]);
+
+    public function post_locale(Request $request)
+    {
+        session()->put(['locale' => $request->input('locale')]);
         App::setLocale(session()->get('locale'));;
     }
 

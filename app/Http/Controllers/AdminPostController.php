@@ -103,19 +103,28 @@ class AdminPostController extends AdminController
 
 //           Delete Blog Section
 
-//            try {
+            try {
             Blog::where('slug', $request->slug)->delete();
             Storage::disk('uploads')->deleteDirectory('img/blog/' . $request->slug);
             return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Blog deleted successfully !']);
-//            } catch (\Exception $e) {
+            } catch (\Exception $e) {
             return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Blog could not deleted !', $e]);
-//            }
+            }
         }
 
     }
 
     public function post_edit_blog($slug, Request $request)
     {
+        if (isset($request->photo)) {
+            try {
+                Storage::disk('uploads')->delete($request->photo);
+                return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Image deleted successfully !']);
+            } catch (\Exception $e) {
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Image could not deleted !', 'error' => $e]);
+            }
+
+        }
         $validator = Validator::make($request->all(), [
             'photos[].' => 'image|mimes:jpg,jpeg,png,gif',
             'title' => 'required|max:250',
@@ -127,15 +136,7 @@ class AdminPostController extends AdminController
         if ($validator->fails()) {
             return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Fill the required blanks !']);
         }
-        if (isset($request->photo)) {
-            try {
-                Storage::disk('uploads')->delete($request->photo);
-                return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Image deleted successfully !']);
-            } catch (\Exception $e) {
-                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Image could not deleted !', 'error' => $e]);
-            }
-
-        } else {
+        if(!isset($request->photo)){
             $photos = $request->file('photos');
             if (!empty($photos)) {
                 foreach ($photos as $photo) {
