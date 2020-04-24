@@ -14,6 +14,7 @@ use Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use function GuzzleHttp\Promise\all;
 
 class AdminPostController extends AdminController
 {
@@ -70,7 +71,7 @@ class AdminPostController extends AdminController
                 'tags' => 'required|max:250',
             ]);
             if ($validator->fails()) {
-                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Fill the required blanks !']);
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Fill the required fields !']);
             }
             $date = Str::slug(Carbon::now());
             $slug = Str::slug($request->title) . '-' . $date;
@@ -104,11 +105,11 @@ class AdminPostController extends AdminController
 //           Delete Blog Section
 
             try {
-            Blog::where('slug', $request->slug)->delete();
-            Storage::disk('uploads')->deleteDirectory('img/blog/' . $request->slug);
-            return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Blog deleted successfully !']);
+                Blog::where('slug', $request->slug)->delete();
+                Storage::disk('uploads')->deleteDirectory('img/blog/' . $request->slug);
+                return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Blog deleted successfully !']);
             } catch (\Exception $e) {
-            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Blog could not deleted !', $e]);
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Blog could not deleted !', $e]);
             }
         }
 
@@ -134,9 +135,9 @@ class AdminPostController extends AdminController
             'category' => 'required',
         ]);
         if ($validator->fails()) {
-            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Fill the required blanks !']);
+            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Fill the required fields !']);
         }
-        if(!isset($request->photo)){
+        if (!isset($request->photo)) {
             $photos = $request->file('photos');
             if (!empty($photos)) {
                 foreach ($photos as $photo) {
@@ -239,5 +240,57 @@ class AdminPostController extends AdminController
             return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'FAQ title could not updated !', 'error' => $e]);
         }
 
+    }
+
+    public function post_profile_user(Request $request, $username)
+    {
+        if ($request->logo) {
+
+            $validator = Validator::make($request->all(), [
+                'logo' => 'mimes:jpg,jpeg,png,gif',
+            ]);
+
+            if ($validator->fails()) {
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Please select image for change profile image !']);
+            }
+
+            $pr = explode('-', $username);
+            $profileName = $pr[0] . '-' . $pr[1];
+
+            $logo = $request->file('logo');
+            $logo_extention = $request->file('logo')->getClientOriginalExtension();
+            $logo_name = 'profileImage.' . $logo_extention;
+            Storage::disk('uploads')->makeDirectory('img/profileImages/' . $profileName);
+            Image::make($logo->getRealPath())->resize(226, 226)->save('uploads/img/profileImages/'.$profileName.'/' . $logo_name);
+
+
+
+
+            unset($request['_token']);
+            try {
+                User::where('id', $pr[count($pr) - 1])->update(['profile_image'=>$logo_name]);
+                return response(['processStatuss' => 'success', 'processTitlee' => 'Success', 'processDescc' => 'Congratulations , profile image updated!']);
+            } catch (\Exception $e) {
+                return response(['processStatuss' => 'error', 'processTitlee' => 'Error', 'processDescc' => 'Profile image could not updated !', 'error' => $e]);
+            }
+
+        } else {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|max:250',
+                'email' => 'required|email|max:250 ',
+            ]);
+
+            if ($validator->fails()) {
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Please fill required blanks !']);
+            }
+            unset($request['_token']);
+            $u = explode('-', $username);
+            try {
+                User::where('id', $u[count($u) - 1])->update($request->all());
+                return response(['processStatus' => 'success', 'processTitle' => 'Success', 'processDesc' => 'Congratulations , profile information updated!']);
+            } catch (\Exception $e) {
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Profile information could not updated !', 'error' => $e]);
+            }
+        }
     }
 }

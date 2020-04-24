@@ -201,7 +201,8 @@
 
 .profile_pic {
   width: 35%;
-  float: left; }
+  float: left;
+}
 
 .img-circle.profile_img {
   width: 70%;
@@ -216,12 +217,14 @@
 .profile_info {
   padding: 25px 10px 10px;
   width: 65%;
-  float: left; }
+  float: left;
+}
 
 .profile_info span {
   font-size: 13px;
   line-height: 30px;
-  color: #BAB8B8; }
+  color: #BAB8B8;
+}
 
 .profile_info h2 {
   font-size: 14px;
@@ -233,17 +236,20 @@
   text-align: center; }
 
 .profile.img_2 .profile_pic {
-  width: 100%; }
+  width: 100%;
+}
 
 .profile.img_2 .profile_pic .img-circle.profile_img {
   width: 50%;
-  margin: 10px 0 0; }
+  margin: 10px 0 0;
+}
 
 .profile.img_2 .profile_info {
   padding: 15px 10px 0;
   width: 100%;
   margin-bottom: 10px;
-  float: left; }
+  float: left;
+}
 
 .main_menu span.fa {
   float: right;

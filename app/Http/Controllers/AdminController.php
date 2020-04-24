@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
+use Illuminate\Contracts\View\View;
+
 class AdminController extends Controller
 {
     /**
@@ -23,4 +26,5 @@ class AdminController extends Controller
 //    {
 //        return view('home');
 //    }
+
 }

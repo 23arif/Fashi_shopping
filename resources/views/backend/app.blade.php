@@ -18,26 +18,51 @@
     <link href="/backend/build/css/custom.min.css" rel="stylesheet">
     @yield('css')
 </head>
-
+<style>
+    .customProfileImage{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        width:80px;
+        height: 80px;
+        overflow: hidden;
+        margin-left: 15px;
+    }
+    .customProfileImage img{
+        max-width: 100%;
+        max-height: 100%;
+    }
+    .profile_info{
+        width:130px;float:right
+    }
+</style>
 <body class="nav-md">
 <div class="container body">
     <div class="main_container">
         <div class="col-md-3 left_col">
             <div class="left_col scroll-view">
                 <div class="navbar nav_title" style="border: 0;">
-                    <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>Admin Panel</span></a>
+                    <a href="/admin" class="site_title"><i class="fa fa-paw"></i> <span>Admin Panel</span></a>
                 </div>
 
                 <div class="clearfix"></div>
 
                 <!-- menu profile quick info -->
                 <div class="profile clearfix">
-                    <div class="profile_pic">
-                        <img src="/backend/images/img.jpg" alt="..." class="img-circle profile_img">
+                    <div class="profile_pic customProfileImage">
+
+                        @php
+                            $id  =\Illuminate\Support\Facades\Auth::user()->id;
+                            $userData = \App\User::where('id',$id)->first();
+                        @endphp
+
+                        <img
+                            src="@if(empty($userData->profile_image))/uploads/img/profileImages/default.png @else /uploads/img/profileImages/{{$userData->slug}}/{{$userData->profile_image}}@endif" >
                     </div>
                     <div class="profile_info">
                         <span>Welcome,</span>
-                        <h2>John Doe</h2>
+                        <h2>{{ucfirst(\Illuminate\Support\Facades\Auth::user()->name)}}</h2>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -94,11 +119,14 @@
                         <li class="">
                             <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
                                aria-expanded="false">
-                                <img src="/backend/images/img.jpg" alt="">John Doe
+                                <img src="@if(empty($userData->profile_image))/uploads/img/profileImages/default.png @else /uploads/img/profileImages/{{$userData->slug}}/{{$userData->profile_image}}@endif">
+                                {{ucfirst(\Illuminate\Support\Facades\Auth::user()->name)}}
                                 <span class=" fa fa-angle-down"></span>
                             </a>
                             <ul class="dropdown-menu dropdown-usermenu pull-right">
-                                <li><a href="javascript:;"> Profile</a></li>
+                                <li>
+                                    <a href="/admin/profile/{{\Illuminate\Support\Facades\Auth::user()->slug}}-{{\Illuminate\Support\Facades\Auth::user()->id}}">
+                                        Profile</a></li>
                                 <li>
                                     <a href="javascript:;">
                                         <span class="badge bg-red pull-right">50%</span>

@@ -2,6 +2,7 @@
 
 use App\Settings;
 use App\Locale;
+use App\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 view()->composer('*', function ($view) {
     $locale = Locale::all();
-    $view->with(['settings' => $settings = Settings::all(),'locale'=> $locale]);
+    $view->with(['settings' => $settings = Settings::all(), 'locale' => $locale]);
 });
 
 
@@ -52,6 +53,7 @@ Route::group(['prefix' => 'faq'], function () {
 
 
 Route::group(['prefix' => 'admin', 'middleware' => 'Admin'], function () {
+
     Route::get('/', 'AdminGetController@get_index');
     Route::get('/settings', 'AdminGetController@get_settings');
     Route::post('/settings', 'AdminPostController@post_settings');
@@ -74,6 +76,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'Admin'], function () {
         Route::post('/', 'AdminPostController@post_faq');
         Route::get('/edit-faq/{slug}', 'AdminGetController@get_edit_faq');
         Route::post('/edit-faq/{slug}', 'AdminPostController@post_edit_faq');
+
+    });
+    Route::group(['prefix' => 'profile'], function () {
+        Route::get('/{username}', 'AdminGetController@get_profile_user');
+        Route::post('/{username}', 'AdminPostController@post_profile_user');
 
     });
 

@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','slug',
+        'profile_image','name', 'surname', 'phone', 'email', 'password', 'slug',
     ];
 
     /**
@@ -38,7 +38,29 @@ class User extends Authenticatable
     ];
 
 //    Function for check users status.Is user admin or not?
-    public function status(){
+    public function status()
+    {
         return $this->status;
     }
+
+    public function countBlogComment()
+    {
+        return $this->hasMany('\App\Comment', 'user_id', 'id');
+    }
+
+    public function countBlog()
+    {
+        return $this->hasMany('\App\Blog', 'author', 'id');
+    }
+
+    public function faqQuestions()
+    {
+        return $this->hasMany('\App\FaqTopic', 'author', 'id');
+    }
+
+    public function faqComments()
+    {
+        return $this->hasMany('\App\FaqComment', 'user_id', 'id');
+    }
+
 }

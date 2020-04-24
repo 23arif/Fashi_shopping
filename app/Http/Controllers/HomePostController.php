@@ -30,7 +30,7 @@ class HomePostController extends HomeController
             ]);
         }
         if ($validator->fails()) {
-            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Fill the required blanks !']);
+            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Fill the required fields !']);
         }
         $category = explode('/', $slug); //Explodes category slugs
         $request->merge(['blog' => $category[count($category) - 1]]);
@@ -77,7 +77,7 @@ class HomePostController extends HomeController
             'faq_content' => 'required',
         ]);
         if ($validator->fails()) {
-            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Fill the required blanks !']);
+            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Fill the required fields !']);
         }
         $request->merge(['user_id' => Auth::user()->id, 'faq' => $question_details]);
 

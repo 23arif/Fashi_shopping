@@ -6,6 +6,7 @@ use App\Blog;
 use App\Category;
 use App\FAQs;
 use App\Settings;
+use App\User;
 
 class AdminGetController extends AdminController
 {
@@ -48,5 +49,11 @@ class AdminGetController extends AdminController
     public function get_edit_faq($slug){
         $topic = FAQs::where('slug',$slug)->first();
         return view('backend.edit-faq')->with('topic',$topic);
+    }
+
+    public function get_profile_user($username){
+        $id = explode('-',$username);
+        $datas = User::where('id',$id[count($id) - 1])->get();
+        return view('backend.profile')->with('datas',$datas);
     }
 }
