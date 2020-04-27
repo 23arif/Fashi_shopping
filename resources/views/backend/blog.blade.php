@@ -40,7 +40,7 @@
                                             <th>Author</th>
                                             <th>Category</th>
                                             <th>Hit</th>
-                                            <th>Feedbacks</th>
+                                            <th>Comments</th>
                                             <th>Created at</th>
                                             <th>Delete</th>
                                             <th>Edit</th>
@@ -57,21 +57,16 @@
                                             <tr>
                                                 <td>{{$blog->id}}</td>
                                                 <td>{{$blog->title}}</td>
-                                                <td>{{$blog->author}}</td>
+                                                <td>{{$blog->user->name}}</td>
                                                 <td>{{$blog->category}}</td>
                                                 <td>{{$blog->hit}}</td>
-                                                <td></td>
+                                                <td>{{count($blog->comments)}}</td>
                                                 <td>{{$blog->created_at}}</td>
                                                 <td>
-                                                    <form method="post" class="blogList" name="form">
-                                                        {{csrf_field()}}
-                                                        <input type="hidden" value="{{$blog->slug}}" name="slug">
-                                                        <input type="hidden" name="queue" class="queue"
-                                                               value="{{$queue}}">
-                                                        <button type="submit" class="btn btn-danger" value="delete">
-                                                            Delete
-                                                        </button>
-                                                    </form>
+                                                    <meta name="csrf-token" content="{{ csrf_token() }}">
+                                                    <button class="btn btn-danger" onclick="dlt('{{$blog->slug}}')">
+                                                        Delete
+                                                    </button>
                                                 </td>
                                                 <td>
                                                     <a href="blog/edit-blog/{{$blog->slug}}" class="btn btn-primary">Edit</a>
@@ -105,10 +100,11 @@
 
                                         <div class="form-group">
                                             <label for="shortContent"
-                                                   class="control-label col-md-3 col-sm-3 col-xs-12">Categories *</label>
+                                                   class="control-label col-md-3 col-sm-3 col-xs-12">Categories
+                                                *</label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                 <select class="form-control" name="category">
-                                                    <option value="0" >Other category</option>
+                                                    <option value="0">Other category</option>
                                                     @foreach($categories as $category)
                                                         <option
                                                             value="{{$category->id}}">{{$category->name}}</option>
@@ -300,25 +296,47 @@
 
     {{--  Sweet Alert  For blog list page--}}
     <script>
-        $(document).ready(function () {
-            $('.blogList').ajaxForm({
-                success: function (response) {
-                    Swal.fire(
-                        response.processTitle,
-                        response.processDesc,
-                        response.processStatus
-                        )
-                    if (response.processStatus == 'success') {
-                        var form = document.getElementsByClassName('blogList');
-                        var queue = form.elements[2].value;
-                        document.getElementById('datatable-buttons').deleteRow(queue);
-                        document.getElementById('test').innerHTML = queue;
-                    }
+        function dlt(slug) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "The category will delete!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Cancel',
+                confirmButtonText: 'Yes, delete it!'
+            }).then(function (result) {
+                if (result.value) {
+                    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                    $.ajax({
+                        type: "POST",
+                        url: '',
+                        data: {
+                            'slug': slug,
+                            '_token': CSRF_TOKEN
+                        },
+                        beforeSubmit: function () {
+                            Swal.fire({
+                                title: '<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>',
+                                text: 'Loading please wait!',
+                                showConfirmButton: false
+                            })
+                        },
+                        success: function (response) {
+                            Swal.fire(
+                                response.processTitle,
+                                response.processDesc,
+                                response.processStatus
+                                ).then(()=>{
+                                    location.reload();
+                            });
+                        }
+                    })
                 }
             })
-        })
+        }
     </script>
-
     {{--/ Sweet Alert  For blog list page--}}
 
     {{--  Sweet Alert  For add blog page--}}

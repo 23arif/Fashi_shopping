@@ -64,7 +64,7 @@
                                                 @endforeach
                                             </div>
                                             <div class="footerItems">
-                                                <i class="ti-comments "></i> 12 Comments
+                                                <i class="ti-comments "></i> {{count($tag->faqComments)}} Comments
                                             </div>
                                         </div>
                                     </div>

@@ -95,10 +95,10 @@
                     </select>
                 </div>
                 <div class="top-social">
-                    <a href="#"><i class="ti-facebook"></i></a>
-                    <a href="#"><i class="ti-twitter-alt"></i></a>
-                    <a href="#"><i class="ti-linkedin"></i></a>
-                    <a href="#"><i class="ti-pinterest"></i></a>
+                    <a href="{{$settings[0]->facebook}}"><i class="ti-facebook"></i></a>
+                    <a href="{{$settings[0]->twitter}}"><i class="ti-twitter-alt"></i></a>
+                    <a href="{{$settings[0]->instagram}}"><i class="ti-instagram"></i></a>
+                    <a href="{{$settings[0]->youtube}}"><i class="fa fa-youtube-play"></i></a>
                 </div>
             </div>
         </div>

@@ -8,6 +8,7 @@ use App\FAQs;
 use App\FaqTopic;
 use App\Settings;
 use App\User;
+use http\Env\Request;
 use Illuminate\Support\Facades\Auth;
 
 class HomeGetController extends HomeController

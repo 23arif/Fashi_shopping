@@ -59,8 +59,8 @@
                                                     <div class="card-header text-left h3">
                                                         <a @if($faqTopic->show_hide=='1')
                                                            href="/faq/{{$faqTopic->primeTitle->slug}}/{{$faqTopic->slug}}"
-                                                        @endif
-                                                        @if($faqTopic->show_hide == '0') class="unPoint" @endif>{{$faqTopic->title}}</a>
+                                                           @endif
+                                                           @if($faqTopic->show_hide == '0') class="unPoint" @endif>{{$faqTopic->title}}</a>
                                                         @if($faqTopic->show_hide == '0')
                                                             <span
                                                                 class="pull-right"><h6><u>Disabled question</u></h6></span>
@@ -78,7 +78,10 @@
                                                             </div>
                                                             <div class="col-md-11 text-left"
                                                                  style="padding:20px 20px 20px 20px ">
-                                                                {{ strip_tags(\Illuminate\Support\Str::limit($faqTopic->content,200,$end='...')) }}
+                                                                {{--{{ strip_tags(\Illuminate\Support\Str::limit($faqTopic->content,200,$end='...')) }}--}}
+                                                                @php($text = strip_tags($faqTopic->content))
+                                                                {{\Illuminate\Support\Str::limit($text,200,$end='...')}}
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -268,8 +271,9 @@
             color: #000;
             transition: all .2s;
         }
-        .unPoint{
-            cursor: not-allowed ;
+
+        .unPoint {
+            cursor: not-allowed;
         }
     </style>
 

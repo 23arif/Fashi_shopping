@@ -19,7 +19,7 @@
                             <h2>{{$question->title}}</h2>
                             <p><i class="fa fa-tags"></i>
                                 @foreach(explode(',',$question->tags) as $tag)
-                                    <a href="/blog/tags/{{$tag}}" class="blogTags">{{$tag}}</a>
+                                    <a href="/faq/tags/{{$tag}}" class="blogTags">{{$tag}}</a>
                                 @endforeach
                                 <span>- {{$question->created_at->formatLocalized('%d')}} {{$question->created_at->formatLocalized('%b')}},{{$question->created_at->formatLocalized('%Y')}}</span>
                             </p>
@@ -33,9 +33,9 @@
                             <div class="details-tag">
                                 <ul>
                                     <li><i class="fa fa-tags"></i></li>
-                                    @foreach (explode(',', $question->tags) as $tags)
-                                        <a href="#">
-                                            <li>{{trim($tags)}}</li>
+                                    @foreach(explode(',',$question->tags) as $tag)
+                                        <a href="/faq/tags/{{$tag}}">
+                                            <li>{{$tag}}</li>
                                         </a>
                                     @endforeach
                                 </ul>

@@ -59,7 +59,7 @@
                         @endforeach
 
                         <div class="col-lg-12">
-                            {{$blogs->links('vendor.pagination.bootstrap-4')}}
+{{--                            {{$blogs->links('vendor.pagination.bootstrap-4')}}--}}
                         </div>
                     </div>
                 </div>

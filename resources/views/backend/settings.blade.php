@@ -65,7 +65,8 @@
                                              aria-labelledby="general-tab">
 
                                             <div class="form-group">
-                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Current Logo</label>
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Current
+                                                    Logo</label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                                     <img src="/uploads/img/{{$settings[0]->logo}}" alt="">
                                                 </div>
@@ -73,11 +74,20 @@
 
                                             <div class="form-group">
                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12"
-                                                       for="logo">Logo</label>
+                                                >Logo</label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                                     <input type="file" id="logo" name="logo"
                                                            class="form-control col-md-7 col-xs-12">
                                                     <input type="hidden" name="prevLogo" value="{{$settings[0]->logo}}">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                                >Slider</label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input id="check" type="checkbox" name="slider" class="js-switch"
+                                                           @if($settings[0]->slider == '1')
+                                                           checked @endif />
                                                 </div>
                                             </div>
                                             {{Form::bsText('title','Web Page Title',$settings[0]->title)}}
@@ -153,7 +163,6 @@
             </div>
         </div>
     </div>
-    </div>
 
     <!-- /page content -->
 @endsection
@@ -161,6 +170,9 @@
 @section('css')
     <link rel="stylesheet" href="/css/sweetalert2.min.css">
     <link rel="stylesheet" href="/css/projectCustom.css">
+
+    <!-- Switchery -->
+    <link href="/backend/vendors/switchery/dist/switchery.min.css" rel="stylesheet">
 
 @endsection
 
@@ -178,10 +190,15 @@
                         response.processTitle,
                         response.processDesc,
                         response.processStatus
-                    )
+                        )
 
                 }
             })
         })
     </script>
+
+    {{--Slider switch--}}
+    <script src="/backend/vendors/switchery/dist/switchery.min.js"></script>
+    {{--/Slider switch--}}
+
 @endsection

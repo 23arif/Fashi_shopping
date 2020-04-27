@@ -30,6 +30,7 @@ Route::get('/shop', 'HomeGetController@get_shop');
 Route::get('/shopping-cart', 'HomeGetController@get_shopping_cart');
 Route::group(['prefix' => 'blog'], function () {
     Route::get('/', 'HomeGetController@get_blog');
+    Route::get('?result={result}', 'HomeGetController@get_blog_search');
     Route::get('/author/{authorName}', 'HomeGetController@get_blog_author');
     Route::get('/tags/{tagName}', 'HomeGetController@get_blog_tags');
     Route::get('/{slug}', 'HomeGetController@get_blog_content')->where('slug', '^[a-zA-Z0-9-_\/]+$');

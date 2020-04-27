@@ -53,31 +53,32 @@
                                         </div>
 
                                         <div class="changeImage">
-                                            <div class="form-group col col-xs-12" style="margin-top: 5px">
-                                                <button class="btn btn-primary btn-block" onclick="formSubmit()">Change
-                                                    image
-                                                </button>
-                                            </div>
-
-
-{{--                                            <form method="post" id="test" >--}}
-{{--                                                {{csrf_field()}}--}}
-{{--                                                <input type="file" name="test" id="test">--}}
-{{--                                                <button type="submit">Test</button>--}}
-{{--                                            </form>--}}
-
-
-
                                             <form method="post" id="changeImageForm" enctype="multipart/form-data">
                                                 {{csrf_field()}}
                                                 <div id="changeImage">
-                                                        <input type="file" id="logo" name="logo"
-                                                               onchange="this.form.submit();">
+                                                    <input type="file" id="logo" name="logo">
+                                                </div>
+                                                <div class="row" style="margin-top: 5px;">
+                                                    <div class="col col-md-7 col-sm-12 col-xs-6">
+                                                        <button type="button" class="btn btn-info btn-block"
+                                                                onclick="formSubmit()">
+                                                            Select
+                                                            image
+                                                        </button>
+                                                    </div>
+                                                    <div class="col col-md-5 col-sm-12 col-xs-6">
+                                                        <button class="btn btn-primary btn-block" type="submit">Update
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </form>
                                         </div>
+                                        <div>
+                                            <div class="test"></div>
+                                        </div>
                                     </div>
                                 </div>
+
                                 <div class="col col-xs-12 col-sm-8 col-md-8  " id="profileSettingsContainer">
                                     <div class="profileSettings">
                                         <form method="post" id="profileForm" data-parsley-validate
@@ -156,7 +157,7 @@
 
         .profileImage {
             width: 100%;
-            height: 460px;
+            min-height: 460px;
             border: 1px solid #eee;
             border-radius: 5px;
         }
@@ -208,13 +209,6 @@
             color: #ffc106;
         }
 
-        .changeImage {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            /*margin-top: 20px;*/
-        }
-
         #changeImage {
             display: none;
         }
@@ -246,17 +240,25 @@
     <script>
         $(document).ready(function () {
             $('#changeImageForm').ajaxForm({
-                success: function (response) {
+                beforeSubmit: function () {
+                    Swal.fire({
+                        title: '<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>',
+                        text: 'Loading please wait!',
+                        showConfirmButton: false
+                    })
+                }, success: function (response) {
                     Swal.fire(
-                        response.processTitlee,
-                        response.processDescc,
-                        response.processStatuss
-                        )
-
+                        response.processTitle,
+                        response.processDesc,
+                        response.processStatus
+                        ).then(() => {
+                        location.reload();
+                    })
                 }
             })
         })
     </script>
+
     <script>
         $(document).ready(function () {
             $('#profileForm').ajaxForm({
@@ -265,9 +267,9 @@
                 },
                 success: function (response) {
                     Swal.fire(
-                        response.processTitlee,
-                        response.processDescc,
-                        response.processStatuss
+                        response.processTitle,
+                        response.processDesc,
+                        response.processStatus
                         ).then(() => {
                         location.reload();
                     })
@@ -295,8 +297,6 @@
         });
     </script>
     <!-- /jquery.inputmask -->
-
-
 
 
 @endsection

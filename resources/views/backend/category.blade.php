@@ -200,7 +200,7 @@
                             response.processTitle,
                             response.processDesc,
                             response.processStatus
-                            );
+                            )
                     }
                 })
             }

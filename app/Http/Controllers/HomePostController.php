@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Blog;
 use App\Comment;
 use App\FaqComment;
 use App\FaqTopic;
@@ -49,6 +50,7 @@ class HomePostController extends HomeController
             'prime_title' => 'required| max:250',
             'title' => 'required| max:250',
             'content' => 'required',
+            'tags'=>'required'
         ]);
         $length = strlen($request->title);
         if ($length > 250) {
@@ -69,7 +71,7 @@ class HomePostController extends HomeController
             } catch (\Exception $e) {
                 return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Question could not added !', 'error' => $e]);
             }
-        }
+    }
 
     public function post_faq_question_comments(Request $request, $topic, $question_details)
     {

@@ -20,7 +20,6 @@ class AdminPostController extends AdminController
 {
     public function post_settings(Request $request)
     {
-
         if (isset($request->logo)) {
 
             $validator = Validator::make($request->all(), [
@@ -37,6 +36,13 @@ class AdminPostController extends AdminController
             Image::make($logo->getRealPath())->resize(222, 108)->save('uploads/img/' . $logo_name);
         }
         try {
+            $check = $request->slider;
+            if (!empty($check)) {
+                $request->merge(['slider' => '1']);
+            } else {
+                $request->merge(['slider' => '0']);
+            }
+
             unset($request['_token']);
             if (isset($request->logo)) {
                 unset($request['prevLogo']);
@@ -199,24 +205,33 @@ class AdminPostController extends AdminController
 
     public function post_faq(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required| max:250',
-            'short_content' => 'required| max:250',
-        ]);
+        if ($request->only('slug')) {
+            try {
+                FAQs::where('slug', $request->slug)->delete();
+                return response(['processStatus' => 'success', 'processTitle' => 'Success', 'processDesc' => 'FAQ title deleted successfully !']);
+            }catch (\Exception $e){
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'FAQ title could not deleted !']);
+            }
 
-        if ($validator->fails()) {
-            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Please fill required blanks !']);
+        } else {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required| max:250',
+                'short_content' => 'required| max:250',
+            ]);
+
+            if ($validator->fails()) {
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Please fill required blanks !']);
+            }
+            try {
+                $slug = str::slug($request->name);
+                $request->merge(['slug' => $slug]);
+                FAQs::create($request->all());
+                return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'FAQ title added successfully !']);
+
+            } catch (\Exception $e) {
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'FAQ title could not added !', 'error' => $e]);
+            }
         }
-        try {
-            $slug = str::slug($request->name);
-            $request->merge(['slug' => $slug]);
-            FAQs::create($request->all());
-            return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'FAQ title added successfully !']);
-
-        } catch (\Exception $e) {
-            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'FAQ title could not added !', 'error' => $e]);
-        }
-
     }
 
     public function post_edit_faq(Request $request, $slug)
@@ -244,7 +259,7 @@ class AdminPostController extends AdminController
 
     public function post_profile_user(Request $request, $username)
     {
-        if ($request->logo) {
+        if ($request->only('logo')) {
 
             $validator = Validator::make($request->all(), [
                 'logo' => 'mimes:jpg,jpeg,png,gif',
@@ -261,17 +276,16 @@ class AdminPostController extends AdminController
             $logo_extention = $request->file('logo')->getClientOriginalExtension();
             $logo_name = 'profileImage.' . $logo_extention;
             Storage::disk('uploads')->makeDirectory('img/profileImages/' . $profileName);
-            Image::make($logo->getRealPath())->resize(226, 226)->save('uploads/img/profileImages/'.$profileName.'/' . $logo_name);
-
-
+            Image::make($logo->getRealPath())->resize(226, 226)->save('uploads/img/profileImages/' . $profileName . '/' . $logo_name);
 
 
             unset($request['_token']);
+
             try {
-                User::where('id', $pr[count($pr) - 1])->update(['profile_image'=>$logo_name]);
-                return response(['processStatuss' => 'success', 'processTitlee' => 'Success', 'processDescc' => 'Congratulations , profile image updated!']);
+                User::where('id', $pr[count($pr) - 1])->update(['profile_image' => $logo_name]);
+                return response(['processStatus' => 'success', 'processTitle' => 'Success', 'processDesc' => 'Congratulations , profile image updated!']);
             } catch (\Exception $e) {
-                return response(['processStatuss' => 'error', 'processTitlee' => 'Error', 'processDescc' => 'Profile image could not updated !', 'error' => $e]);
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Profile image could not updated !', 'error' => $e]);
             }
 
         } else {
