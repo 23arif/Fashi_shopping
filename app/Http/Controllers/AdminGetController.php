@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Blog;
 use App\Category;
 use App\FAQs;
+use App\PrBrand;
+use App\PrCategory;
+use App\Product;
+use App\PrSize;
 use App\Settings;
 use App\User;
 
@@ -19,6 +23,16 @@ class AdminGetController extends AdminController
     {
         return view('backend.settings');
     }
+
+    public function get_products()
+    {
+        $products = Product::all();
+        $categories = PrCategory::all();
+        $brands = PrBrand::all();
+        $sizes = PrSize::all();
+        return view('backend.products',['products'=>$products,'categories'=>$categories,'brands'=>$brands,'sizes'=>$sizes]);
+    }
+
 
     public function get_blog()
     {
@@ -46,6 +60,7 @@ class AdminGetController extends AdminController
         $faqs = FAQs::all();
         return view('backend.faq')->with('faqs',$faqs);
     }
+
     public function get_edit_faq($slug){
         $topic = FAQs::where('slug',$slug)->first();
         return view('backend.edit-faq')->with('topic',$topic);

@@ -63,7 +63,13 @@
                                     <div id="myTabContent" class="tab-content">
                                         <div role="tabpanel" class="tab-pane fade active in" id="tab_general"
                                              aria-labelledby="general-tab">
-
+                                            @if($errors->any())
+                                            <ul>
+                                                @foreach($errors->all() as $error)
+                                                <li>{{$error}}</li>
+                                                    @endforeach
+                                            </ul>
+                                            @endif
                                             <div class="form-group">
                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Current
                                                     Logo</label>

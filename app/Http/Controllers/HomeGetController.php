@@ -6,6 +6,11 @@ use App\Blog;
 use App\Category;
 use App\FAQs;
 use App\FaqTopic;
+use App\PrBrand;
+use App\PrCategory;
+use App\PrColor;
+use App\Product;
+use App\PrSize;
 use App\Settings;
 use App\User;
 use http\Env\Request;
@@ -67,25 +72,37 @@ class HomeGetController extends HomeController
 
     }
 
-    public function get_checkout()
-    {
-        return view('frontend.check-out');
-    }
-
-    public function get_product()
-    {
-        return view('frontend.product');;
-    }
-
     public function get_shop()
     {
-        return view('frontend.shop');
+        $products = Product::all();
+        $brands = PrBrand::all();
+        $categories = PrCategory::all();
+        $sizes = PrSize::all();
+        $colors = PrColor::all();
+        return view('frontend.shop',['products'=>$products,'brands'=>$brands,'categories'=>$categories,'sizes'=>$sizes,'colors'=>$colors]);
     }
+
+    public function get_product_details()
+    {
+        $products = Product::all();
+        $brands = PrBrand::all();
+        $categories = PrCategory::all();
+        $sizes = PrSize::all();
+        $colors = PrColor::all();
+        return view('frontend.product',['products'=>$products,'brands'=>$brands,'categories'=>$categories,'sizes'=>$sizes,'colors'=>$colors]);;
+    }
+
 
     public function get_shopping_cart()
     {
         return view('frontend.shopping-cart');
     }
+
+    public function get_checkout()
+    {
+        return view('frontend.check-out');
+    }
+
 
     public function get_faq()
     {
@@ -96,10 +113,10 @@ class HomeGetController extends HomeController
 
     public function get_add_faq()
     {
-        if(Auth::check() && Auth::user()->status()>0){
+        if (Auth::check() && Auth::user()->status() > 0) {
             $topics = FAQs::all();
             return view('frontend.add-faq')->with('topics', $topics);
-        }else{
+        } else {
             return redirect('/faq');
         }
 
@@ -128,7 +145,7 @@ class HomeGetController extends HomeController
 
     public function get_faq_title($faqTitle)
     {
-        $faqs = FAQs::where('slug',$faqTitle);
+        $faqs = FAQs::where('slug', $faqTitle);
         if ($faqs) {
             return redirect('/faq');
         }

@@ -131,7 +131,7 @@
                             </a>
                         </li>
                         <li class="cart-icon">
-                            <a href="/shopping-cart">
+                            <a href="/shop/shopping-cart">
                                 <i class="icon_bag_alt"></i>
                                 <span>3</span>
                             </a>
@@ -173,8 +173,8 @@
                                     <h5>$120.00</h5>
                                 </div>
                                 <div class="select-button">
-                                    <a href="/shopping-cart" class="primary-btn view-card">VIEW CARD</a>
-                                    <a href="/check-out" class="primary-btn checkout-btn">CHECK OUT</a>
+                                    <a href="/shop/shopping-cart" class="primary-btn view-card">VIEW CARD</a>
+                                    <a href="/shop/check-out" class="primary-btn checkout-btn">CHECK OUT</a>
                                 </div>
                             </div>
                         </li>

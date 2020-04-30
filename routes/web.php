@@ -26,8 +26,15 @@ Route::get('/index', 'HomeGetController@get_index_yonlendir');
 Route::post('/locale', 'HomePostController@post_locale');
 Route::get('/home', 'HomeGetController@get_index_yonlendir');
 Route::get('/contact', 'HomeGetController@get_contact');
-Route::get('/shop', 'HomeGetController@get_shop');
-Route::get('/shopping-cart', 'HomeGetController@get_shopping_cart');
+
+Route::group(['prefix' => 'shop'], function () {
+    Route::get('/', 'HomeGetController@get_shop');
+    Route::get('/product-details', 'HomeGetController@get_product_details');
+    Route::get('/shopping-cart', 'HomeGetController@get_shopping_cart');
+    Route::get('/check-out', 'HomeGetController@get_checkout');
+
+});
+
 Route::group(['prefix' => 'blog'], function () {
     Route::get('/', 'HomeGetController@get_blog');
     Route::get('?result={result}', 'HomeGetController@get_blog_search');
@@ -36,10 +43,8 @@ Route::group(['prefix' => 'blog'], function () {
     Route::get('/{slug}', 'HomeGetController@get_blog_content')->where('slug', '^[a-zA-Z0-9-_\/]+$');
     Route::post('/{slug}', 'HomePostController@post_blog_comment')->where('slug', '^[a-zA-Z0-9-_\/]+$');
 });
-Route::get('/check-out', 'HomeGetController@get_checkout');
 Route::get('/login', 'HomeGetController@showLoginForm');
 Route::get('/register', 'HomeGetController@showRegistrationForm');
-Route::get('/product', 'HomeGetController@get_product');
 Route::group(['prefix' => 'faq'], function () {
     Route::get('/', 'HomeGetController@get_faq');
     Route::get('/add-faq', 'HomeGetController@get_add_faq');
@@ -51,14 +56,17 @@ Route::group(['prefix' => 'faq'], function () {
     Route::get('/{topic}/{question_details}', 'HomeGetController@get_faq_question_details');
     Route::post('/{topic}/{question_details}', 'HomePostController@post_faq_question_comments');
 });
-
-
 Route::group(['prefix' => 'admin', 'middleware' => 'Admin'], function () {
 
     Route::get('/', 'AdminGetController@get_index');
     Route::get('/settings', 'AdminGetController@get_settings');
     Route::post('/settings', 'AdminPostController@post_settings');
 
+    Route::group(['prefix' => 'products'], function () {
+        Route::get('/', 'AdminGetController@get_products');
+        Route::post('/', 'AdminPostController@post_products');
+
+    });
 
     Route::group(['prefix' => 'blog'], function () {
         Route::get('/', 'AdminGetController@get_blog');
@@ -84,6 +92,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'Admin'], function () {
         Route::post('/{username}', 'AdminPostController@post_profile_user');
 
     });
+
 
 
 });

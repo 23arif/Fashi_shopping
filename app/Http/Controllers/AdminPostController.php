@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use App\Blog;
 use App\Category;
 use App\FAQs;
+use App\PrBrand;
+use App\PrCategory;
+use App\PrColor;
+use App\Product;
+use App\PrSize;
 use App\Settings;
 use App\User;
 use Carbon\Carbon;
@@ -14,7 +19,7 @@ use Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use function GuzzleHttp\Promise\all;
+use function foo\func;
 
 class AdminPostController extends AdminController
 {
@@ -121,6 +126,100 @@ class AdminPostController extends AdminController
 
     }
 
+    public function post_products(Request $request)
+    {
+        if ($request->pr_name) {
+            $validator = Validator::make($request->all(), [
+                'photos[].' => 'image|mimes:jpg,jpeg,png,gif',
+                'pr_category' => 'required | max:250',
+                'pr_brand' => 'required | max:250',
+                'pr_size' => 'required | max:250',
+                'pr_name' => 'required | max:250',
+                'pr_desc' => 'required',
+                'pr_color' => 'required | max:250',
+                'pr_tags' => 'required | max:250',
+                'pr_last_price' => 'required | max:250',
+
+            ]);
+            if ($validator->fails()) {
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Fill the required fields !']);
+            }
+
+            foreach ($request->photos as $photo) {
+                $logo_extention = $photo->getClientOriginalExtension();
+                $date = Str::slug(Carbon::now());
+                $slug = str::slug($request->pr_name) . '-' . $date;
+                $image_name = rand(1, 99999) . rand(1, 99999) . rand(1, 99999) . '.' . $logo_extention;
+                Storage::disk('uploads')->makeDirectory('img/products/' . $slug);
+                Image::make($photo->getRealPath())->resize(226, 226)->save('uploads/img/products/' . $slug . '/' . $image_name);
+            }
+
+            try {
+                $request->merge(['pr_prev_price' => $request->pr_last_price, 'slug' => $slug]);
+                Product::create($request->all());
+                return response(['processStatus' => 'success', 'processTitle' => 'Success', 'processDesc' => 'Congratulations , product added successfully !']);
+            } catch (\Exception $e) {
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Product could not added !', 'error' => $e]);
+            }
+        } elseif ($request->category_name) {
+            $validator = Validator::make($request->all(), [
+                'category_name' => 'required | max:250 | unique:pr_categories',
+                'category_desc' => 'required'
+            ]);
+
+            if ($validator->fails()) {
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Fill the required fields !']);
+            }
+
+            $slug = str::slug($request->category_name);
+
+            try {
+                $request->merge(['slug' => $slug]);
+                PrCategory::create($request->all());
+                return response(['processStatus' => 'success', 'processTitle' => 'Success', 'processDesc' => 'Congratulations ,Product category created successfully !']);
+            } catch (\Exception $e) {
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Product Category could not created !', 'error' => $e]);
+            }
+        } elseif ($request->size) {
+            $validator = Validator::make($request->all(), [
+                'size' => 'required|unique:pr_size'
+            ]);
+            if ($validator->fails()) {
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Fill the required fields correctly !']);
+            }
+
+            $slug = str::slug($request->size);
+
+
+            try {
+                $request->merge(['slug' => $slug]);
+                PrSize::create($request->all());
+                return response(['processStatus' => 'success', 'processTitle' => 'Success', 'processDesc' => 'Congratulations ,Product size created successfully !']);
+            } catch (\Exception $e) {
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Product size could not created !', 'error' => $e]);
+            }
+        }elseif ($request->brand_desc){
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|unique:pr_brands',
+                'brand_desc' => 'required'
+            ]);
+            if ($validator->fails()) {
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Fill the required fields correctly !']);
+            }
+
+            $slug = str::slug($request->name);
+
+            try {
+                $request->merge(['slug' => $slug]);
+                PrBrand::create($request->all());
+                return response(['processStatus' => 'success', 'processTitle' => 'Success', 'processDesc' => 'Congratulations ,Product brand created successfully !']);
+            } catch (\Exception $e) {
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Product brand could not created !', 'error' => $e]);
+            }
+        }
+    }
+
+
     public function post_edit_blog($slug, Request $request)
     {
         if (isset($request->photo)) {
@@ -172,7 +271,8 @@ class AdminPostController extends AdminController
         }
     }
 
-    public function post_category(Request $request)
+    public
+    function post_category(Request $request)
     {
         if ($request->get('name')) {
 
@@ -203,13 +303,14 @@ class AdminPostController extends AdminController
         }
     }
 
-    public function post_faq(Request $request)
+    public
+    function post_faq(Request $request)
     {
         if ($request->only('slug')) {
             try {
                 FAQs::where('slug', $request->slug)->delete();
                 return response(['processStatus' => 'success', 'processTitle' => 'Success', 'processDesc' => 'FAQ title deleted successfully !']);
-            }catch (\Exception $e){
+            } catch (\Exception $e) {
                 return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'FAQ title could not deleted !']);
             }
 
@@ -234,7 +335,8 @@ class AdminPostController extends AdminController
         }
     }
 
-    public function post_edit_faq(Request $request, $slug)
+    public
+    function post_edit_faq(Request $request, $slug)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required| max:250',
@@ -257,7 +359,8 @@ class AdminPostController extends AdminController
 
     }
 
-    public function post_profile_user(Request $request, $username)
+    public
+    function post_profile_user(Request $request, $username)
     {
         if ($request->only('logo')) {
 
