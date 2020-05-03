@@ -13,6 +13,8 @@ use App\Product;
 use App\PrSize;
 use App\Settings;
 use App\User;
+use App\UserExtraInfo;
+use foo\Foo;
 use http\Env\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -36,9 +38,9 @@ class HomeGetController extends HomeController
 
     public function get_blog()
     {
-        $blogs = Blog::orderBy('id', 'desc')->paginate(6);
+        $blogs = Blog::orderBy('id', 'desc')->get();
         $categories = Category::where('up_category', '0')->get();
-        return view('frontend.blog')->with('blogs', $blogs)->with('categories', $categories);
+        return view('frontend.blog', ['blogs' => $blogs, 'categories' => $categories]);
     }
 
     public function get_blog_author($authorName)
@@ -74,24 +76,46 @@ class HomeGetController extends HomeController
 
     public function get_shop()
     {
-        $products = Product::all();
+        $products = Product::orderBy('id', 'desc')->paginate(6);
         $brands = PrBrand::all();
         $categories = PrCategory::all();
         $sizes = PrSize::all();
         $colors = PrColor::all();
-        return view('frontend.shop',['products'=>$products,'brands'=>$brands,'categories'=>$categories,'sizes'=>$sizes,'colors'=>$colors]);
+        return view('frontend.shop', ['products' => $products, 'brands' => $brands, 'categories' => $categories, 'sizes' => $sizes, 'colors' => $colors]);
     }
 
-    public function get_product_details()
+    public function get_product_details($slug)
     {
-        $products = Product::all();
+        $products = Product::where('slug', $slug)->first();
+        $userExtraData = UserExtraInfo::all();
         $brands = PrBrand::all();
         $categories = PrCategory::all();
         $sizes = PrSize::all();
         $colors = PrColor::all();
-        return view('frontend.product',['products'=>$products,'brands'=>$brands,'categories'=>$categories,'sizes'=>$sizes,'colors'=>$colors]);;
+        $payments = UserExtraInfo::all();
+        return view('frontend.product', ['products' => $products, 'brands' => $brands, 'categories' => $categories, 'sizes' => $sizes, 'colors' => $colors, 'payments' => $payments, 'userExtraData' => $userExtraData]);;
     }
 
+    public function get_product_category($catName)
+    {
+        $getCatId = PrCategory::where('slug',$catName)->value('id');
+        $products = Product::where('pr_category',$getCatId)->get();
+        $brands = PrBrand::all();
+        $categories = PrCategory::all();
+        $sizes = PrSize::all();
+        $colors = PrColor::all();
+        return view('frontend.shop-categories',['catName'=>$catName,'products' => $products,'brands' => $brands, 'categories' => $categories, 'sizes' => $sizes, 'colors' => $colors]);
+    }
+
+    public function get_product_size($sizeName){
+        $getSizeId = PrSize::where('slug',$sizeName)->value('id');
+        $products = Product::where('pr_size', $getSizeId)->get();
+        $brands = PrBrand::all();
+        $categories = PrCategory::all();
+        $sizes = PrSize::all();
+        $colors = PrColor::all();
+        return view('frontend.shop-size', ['sizeName'=>$sizeName,'products' => $products, 'brands' => $brands, 'categories' => $categories, 'sizes' => $sizes, 'colors' => $colors]);
+    }
 
     public function get_shopping_cart()
     {

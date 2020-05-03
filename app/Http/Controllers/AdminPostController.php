@@ -12,9 +12,11 @@ use App\Product;
 use App\PrSize;
 use App\Settings;
 use App\User;
+use App\UserExtraInfo;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
+use Symfony\Component\Console\Input\Input;
 use Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -134,10 +136,12 @@ class AdminPostController extends AdminController
                 'pr_category' => 'required | max:250',
                 'pr_brand' => 'required | max:250',
                 'pr_size' => 'required | max:250',
+                'pr_weight' => 'required | max:250',
                 'pr_name' => 'required | max:250',
                 'pr_desc' => 'required',
                 'pr_color' => 'required | max:250',
                 'pr_tags' => 'required | max:250',
+                'pr_sku' => 'required | max:250',
                 'pr_last_price' => 'required | max:250',
 
             ]);
@@ -198,7 +202,7 @@ class AdminPostController extends AdminController
             } catch (\Exception $e) {
                 return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Product size could not created !', 'error' => $e]);
             }
-        }elseif ($request->brand_desc){
+        } elseif ($request->brand_desc) {
             $validator = Validator::make($request->all(), [
                 'name' => 'required|unique:pr_brands',
                 'brand_desc' => 'required'
@@ -403,7 +407,19 @@ class AdminPostController extends AdminController
             unset($request['_token']);
             $u = explode('-', $username);
             try {
-                User::where('id', $u[count($u) - 1])->update($request->all());
+                User::where('id', $u[count($u) - 1])->update($request->except(['visa', 'master_card', 'paypal']));
+                if (!empty($request->visa || $request->master_card || $request->paypal)) {
+                    $userId = $u[count($u) - 1];
+                    $request->merge(['user_id' => $userId]);
+                    $checkId = UserExtraInfo::where('user_id', '=', $request->input('user_id'))->first();
+                    if ($checkId === null) {
+                        UserExtraInfo::create($request->only(['user_id', 'visa', 'master_card', 'paypal']));
+                    } else {
+                        UserExtraInfo::where('user_id',$userId)->update($request->only(['user_id', 'visa', 'master_card', 'paypal']));
+                    }
+
+
+                }
                 return response(['processStatus' => 'success', 'processTitle' => 'Success', 'processDesc' => 'Congratulations , profile information updated!']);
             } catch (\Exception $e) {
                 return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Profile information could not updated !', 'error' => $e]);

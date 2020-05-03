@@ -2,3 +2,13 @@
 .swal2-popup {
     font-size: 1.6rem !important;
 }
+.fashiInfoAlert{
+    width: 100%;
+    background:rgba(231, 171, 60,.9);
+    color:#fff;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    word-spacing: 3px;
+}

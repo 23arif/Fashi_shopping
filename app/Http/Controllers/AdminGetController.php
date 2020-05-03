@@ -11,6 +11,7 @@ use App\Product;
 use App\PrSize;
 use App\Settings;
 use App\User;
+use App\UserExtraInfo;
 
 class AdminGetController extends AdminController
 {
@@ -69,6 +70,7 @@ class AdminGetController extends AdminController
     public function get_profile_user($username){
         $id = explode('-',$username);
         $datas = User::where('id',$id[count($id) - 1])->get();
-        return view('backend.profile')->with('datas',$datas);
+        $extraDatas = UserExtraInfo::where('user_id',$id[count($id) - 1])->get();
+        return view('backend.profile',['datas'=>$datas,'extraDatas'=>$extraDatas]);
     }
 }

@@ -90,12 +90,12 @@
                                                 <td>{{$product->id}}</td>
                                                 <td>{{$product->pr_name}}</td>
                                                 <td>{{strip_tags($product->pr_desc)}}</td>
-                                                <td>{{$product->pr_category}}</td>
+                                                <td>{{$product->prCategory->category_name}}</td>
                                                 <td>{{$product->pr_color}}</td>
                                                 <td><strike>{{$product->pr_prev_price}}</strike></td>
                                                 <td>{{$product->pr_last_price}}</td>
                                                 <td>{{$product->prBrand->name}}</td>
-                                                <td>{{strtoupper($product->prSize->name)}}</td>
+                                                <td>{{strtoupper($product->prSize->size)}}</td>
                                                 <td>
                                                     <a href="product/edit-product/{{$product->slug}}"
                                                        class="btn btn-primary">Edit</a>
@@ -138,7 +138,6 @@
                                                    class="control-label col-md-3 col-sm-3 col-xs-12">Brand *</label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                 <select class="form-control" name="pr_brand">
-                                                    <option value="0">Other brand</option>
                                                     @foreach($brands as $brand)
                                                         <option
                                                             value="{{$brand->id}}">{{$brand->name}}</option>
@@ -153,8 +152,7 @@
                                                    class="control-label col-md-3 col-sm-3 col-xs-12">Size *</label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                 <select class="form-control" name="pr_size">
-                                                    <option value="0">Other size</option>
-                                                    @foreach($sizes as $size)
+                                                    @foreach($sizes->sortBy('id') as $size)
                                                         <option
                                                             value="{{$size->id}}">{{strtoupper($size->size)}}</option>
                                                     @endforeach
@@ -162,6 +160,22 @@
                                                 </select>
                                             </div>
                                         </div>
+
+                                        <div class="form-group">
+                                            <label for="pr_weight" class="control-label col-md-3 col-sm-3 col-xs-12">Weight
+                                                *</label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <div class="input-group">
+                                                    <input name="pr_weight" type="number" placeholder="0.00" min="0"
+                                                           step="0.01" data-number-to-fixed="2"
+                                                           data-number-stepfactor="100"
+                                                           class="form-control currency"
+                                                           id="c2" required/>
+                                                    <span class="input-group-addon">kq</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
 
                                         <div class="form-group">
                                             <label
@@ -222,6 +236,16 @@
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                 <input name="pr_tags" id="tags_1" type="text"
                                                        class="tags form-control" required/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="pr_sku"
+                                                   class="control-label col-md-3 col-sm-3 col-xs-12">Products SKU
+                                                *</label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="text" id="pr_sku" name="pr_sku" class="form-control"
+                                                       required>
                                             </div>
                                         </div>
 
@@ -391,7 +415,8 @@
         .mobileVersion a:hover, .mobileVersion a:focus {
             text-decoration: underline;
         }
-        @media screen and (max-width: 1200px){
+
+        @media screen and (max-width: 1200px) {
             .dt-buttons, #datatable-buttons_filter {
                 display: none;
             }

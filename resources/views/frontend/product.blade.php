@@ -28,29 +28,27 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="product-pic-zoom">
-                                <img class="product-big-img" src="/frontend/img/product-single/product-1.jpg" alt="">
+                                @foreach($photos = Storage::disk('uploads')->files('img/products/'.$products->slug) as $photo)
+                                @endforeach
+                                <img class="product-big-img" src="/uploads/{{$photo}}" alt="">
                                 <div class="zoom-icon">
                                     <i class="fa fa-search-plus"></i>
                                 </div>
                             </div>
                             <div class="product-thumbs">
                                 <div class="product-thumbs-track ps-slider owl-carousel">
-                                    <div class="pt active" data-imgbigurl="/frontend/img/product-single/product-1.jpg"><img
-                                            src="/frontend/img/product-single/product-1.jpg" alt=""></div>
-                                    <div class="pt" data-imgbigurl="/frontend/img/product-single/product-2.jpg"><img
-                                            src="/frontend/img/product-single/product-2.jpg" alt=""></div>
-                                    <div class="pt" data-imgbigurl="/frontend/img/product-single/product-3.jpg"><img
-                                            src="/frontend/img/product-single/product-3.jpg" alt=""></div>
-                                    <div class="pt" data-imgbigurl="/frontend/img/product-single/product-3.jpg"><img
-                                            src="/frontend/img/product-single/product-3.jpg" alt=""></div>
+                                    @foreach($photos = Storage::disk('uploads')->files('img/products/'.$products->slug) as $photo)
+                                        <div class="pt" data-imgbigurl="/uploads/{{$photo}}">
+                                            <img src="/uploads/{{$photo}}" alt="{{$products->pr_name}}" height="200">
+                                        </div>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="product-details">
                                 <div class="pd-title">
-                                    <span>oranges</span>
-                                    <h3>Pure Pineapple</h3>
+                                    <span>{{$products->pr_name}}</span>
                                     <a href="#" class="heart-icon"><i class="icon_heart_alt"></i></a>
                                 </div>
                                 <div class="pd-rating">
@@ -62,9 +60,9 @@
                                     <span>(5)</span>
                                 </div>
                                 <div class="pd-desc">
-                                    <p>Lorem ipsum dolor sit amet, consectetur ing elit, sed do eiusmod tempor sum dolor
-                                        sit amet, consectetur adipisicing elit, sed do mod tempor</p>
-                                    <h4>$495.00 <span>629.99</span></h4>
+                                    {{--                                    <p>Lorem ipsum dolor sit amet, consectetur ing elit, sed do eiusmod tempor sum dolor--}}
+                                    {{--                                        sit amet, consectetur adipisicing elit, sed do mod tempor</p>--}}
+                                    <h4>${{$products->pr_last_price}} <span>{{$products->pr_prev_price}}</span></h4>
                                 </div>
                                 <div class="pd-color">
                                     <h6>Color</h6>
@@ -84,22 +82,14 @@
                                     </div>
                                 </div>
                                 <div class="pd-size-choose">
-                                    <div class="sc-item">
-                                        <input type="radio" id="sm-size">
-                                        <label for="sm-size">s</label>
-                                    </div>
-                                    <div class="sc-item">
-                                        <input type="radio" id="md-size">
-                                        <label for="md-size">m</label>
-                                    </div>
-                                    <div class="sc-item">
-                                        <input type="radio" id="lg-size">
-                                        <label for="lg-size">l</label>
-                                    </div>
-                                    <div class="sc-item">
-                                        <input type="radio" id="xl-size">
-                                        <label for="xl-size">xs</label>
-                                    </div>
+                                    @php($pr = explode(',',$products->pr_size))
+                                    @foreach($pr as $size)
+                                        <div class="sc-item">
+                                            <input type="radio" id="sm-size">
+                                            @php($sizeName = \App\PrSize::where('id',$size)->first())
+                                            <label for="sm-size">{{$sizeName->size}}</label>
+                                        </div>
+                                    @endforeach
                                 </div>
                                 <div class="quantity">
                                     <div class="pro-qty">
@@ -108,11 +98,11 @@
                                     <a href="#" class="primary-btn pd-cart">Add To Cart</a>
                                 </div>
                                 <ul class="pd-tags">
-                                    <li><span>CATEGORIES</span>: More Accessories, Wallets & Cases</li>
-                                    <li><span>TAGS</span>: Clothing, T-shirt, Woman</li>
+                                    <li><span>CATEGORIES</span>: {{$products->prCategory->category_name}}</li>
+                                    <li><span>TAGS</span>: {{$products->pr_tags}}</li>
                                 </ul>
                                 <div class="pd-share">
-                                    <div class="p-code">Sku : 00012</div>
+                                    <div class="p-code">Sku : #{{$products->pr_sku}}</div>
                                     <div class="pd-social">
                                         <a href="#"><i class="ti-facebook"></i></a>
                                         <a href="#"><i class="ti-twitter-alt"></i></a>
@@ -142,19 +132,13 @@
                                     <div class="product-content">
                                         <div class="row">
                                             <div class="col-lg-7">
-                                                <h5>Introduction</h5>
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                                                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-                                                    ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                                                    aliquip ex ea commodo consequat. Duis aute irure dolor in </p>
-                                                <h5>Features</h5>
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                                                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-                                                    ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                                                    aliquip ex ea commodo consequat. Duis aute irure dolor in </p>
+                                                <h5>About :</h5>
+                                                <p>
+                                                    {!! $products->pr_desc !!}
+                                                </p>
                                             </div>
                                             <div class="col-lg-5">
-                                                <img src="/frontend/img/product-single/tab-desc.jpg" alt="">
+                                                <img src="/uploads/{{$photo}}" alt="">
                                             </div>
                                         </div>
                                     </div>
@@ -162,6 +146,11 @@
                                 <div class="tab-pane fade" id="tab-2" role="tabpanel">
                                     <div class="specification-table">
                                         <table>
+                                            <tr>
+                                                <td class="p-catagory">Seller Name</td>
+
+                                                <td class="p-stock">{{ucfirst($products->sellerName->name)}}</td>
+                                            </tr>
                                             <tr>
                                                 <td class="p-catagory">Customer Rating</td>
                                                 <td>
@@ -178,13 +167,38 @@
                                             <tr>
                                                 <td class="p-catagory">Price</td>
                                                 <td>
-                                                    <div class="p-price">$495.00</div>
+                                                    <div class="p-price">${{$products->pr_last_price}}</div>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="p-catagory">Add To Cart</td>
+                                                <td class="p-catagory">Payments</td>
                                                 <td>
-                                                    <div class="cart-add">+ add to cart</div>
+                                                    <div class="cart-add">
+                                                        @foreach($userExtraData->where('user_id',$products->seller_id) as $extra)
+
+                                                            @if(!is_null($extra->paypal))
+                                                                <img width="45" height="35"
+                                                                     src="/uploads/payments/payPal.png"
+                                                                     alt="">
+                                                            @endif
+
+                                                            @if(!is_null($extra->master_card))
+                                                                <img width="45" height="35"
+                                                                     src="/uploads/payments/masterCard.png" alt="">
+                                                            @endif
+
+                                                            @if(!is_null($extra->visa))
+                                                                <img width="45" height="35"
+                                                                     src="/uploads/payments/visa.png"
+                                                                     alt="">
+                                                            @endif
+
+                                                            @if(empty($extra->paypal) && empty($extra->master_card) && empty($extra->visa))
+                                                                <div class="p-stock"> No payments method</div>
+                                                            @endif
+                                                        @endforeach
+
+                                                    </div>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -196,13 +210,13 @@
                                             <tr>
                                                 <td class="p-catagory">Weight</td>
                                                 <td>
-                                                    <div class="p-weight">1,3kg</div>
+                                                    <div class="p-weight">{{$products->pr_weight}}</div>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td class="p-catagory">Size</td>
                                                 <td>
-                                                    <div class="p-size">Xxl</div>
+                                                    <div class="p-size">{{$products->prSize->size}}</div>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -212,7 +226,7 @@
                                             <tr>
                                                 <td class="p-catagory">Sku</td>
                                                 <td>
-                                                    <div class="p-code">00012</div>
+                                                    <div class="p-code">#{{$products->pr_sku}}</div>
                                                 </td>
                                             </tr>
                                         </table>

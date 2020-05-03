@@ -14,6 +14,8 @@
             <div class="clearfix"></div>
             @foreach($datas as $data)
             @endforeach
+            @foreach($extraDatas as $extraData)
+            @endforeach
             <div class="">
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="x_panel">
@@ -103,6 +105,34 @@
                                                                value="{{$data->surname}}">
                                                     </div>
 
+                                                    <div class="form-group">
+                                                        <label class="control-label">Visa</label>
+                                                        <div>
+                                                            <input name="visa" value="
+                                                            @if($extraData->visa)
+                                                            {{$extraData->visa}}
+                                                            @endif"
+                                                                   type="text"
+                                                                   class="form-control"
+                                                                   data-inputmask="'mask' : '9999-9999-9999-9999'">
+                                                            <span class="fa fa-user form-control-feedback right"
+                                                                  aria-hidden="true"></span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="control-label">PayPal</label>
+                                                        <div>
+                                                            <input name="paypal" value="
+                                                            @if($extraData->paypal)
+                                                            {{$extraData->paypal}}
+                                                            @endif"
+                                                                   type="text" class="form-control"
+                                                                   data-inputmask="'mask' : '9999-9999-9999-9999'">
+                                                            <span class="fa fa-user form-control-feedback right"
+                                                                  aria-hidden="true"></span>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div
                                                     class="formTwo col col-md-4 col-md-offset-2 col-sm-4 col-sm-offset-2 col-xs-8 col-xs-offset-2">
@@ -119,6 +149,22 @@
                                                             <input type="text" class="form-control"
                                                                    data-inputmask="'mask' : '(999) 999-9999'"
                                                                    name="phone" value="{{$data->phone}}">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="control-label">Master Card</label>
+                                                        <div>
+                                                            <input name="master_card"
+                                                                   value="
+                                                            @if($extraData->master_card)
+                                                                   {{$extraData->master_card}}
+                                                                   @endif"
+                                                                   type="text"
+                                                                   class="form-control"
+                                                                   data-inputmask="'mask' : '9999-9999-9999-9999'">
+                                                            <span class="fa fa-user form-control-feedback right"
+                                                                  aria-hidden="true"></span>
                                                         </div>
                                                     </div>
                                                 </div>
