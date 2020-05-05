@@ -159,7 +159,7 @@ class AdminPostController extends AdminController
             }
 
             try {
-                $request->merge(['pr_prev_price' => $request->pr_last_price, 'slug' => $slug]);
+                $request->merge(['pr_prev_price' => $request->pr_last_price, 'slug' => $slug, 'seller_id' => Auth::id()]);
                 Product::create($request->all());
                 return response(['processStatus' => 'success', 'processTitle' => 'Success', 'processDesc' => 'Congratulations , product added successfully !']);
             } catch (\Exception $e) {
@@ -415,7 +415,7 @@ class AdminPostController extends AdminController
                     if ($checkId === null) {
                         UserExtraInfo::create($request->only(['user_id', 'visa', 'master_card', 'paypal']));
                     } else {
-                        UserExtraInfo::where('user_id',$userId)->update($request->only(['user_id', 'visa', 'master_card', 'paypal']));
+                        UserExtraInfo::where('user_id', $userId)->update($request->only(['user_id', 'visa', 'master_card', 'paypal']));
                     }
 
 

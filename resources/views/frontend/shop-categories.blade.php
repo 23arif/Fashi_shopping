@@ -40,7 +40,8 @@
                             </div>
 
                             <div class="col-lg-5 col-md-5 text-right">
-                                <p>Show 01- {{count($products)}} Of {{count($products)}} Product</p>
+                                <p>{{count($products)}} {{count($products)>1 ? 'Products' : 'Product'}}</p>
+
                             </div>
                         </div>
                     </div>
@@ -54,7 +55,9 @@
                                                 @foreach($photos = Storage::disk('uploads')->files('img/products/'.$product->slug) as $photo)
                                                 @endforeach
                                                 <img src="/uploads/{{$photo}}" alt="">
-                                                <div class="sale pp-sale">Sale</div>
+                                                @if($product->pr_last_price != $product->pr_prev_price)
+                                                    <div class="sale pp-sale">Sale</div>
+                                                @endif
                                                 <div class="icon">
                                                     <i class="icon_heart_alt"></i>
                                                 </div>
@@ -72,7 +75,10 @@
                                                 </a>
                                                 <div class="product-price">
                                                     ${{$product->pr_last_price}}
-                                                    <span>${{$product->pr_prev_price}}</span>
+                                                    @if($product->pr_last_price != $product->pr_prev_price)
+                                                        <span>${{$product->pr_prev_price}}</span>
+                                                    @endif
+
                                                 </div>
                                             </div>
                                         </div>

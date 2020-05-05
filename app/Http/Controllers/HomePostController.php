@@ -6,6 +6,11 @@ use App\Blog;
 use App\Comment;
 use App\FaqComment;
 use App\FaqTopic;
+use App\PrBrand;
+use App\PrCategory;
+use App\PrColor;
+use App\Product;
+use App\PrSize;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -50,7 +55,7 @@ class HomePostController extends HomeController
             'prime_title' => 'required| max:250',
             'title' => 'required| max:250',
             'content' => 'required',
-            'tags'=>'required'
+            'tags' => 'required'
         ]);
         $length = strlen($request->title);
         if ($length > 250) {
@@ -60,17 +65,17 @@ class HomePostController extends HomeController
             return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Please fill required blanks !']);
         }
 
-            try {
-                $author = Auth::user()->id;
-                $date = Str::slug(Carbon::now());
-                $slug = Str::slug($request->title) . '-' . $date;
-                $request->merge(['slug' => $slug, 'author' => $author]);
-                FaqTopic::create($request->all());
-                return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Question added successfully !']);
+        try {
+            $author = Auth::user()->id;
+            $date = Str::slug(Carbon::now());
+            $slug = Str::slug($request->title) . '-' . $date;
+            $request->merge(['slug' => $slug, 'author' => $author]);
+            FaqTopic::create($request->all());
+            return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Question added successfully !']);
 
-            } catch (\Exception $e) {
-                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Question could not added !', 'error' => $e]);
-            }
+        } catch (\Exception $e) {
+            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Question could not added !', 'error' => $e]);
+        }
     }
 
     public function post_faq_question_comments(Request $request, $topic, $question_details)
@@ -126,4 +131,21 @@ class HomePostController extends HomeController
         App::setLocale(session()->get('locale'));;
     }
 
+    public function post_priceFilter(Request $request)
+    {
+        $minamount = $request->minamount;
+        $maxamount = $request->maxamount;
+
+        $minamount = str_replace('$', '', $minamount);
+        $maxamount = str_replace('$', '', $maxamount);
+
+        $products = Product::whereBetween('pr_last_price',[intval($minamount),intval($maxamount)])->get();
+
+
+        $brands = PrBrand::all();
+        $categories = PrCategory::all();
+        $sizes = PrSize::all();
+        $colors = PrColor::all();
+        return view('frontend.shop', ['filteredProducts' => $products, 'brands' => $brands, 'categories' => $categories, 'sizes' => $sizes, 'colors' => $colors]);
+    }
 }

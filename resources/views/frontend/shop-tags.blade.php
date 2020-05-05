@@ -8,7 +8,8 @@
                 <div class="col-lg-12">
                     <div class="breadcrumb-text">
                         <a href="/"><i class="fa fa-home"></i> Home</a>
-                        <span>Shop</span>
+                        <a href="/shop"> Shop</a>
+                        <span>#{{ucfirst($tags)}}</span>
                     </div>
                 </div>
             </div>
@@ -39,19 +40,14 @@
                             </div>
 
                             <div class="col-lg-5 col-md-5 text-right">
-                                @if(isset($products))
-                                    <p>{{count($products->get())}} {{count($products->get())>1 ? 'Products' : 'Product'}}</p>
-                                @else
-                                    <p>{{count($filteredProducts)}} {{count($filteredProducts)>1 ? 'Products' : 'Product'}}</p>
-                                @endif
+                                <p>{{count($products)}} {{count($products)>1 ? 'Products' : 'Product'}}</p>
                             </div>
-
                         </div>
                     </div>
                     <div class="product-list">
                         <div class="row">
-                            @if(isset($products))
-                                @foreach($products->paginate(6) as $product)
+                            @if(count($products))
+                                @foreach($products as $product)
                                     <div class="col-lg-4 col-sm-6">
                                         <div class="product-item">
                                             <div class="pi-pic">
@@ -86,50 +82,15 @@
                                         </div>
                                     </div>
                                 @endforeach
-                            @elseif(isset($filteredProducts))
-                                @foreach($filteredProducts->sortByDesc('id') as $product)
-                                    <div class="col-lg-4 col-sm-6">
-                                        <div class="product-item">
-                                            <div class="pi-pic">
-                                                @foreach($photos = Storage::disk('uploads')->files('img/products/'.$product->slug) as $photo)
-                                                @endforeach
-                                                <img src="/uploads/{{$photo}}" alt="">
-                                                @if($product->pr_last_price != $product->pr_prev_price)
-                                                    <div class="sale pp-sale">Sale</div>
-                                                @endif
-                                                <div class="icon">
-                                                    <i class="icon_heart_alt"></i>
-                                                </div>
-                                                <ul>
-                                                    <li class="w-icon active"><a href="#"><i
-                                                                class="icon_bag_alt"></i></a>
-                                                    </li>
-                                                    <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                                    <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                                                </ul>
-                                            </div>
-                                            <div class="pi-text">
-                                                <a href="shop/product-details/{{$product->slug}}">
-                                                    <div class="catagory-name">{{$product->pr_name}}</div>
-                                                </a>
-                                                <div class="product-price">
-                                                    ${{$product->pr_last_price}}
-                                                    @if($product->pr_last_price != $product->pr_prev_price)
-                                                        <span>${{$product->pr_prev_price}}</span>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach
-
+                            @else
+                                <div class="alert fashiInfoAlert">
+                                    No products found for <u>{{ucfirst($tags)}}</u> category
+                                </div>
                             @endif
                         </div>
                     </div>
                     <div>
-                        @if(isset($products))
-                            {{$products->paginate(6)->links('vendor.pagination.bootstrap-4')}}
-                        @endif
+                        {{--                        {{$products->links('vendor.pagination.bootstrap-4')}}--}}
                     </div>
                 </div>
             </div>
@@ -140,6 +101,8 @@
 @endsection
 
 @section('css')
+    <link rel="stylesheet" href="/css/projectCustom.css">
+
 @endsection
 
 @section('js')

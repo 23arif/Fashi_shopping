@@ -29,9 +29,11 @@ Route::get('/contact', 'HomeGetController@get_contact');
 
 Route::group(['prefix' => 'shop'], function () {
     Route::get('/', 'HomeGetController@get_shop');
+    Route::post('/', 'HomePostController@post_priceFilter');
     Route::get('/product-details/{slug}', 'HomeGetController@get_product_details');
     Route::get('/category/{catName}', 'HomeGetController@get_product_category');
     Route::get('/size/{sizeName}', 'HomeGetController@get_product_size');
+    Route::get('/tags/{tags}', 'HomeGetController@get_product_tags');
     Route::get('/shopping-cart', 'HomeGetController@get_shopping_cart');
     Route::get('/check-out', 'HomeGetController@get_checkout');
 

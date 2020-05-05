@@ -1815,6 +1815,9 @@ ol {
     border: 1px solid #ebebeb;
     border-radius: 2px;
 }
+.filter-widget .filter-range-wrap .range-slider .price-input #maxamount {
+    max-width:30%;
+}
 
 .filter-widget .filter-range-wrap .range-slider .price-input input:nth-child(1) {
     margin-right: 28px;
