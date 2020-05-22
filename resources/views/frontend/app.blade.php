@@ -85,13 +85,22 @@
 
 
                 <div class="lan-selector">
-                    <select class="language_drop" name="countries" id="countries" style="width:300px;">
-                        <option value='yt' data-image="/frontend/img/flag-1.jpg" data-imagecss="flag yt"
-                                data-title="English">English
-                        </option>
-                        <option value='yu' data-image="/frontend/img/flag-2.jpg" data-imagecss="flag yu"
-                                data-title="Bangladesh">German
-                        </option>
+                    <select class="language_drop" id="locale" name="locale" onchange="langLocalization()"
+                            style="width:300px;">
+                        @foreach($locales as $locale)
+                            <option @if(App::isLocale($locale->abbreviation)) selected
+                                    @endif value='{{$locale->abbreviation}}'
+                                    data-image="/frontend/img/{{$locale->flag}}"
+                                    data-imagecss="flag yt"
+                                    data-title="{{$locale->abbreviation}}">{{ucfirst($locale->abbreviation)}}
+                            </option>
+                        @endforeach
+                        {{--                        <option value='yt' data-image="/frontend/img/flag-1.jpg" data-imagecss="flag yt"--}}
+                        {{--                                data-title="English">En--}}
+                        {{--                        </option>--}}
+                        {{--                        <option value='yu' data-image="/frontend/img/flag-2.jpg" data-imagecss="flag yu"--}}
+                        {{--                                data-title="Azerbaijan">Aze--}}
+                        {{--                        </option>--}}
                     </select>
                 </div>
                 <div class="top-social">
@@ -328,6 +337,23 @@
             var selected_parent = jQuery.data(document.body, "selected_parent");
             $('#spcMenu').children('li:eq(' + selected_parent + ')').children('a').addClass('active');
         }
+    }
+</script>
+<script !src="">
+    function langLocalization() {
+        var l = document.getElementById('locale').value;
+        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        $.ajax({
+            type: 'POST',
+            url: '/locale',
+            data: {
+                'locale': l,
+                '_token': CSRF_TOKEN
+            },
+            success: function (response) {
+                location.reload();
+            }
+        })
     }
 </script>
 @yield('js')

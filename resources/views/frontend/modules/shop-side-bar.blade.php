@@ -9,17 +9,13 @@
 <div class="filter-widget">
     <h4 class="fw-title">Brand</h4>
     <div class="fw-brand-check">
-
-        @foreach($brands as $brand)
-            <div class="bc-item">
-                <label for="bc-calvin">
-                    {{$brand->name}}
-                    <input type="checkbox" id="{{$brand->slug}}">
-                    <span class="checkmark"></span>
-                </label>
-            </div>
-        @endforeach
-
+        <div class="bc-item">
+                <ul class="filter-catagories">
+                    @foreach($brands as $brand)
+                        <li><a href="/shop/brand/{{$brand->slug}}">{{$brand->name}}</a></li>
+                    @endforeach
+                </ul>
+        </div>
     </div>
 </div>
 <div class="filter-widget">
@@ -35,7 +31,7 @@
             </div>
             <div
                 class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
-                data-min="1" data-max="1000">
+                data-min="1" data-max="{{$maxPrice}}">
                 <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
                 <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
                 <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
@@ -90,16 +86,16 @@
 </div>
 {{--/Sizes--}}
 
-<div class="filter-widget">
-    <h4 class="fw-title">Tags</h4>
-    <div class="fw-tags">
-        @foreach(\App\Product::pluck('pr_tags') as $tags)
-            @foreach(explode(',',$tags) as $tag)
-                <a href="/shop/tags/{{$tag}}">{{$tag}}</a>
-            @endforeach
-        @endforeach
-    </div>
-</div>
+{{--<div class="filter-widget">--}}
+{{--    <h4 class="fw-title">Tags</h4>--}}
+{{--    <div class="fw-tags">--}}
+{{--        @foreach(\App\Product::pluck('pr_tags') as $tags)--}}
+{{--            @foreach(explode(',',$tags) as $tag)--}}
+{{--                <a href="/shop/tags/{{$tag}}">{{ucfirst(strtolower($tag))}}</a>--}}
+{{--            @endforeach--}}
+{{--        @endforeach--}}
+{{--    </div>--}}
+{{--</div>--}}
 <script>
     function getSize($slug) {
         var slug = $slug;

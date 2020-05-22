@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Product;
 use App\Settings;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -16,7 +17,6 @@ class HomeController extends Controller
     public function __construct()
     {
 //        $this->middleware('auth'); -- Code for go to login page before everthing
-
     }
 
     /**

@@ -70,7 +70,7 @@
                                                 </ul>
                                             </div>
                                             <div class="pi-text">
-                                                <a href="shop/product-details/{{$product->slug}}">
+                                                <a href="/shop/product-details/{{$product->slug}}">
                                                     <div class="catagory-name">{{$product->pr_name}}</div>
                                                 </a>
                                                 <div class="product-price">

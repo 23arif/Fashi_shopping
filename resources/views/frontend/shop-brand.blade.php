@@ -9,7 +9,7 @@
                     <div class="breadcrumb-text">
                         <a href="/"><i class="fa fa-home"></i> Home</a>
                         <a href="/shop"> Shop</a>
-                        <span>{{strtoupper($sizeName)}} size</span>
+                        <span>{{ucfirst($getBrand->name)}}</span>
                     </div>
                 </div>
             </div>
@@ -84,7 +84,7 @@
                                 @endforeach
                             @else
                                 <div class="alert fashiInfoAlert">
-                                    No products found for <u>{{strtoupper($sizeName)}}</u> size
+                                    No products found for <u>{{ucfirst($getBrand->name)}}</u> brand
                                 </div>
                             @endif
                         </div>

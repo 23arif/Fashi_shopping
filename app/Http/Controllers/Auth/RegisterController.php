@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
-use App\Settings;
 use App\User;
+use App\UserExtraInfo;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
@@ -40,8 +40,7 @@ class RegisterController extends Controller
      */
     public function showRegistrationForm()
     {
-        $settings = Settings::where('id', 1)->select('settings.*')->first();
-        return view('frontend.register')->with('settings', $settings);;
+        return view('frontend.register');
     }
 
     public function __construct()
@@ -72,12 +71,15 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $newUser =  User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'slug' => strtolower($data['name']) . '-' . rand(1, 9999),
+            'slug' => str::slug($data['name']) . '-' . rand(1, 9999),
 
         ]);
+        $id = $newUser->id;
+        UserExtraInfo::create(['user_id'=>$id]);
+        return $newUser;
     }
 }

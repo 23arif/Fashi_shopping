@@ -3,7 +3,11 @@
 namespace App\Providers;
 
 
+use App\Product;
+use App\Locale;
+use App\Settings;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,6 +28,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-//
+        $maxPrice = Product::max('pr_last_price');
+        $locales = Locale::all();
+        View::share(['settings' => $settings = Settings::all(), 'locales' => $locales,'maxPrice'=>$maxPrice]);
     }
 }

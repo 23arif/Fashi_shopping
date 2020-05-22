@@ -19,22 +19,25 @@
     @yield('css')
 </head>
 <style>
-    .customProfileImage{
+    .customProfileImage {
         display: flex;
         justify-content: center;
         align-items: center;
         border-radius: 50%;
-        width:80px;
+        width: 80px;
         height: 80px;
         overflow: hidden;
         margin-left: 15px;
     }
-    .customProfileImage img{
+
+    .customProfileImage img {
         max-width: 100%;
         max-height: 100%;
     }
-    .profile_info{
-        width:130px;float:right
+
+    .profile_info {
+        width: 130px;
+        float: right
     }
 </style>
 <body class="nav-md">
@@ -58,7 +61,7 @@
                         @endphp
 
                         <img
-                            src="@if(empty($userData->profile_image))/uploads/img/profileImages/default.png @else /uploads/img/profileImages/{{$userData->slug}}/{{$userData->profile_image}}@endif" >
+                            src="@if(empty($userData->profile_image))/uploads/img/profileImages/default.png @else /uploads/img/profileImages/{{$userData->slug}}/{{$userData->profile_image}}@endif">
                     </div>
                     <div class="profile_info">
                         <span>Welcome,</span>
@@ -81,6 +84,11 @@
                             <li><a href="/admin/products"><i class="fa fa-shopping-basket"></i> Products </a></li>
                             <li><a href="/admin/blog"><i class="fa fa-newspaper-o"></i> Blog </a></li>
                             <li><a href="/admin/category"><i class="fa fa-newspaper-o"></i> Category </a></li>
+                            @if(\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->status() == 9)
+                                <li>
+                                    <a href="{{route('getUserTable')}}"><i class="fa fa-users"></i> Users Table </a>
+                                </li>
+                            @endif
                             <li><a href="/admin/faq"><i class="fa fa-question-circle-o"></i> FAQs </a></li>
 
                         </ul>
@@ -103,7 +111,8 @@
                         <li class="">
                             <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
                                aria-expanded="false">
-                                <img src="@if(empty($userData->profile_image))/uploads/img/profileImages/default.png @else /uploads/img/profileImages/{{$userData->slug}}/{{$userData->profile_image}}@endif">
+                                <img
+                                    src="@if(empty($userData->profile_image))/uploads/img/profileImages/default.png @else /uploads/img/profileImages/{{$userData->slug}}/{{$userData->profile_image}}@endif">
                                 {{ucfirst(\Illuminate\Support\Facades\Auth::user()->name)}}
                                 <span class=" fa fa-angle-down"></span>
                             </a>

@@ -1,8 +1,5 @@
 <?php
 
-use App\Settings;
-use App\Locale;
-use App\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,10 +12,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-view()->composer('*', function ($view) {
-    $locale = Locale::all();
-    $view->with(['settings' => $settings = Settings::all(), 'locale' => $locale]);
-});
 
 
 Route::get('/', 'HomeGetController@get_index');
@@ -34,6 +27,7 @@ Route::group(['prefix' => 'shop'], function () {
     Route::get('/category/{catName}', 'HomeGetController@get_product_category');
     Route::get('/size/{sizeName}', 'HomeGetController@get_product_size');
     Route::get('/tags/{tags}', 'HomeGetController@get_product_tags');
+    Route::get('/brand/{brandName}', 'HomeGetController@get_product_brand');
     Route::get('/shopping-cart', 'HomeGetController@get_shopping_cart');
     Route::get('/check-out', 'HomeGetController@get_checkout');
 
@@ -96,7 +90,13 @@ Route::group(['prefix' => 'admin', 'middleware' => 'Admin'], function () {
         Route::post('/{username}', 'AdminPostController@post_profile_user');
 
     });
+    Route::group(['prefix' => 'users-table','middleware'=>'OnlySuperAdmin'], function () {
+        Route::get('/', 'AdminGetController@get_users_table')->name('getUserTable');
+        Route::get('/edit-user/{getUser}', 'AdminGetController@get_edit_user')->name('getEditUser');
+        Route::post('/edit-user/{getUser}', 'AdminPostController@post_edit_user')->name('postEditUser');
 
+
+    });
 
 
 });

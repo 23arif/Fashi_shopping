@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'profile_image','name', 'surname', 'phone', 'email', 'password', 'slug',
+        'profile_image', 'name', 'surname', 'phone', 'email', 'password', 'slug','status',
     ];
 
     /**
@@ -43,6 +43,11 @@ class User extends Authenticatable
         return $this->status;
     }
 
+    public function countProduct()
+    {
+        return $this->hasMany('\App\Product', 'seller_id', 'id');
+    }
+
     public function countBlogComment()
     {
         return $this->hasMany('\App\Comment', 'user_id', 'id');
@@ -62,5 +67,4 @@ class User extends Authenticatable
     {
         return $this->hasMany('\App\FaqComment', 'user_id', 'id');
     }
-
 }

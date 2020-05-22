@@ -1,9 +1,11 @@
 <?php
+
 return [
-    'giris' => 'Daxil ol',
-    'mail' => 'Mail adresi',
-    'sifre' => 'Sifre',
-    'yaddaSaxla' => 'Meni yadda saxla',
-    'sifremiUnutdum' => 'Sifremi unutdum?',
-    'yeniHesab' => 'Yeni hesab yarat'
+'giris' => 'Giris et',
+'mail' => 'Email adresi',
+'sifre' => 'Şifrə',
+'yaddaSaxla' => 'Məni xatırla',
+'sifremiUnutdum' => 'Şifrəmi unutdum?',
+'yeniHesab' => 'VƏ YA YENİ HESAB YARAT'
 ];
+

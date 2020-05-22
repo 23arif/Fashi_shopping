@@ -86,17 +86,22 @@ class HomeGetController extends HomeController
 
     public function get_product_details($slug)
     {
-        $products = Product::where('slug', $slug)->first();
-        $userExtraData = UserExtraInfo::all();
-        $brands = PrBrand::all();
-        $categories = PrCategory::all();
-        $sizes = PrSize::all();
-        $colors = PrColor::all();
-        $payments = UserExtraInfo::all();
-        return view('frontend.product', ['products' => $products, 'brands' => $brands, 'categories' => $categories, 'sizes' => $sizes, 'colors' => $colors, 'payments' => $payments, 'userExtraData' => $userExtraData]);;
+        if (!is_null(Product::where('slug', $slug)->first())) {
+            $products = Product::where('slug', $slug)->first();
+            $userExtraData = UserExtraInfo::all();
+            $brands = PrBrand::all();
+            $categories = PrCategory::all();
+            $sizes = PrSize::all();
+            $colors = PrColor::all();
+            $payments = UserExtraInfo::all();
+            return view('frontend.product', ['products' => $products, 'brands' => $brands, 'categories' => $categories, 'sizes' => $sizes, 'colors' => $colors, 'payments' => $payments, 'userExtraData' => $userExtraData]);
+        } else {
+            return redirect()->back();
+        }
     }
 
-    public function get_product_category($catName)
+    public
+    function get_product_category($catName)
     {
         $getCatId = PrCategory::where('slug', $catName)->value('id');
         $products = Product::where('pr_category', $getCatId)->get();
@@ -107,7 +112,24 @@ class HomeGetController extends HomeController
         return view('frontend.shop-categories', ['catName' => $catName, 'products' => $products, 'brands' => $brands, 'categories' => $categories, 'sizes' => $sizes, 'colors' => $colors]);
     }
 
-    public function get_product_size($sizeName)
+    public
+    function get_product_brand($brandName)
+    {
+        if (!is_null(PrBrand::where('slug', $brandName)->first())) {
+            $getBrand = PrBrand::where('slug', $brandName)->first();
+            $products = Product::where('pr_brand', $getBrand->id)->get();
+            $brands = PrBrand::all();
+            $categories = PrCategory::all();
+            $sizes = PrSize::all();
+            $colors = PrColor::all();
+            return view('frontend.shop-brand', ['getBrand' => $getBrand, 'products' => $products, 'brands' => $brands, 'categories' => $categories, 'sizes' => $sizes, 'colors' => $colors]);
+        } else {
+            return redirect()->back();
+        }
+    }
+
+    public
+    function get_product_size($sizeName)
     {
         $getSizeId = PrSize::where('slug', $sizeName)->value('id');
         $products = Product::where('pr_size', $getSizeId)->get();
@@ -118,7 +140,8 @@ class HomeGetController extends HomeController
         return view('frontend.shop-size', ['sizeName' => $sizeName, 'products' => $products, 'brands' => $brands, 'categories' => $categories, 'sizes' => $sizes, 'colors' => $colors]);
     }
 
-    public function get_product_tags($tags)
+    public
+    function get_product_tags($tags)
     {
         $products = Product::where('pr_tags', 'LIKE', '%' . $tags . '%')->get();
         $brands = PrBrand::all();
@@ -134,25 +157,29 @@ class HomeGetController extends HomeController
 //        return view('frontend.shop',['products'=>$products]);
 //    }
 
-    public function get_shopping_cart()
+    public
+    function get_shopping_cart()
     {
         return view('frontend.shopping-cart');
     }
 
-    public function get_checkout()
+    public
+    function get_checkout()
     {
         return view('frontend.check-out');
     }
 
 
-    public function get_faq()
+    public
+    function get_faq()
     {
         $faqTopics = FaqTopic::orderBy('id', 'desc')->get();
         $prime_titles = FAQs::all();
         return view('frontend.faq')->with('prime_titles', $prime_titles)->with('faqTopics', $faqTopics);
     }
 
-    public function get_add_faq()
+    public
+    function get_add_faq()
     {
         if (Auth::check() && Auth::user()->status() > 0) {
             $topics = FAQs::all();
@@ -163,7 +190,8 @@ class HomeGetController extends HomeController
 
     }
 
-    public function get_faq_author($slug)
+    public
+    function get_faq_author($slug)
     {
         $s = explode('-', $slug);
         $author = User::where('id', $s[count($s) - 1])->first();
@@ -171,20 +199,23 @@ class HomeGetController extends HomeController
         return view('frontend.faq-author')->with('questions', $questions)->with('author', $author);
     }
 
-    public function get_faq_tags($slug)
+    public
+    function get_faq_tags($slug)
     {
         $tags = FaqTopic::where('tags', 'LIKE', '%' . $slug . '%')->orderBy('id', 'desc')->get();
         return view('frontend.faq-tags')->with('tags', $tags)->with('slug', $slug);
     }
 
-    public function get_faq_question_details($topic, $slug)
+    public
+    function get_faq_question_details($topic, $slug)
     {
 
         $question = FaqTopic::where('slug', $slug)->first();
         return view('frontend.faq-details')->with('question', $question)->with('topic', $topic);
     }
 
-    public function get_faq_title($faqTitle)
+    public
+    function get_faq_title($faqTitle)
     {
         $faqs = FAQs::where('slug', $faqTitle);
         if ($faqs) {

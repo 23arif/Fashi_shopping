@@ -41,12 +41,12 @@
                             </ul>
                             <ul id="myTab" class="nav nav-tabs bar_tabs hidden-md hidden-sm hidden-xs" role="tablist">
                                 <li role="presentation" class="active"><a href="#list" id="list-tab"
-                                                                          role="tab" data-toggle="tab"
-                                                                          aria-expanded="true">Products List</a>
+                                                                    role="tab" data-toggle="tab"
+                                                                    aria-expanded="true">Products List</a>
                                 </li>
                                 <li role="presentation" class=""><a href="#add" role="tab" id="add-tab"
-                                                                    data-toggle="tab"
-                                                                    aria-expanded="false">Add Product</a>
+                                                                          data-toggle="tab"
+                                                                          aria-expanded="false">Add Product</a>
                                 </li>
                                 <li role="presentation" class=""><a href="#addCategory" role="tab" id="add-tab"
                                                                     data-toggle="tab"

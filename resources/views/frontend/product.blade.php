@@ -62,7 +62,11 @@
                                 <div class="pd-desc">
                                     {{--                                    <p>Lorem ipsum dolor sit amet, consectetur ing elit, sed do eiusmod tempor sum dolor--}}
                                     {{--                                        sit amet, consectetur adipisicing elit, sed do mod tempor</p>--}}
-                                    <h4>${{$products->pr_last_price}} <span>{{$products->pr_prev_price}}</span></h4>
+                                    <h4>${{$products->pr_last_price}}
+                                        @if($products->pr_last_price != $products->pr_prev_price)
+                                            <span>${{$products->pr_prev_price}}</span>
+                                        @endif
+                                    </h4>
                                 </div>
                                 <div class="pd-color">
                                     <h6>Color</h6>
@@ -98,6 +102,7 @@
                                     <a href="#" class="primary-btn pd-cart">Add To Cart</a>
                                 </div>
                                 <ul class="pd-tags">
+                                    <li><span>BRAND</span>: {{$products->prBrand->name}}</li>
                                     <li><span>CATEGORIES</span>: {{$products->prCategory->category_name}}</li>
                                     <li><span>TAGS</span>: {{$products->pr_tags}}</li>
                                 </ul>

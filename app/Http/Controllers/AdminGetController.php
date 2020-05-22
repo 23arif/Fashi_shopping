@@ -12,6 +12,7 @@ use App\PrSize;
 use App\Settings;
 use App\User;
 use App\UserExtraInfo;
+use App\UserStatus;
 
 class AdminGetController extends AdminController
 {
@@ -27,11 +28,14 @@ class AdminGetController extends AdminController
 
     public function get_products()
     {
+        $tags = Product::pluck('pr_tags');
+
+
         $products = Product::all();
         $categories = PrCategory::all();
         $brands = PrBrand::all();
         $sizes = PrSize::all();
-        return view('backend.products',['products'=>$products,'categories'=>$categories,'brands'=>$brands,'sizes'=>$sizes]);
+        return view('backend.products', ['tags' => $tags, 'products' => $products, 'categories' => $categories, 'brands' => $brands, 'sizes' => $sizes]);
     }
 
 
@@ -59,18 +63,50 @@ class AdminGetController extends AdminController
     public function get_faq()
     {
         $faqs = FAQs::all();
-        return view('backend.faq')->with('faqs',$faqs);
+        return view('backend.faq')->with('faqs', $faqs);
     }
 
-    public function get_edit_faq($slug){
-        $topic = FAQs::where('slug',$slug)->first();
-        return view('backend.edit-faq')->with('topic',$topic);
+    public function get_edit_faq($slug)
+    {
+        $topic = FAQs::where('slug', $slug)->first();
+        return view('backend.edit-faq')->with('topic', $topic);
     }
 
-    public function get_profile_user($username){
-        $id = explode('-',$username);
-        $datas = User::where('id',$id[count($id) - 1])->get();
-        $extraDatas = UserExtraInfo::where('user_id',$id[count($id) - 1])->get();
-        return view('backend.profile',['datas'=>$datas,'extraDatas'=>$extraDatas]);
+    public function get_profile_user($username)
+    {
+        $id = explode('-', $username);
+        $datas = User::where('id', $id[count($id) - 1])->get();
+        $extraDatas = UserExtraInfo::where('user_id', $id[count($id) - 1])->get();
+        return view('backend.profile', ['datas' => $datas, 'extraDatas' => $extraDatas]);
     }
+
+    public function get_users_table()
+    {
+        $users = User::all();
+        return view('backend.UserTable.users-table', ['users' => $users]);
+    }
+
+    public function get_edit_user($getUser)
+    {
+        $u = User::where('slug',$getUser)->first();
+        $uStatus = $this->stt(intval($u->status));
+        $allStatuses = UserStatus::all();
+        return view('backend.UserTable.edit-user', ['user' => $u, 'uStatus'=>$uStatus,'allStatuses'=>$allStatuses]);
+    }
+
+    private function stt($status)
+    {
+        if ($status === 9) {
+            return 'Super Admin';
+        } elseif ($status === 8) {
+            return 'Admin';
+        } elseif ($status === 2) {
+            return 'Staff';
+        } elseif ($status === 1) {
+            return 'Editor';
+        } elseif ($status === 0) {
+            return 'User';
+        }
+    }
+
 }

@@ -40,6 +40,10 @@
                                             </p>
                                         </div>
                                         <div class="lists">
+                                            <p>Products <span class="pull-right">{{count($data->countProduct)}}</span>
+                                            </p>
+                                        </div>
+                                        <div class="lists">
                                             <p>Blogs <span class="pull-right">{{count($data->countBlog)}}</span></p>
                                         </div>
                                         <div class="lists">

@@ -128,7 +128,7 @@ class HomePostController extends HomeController
     public function post_locale(Request $request)
     {
         session()->put(['locale' => $request->input('locale')]);
-        App::setLocale(session()->get('locale'));;
+        App::setLocale(session()->get('locale'));
     }
 
     public function post_priceFilter(Request $request)

@@ -5,6 +5,14 @@
     <!-- page content -->
     <div class="right_col" role="main">
         <!-- top tiles -->
+        @if(session()->has('status'))
+            <div class="alert alert-warning text-center floatingAlert" style="margin-top: 50px"><i
+                    class="fa fa-warning"></i> {{session()->get('status')}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true" style="color:#000">&nbsp; &times;</span>
+                </button>
+            </div>
+        @endif
         <div class="row tile_count">
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
                 <span class="count_top"><i class="fa fa-user"></i> Total Users</span>
@@ -1672,4 +1680,12 @@
 @endsection
 
 @section('css')
+    <style>
+        .floatingAlert {
+            position: absolute;
+            z-index: 100;
+            top: 0;
+            right: 0;
+        }
+    </style>
 @endsection

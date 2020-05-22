@@ -10,9 +10,11 @@ use App\PrCategory;
 use App\PrColor;
 use App\Product;
 use App\PrSize;
+use App\PrTag;
 use App\Settings;
 use App\User;
 use App\UserExtraInfo;
+use App\UserStatus;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
@@ -132,7 +134,7 @@ class AdminPostController extends AdminController
     {
         if ($request->pr_name) {
             $validator = Validator::make($request->all(), [
-                'photos[].' => 'image|mimes:jpg,jpeg,png,gif',
+                'photos.*' => 'mimes:jpeg,jpg,png',
                 'pr_category' => 'required | max:250',
                 'pr_brand' => 'required | max:250',
                 'pr_size' => 'required | max:250',
@@ -148,7 +150,6 @@ class AdminPostController extends AdminController
             if ($validator->fails()) {
                 return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Fill the required fields !']);
             }
-
             foreach ($request->photos as $photo) {
                 $logo_extention = $photo->getClientOriginalExtension();
                 $date = Str::slug(Carbon::now());
@@ -165,7 +166,9 @@ class AdminPostController extends AdminController
             } catch (\Exception $e) {
                 return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Product could not added !', 'error' => $e]);
             }
-        } elseif ($request->category_name) {
+
+        } elseif
+        ($request->category_name) {
             $validator = Validator::make($request->all(), [
                 'category_name' => 'required | max:250 | unique:pr_categories',
                 'category_desc' => 'required'
@@ -184,7 +187,8 @@ class AdminPostController extends AdminController
             } catch (\Exception $e) {
                 return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Product Category could not created !', 'error' => $e]);
             }
-        } elseif ($request->size) {
+        } elseif
+        ($request->size) {
             $validator = Validator::make($request->all(), [
                 'size' => 'required|unique:pr_size'
             ]);
@@ -202,7 +206,8 @@ class AdminPostController extends AdminController
             } catch (\Exception $e) {
                 return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Product size could not created !', 'error' => $e]);
             }
-        } elseif ($request->brand_desc) {
+        } elseif
+        ($request->brand_desc) {
             $validator = Validator::make($request->all(), [
                 'name' => 'required|unique:pr_brands',
                 'brand_desc' => 'required'
@@ -222,7 +227,6 @@ class AdminPostController extends AdminController
             }
         }
     }
-
 
     public function post_edit_blog($slug, Request $request)
     {
@@ -275,8 +279,7 @@ class AdminPostController extends AdminController
         }
     }
 
-    public
-    function post_category(Request $request)
+    public function post_category(Request $request)
     {
         if ($request->get('name')) {
 
@@ -307,8 +310,7 @@ class AdminPostController extends AdminController
         }
     }
 
-    public
-    function post_faq(Request $request)
+    public function post_faq(Request $request)
     {
         if ($request->only('slug')) {
             try {
@@ -339,8 +341,7 @@ class AdminPostController extends AdminController
         }
     }
 
-    public
-    function post_edit_faq(Request $request, $slug)
+    public function post_edit_faq(Request $request, $slug)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required| max:250',
@@ -363,8 +364,7 @@ class AdminPostController extends AdminController
 
     }
 
-    public
-    function post_profile_user(Request $request, $username)
+    public function post_profile_user(Request $request, $username)
     {
         if ($request->only('logo')) {
 
@@ -425,5 +425,35 @@ class AdminPostController extends AdminController
                 return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Profile information could not updated !', 'error' => $e]);
             }
         }
+    }
+
+    public function post_edit_user(Request $request, $getUser)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required| max:250',
+            'surname' => 'max:250',
+            'email' => 'required| max:250',
+            'phone' => 'max:250',
+            'status' => 'required| max:250',
+        ]);
+
+        $check = UserStatus::where('status', $request->status)->first();
+
+        if ($check === null) {
+            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'There is not such user status !']);
+        } else {
+            if ($validator->fails()) {
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Please fill required blanks !']);
+            } else {
+                try {
+                    unset($request['_token']);
+                    User::where('slug',$getUser)->update($request->all());
+                    return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'User information updated successfully !']);
+                } catch (\Exception $e) {
+                    return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'User information could not updated !', 'error' => $e]);
+                }
+            }
+        }
+
     }
 }
