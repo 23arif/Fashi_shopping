@@ -3,6 +3,10 @@
 namespace App\Providers;
 
 
+use App\Blog;
+use App\Category;
+use App\Deal;
+use App\PrCategory;
 use App\Product;
 use App\Locale;
 use App\Settings;
@@ -30,6 +34,13 @@ class AppServiceProvider extends ServiceProvider
     {
         $maxPrice = Product::max('pr_last_price');
         $locales = Locale::all();
-        View::share(['settings' => $settings = Settings::all(), 'locales' => $locales,'maxPrice'=>$maxPrice]);
+        $allDepartments = PrCategory::all();
+        $deals = Deal::where('id', 1)->first();
+        $fromTheBlog = Blog::all();
+        View::share(['settings' => $settings = Settings::all(), 'locales' => $locales, 'maxPrice' => $maxPrice,
+            'allDepartments' => $allDepartments,
+            'deals' => $deals,
+            'fromTheBlog' => $fromTheBlog,
+        ]);
     }
 }

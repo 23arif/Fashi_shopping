@@ -84,6 +84,7 @@
                             <li><a href="/admin/products"><i class="fa fa-shopping-basket"></i> Products </a></li>
                             <li><a href="/admin/blog"><i class="fa fa-newspaper-o"></i> Blog </a></li>
                             <li><a href="/admin/category"><i class="fa fa-newspaper-o"></i> Category </a></li>
+                            <li><a href="{{route('getDeal')}}"><i class="fa fa-gift"></i> Deals </a></li>
                             @if(\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->status() == 9)
                                 <li>
                                     <a href="{{route('getUserTable')}}"><i class="fa fa-users"></i> Users Table </a>

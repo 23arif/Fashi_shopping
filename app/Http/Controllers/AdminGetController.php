@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Blog;
 use App\Category;
+use App\Deal;
 use App\FAQs;
 use App\PrBrand;
 use App\PrCategory;
@@ -88,10 +89,10 @@ class AdminGetController extends AdminController
 
     public function get_edit_user($getUser)
     {
-        $u = User::where('slug',$getUser)->first();
+        $u = User::where('slug', $getUser)->first();
         $uStatus = $this->stt(intval($u->status));
         $allStatuses = UserStatus::all();
-        return view('backend.UserTable.edit-user', ['user' => $u, 'uStatus'=>$uStatus,'allStatuses'=>$allStatuses]);
+        return view('backend.UserTable.edit-user', ['user' => $u, 'uStatus' => $uStatus, 'allStatuses' => $allStatuses]);
     }
 
     private function stt($status)
@@ -107,6 +108,13 @@ class AdminGetController extends AdminController
         } elseif ($status === 0) {
             return 'User';
         }
+    }
+
+    public function get_deals()
+    {
+            $deals = Deal::where('id',1)->first();
+            return view('backend.Deals.edit-deal', ['deals'=> $deals]);
+
     }
 
 }

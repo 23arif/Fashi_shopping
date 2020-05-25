@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Blog;
 use App\Category;
+use App\Deal;
 use App\FAQs;
 use App\PrBrand;
 use App\PrCategory;
@@ -16,6 +17,7 @@ use App\User;
 use App\UserExtraInfo;
 use App\UserStatus;
 use Carbon\Carbon;
+use foo\bar;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
 use Symfony\Component\Console\Input\Input;
@@ -447,7 +449,7 @@ class AdminPostController extends AdminController
             } else {
                 try {
                     unset($request['_token']);
-                    User::where('slug',$getUser)->update($request->all());
+                    User::where('slug', $getUser)->update($request->all());
                     return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'User information updated successfully !']);
                 } catch (\Exception $e) {
                     return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'User information could not updated !', 'error' => $e]);
@@ -455,5 +457,84 @@ class AdminPostController extends AdminController
             }
         }
 
+    }
+
+    public function post_delete_user(Request $request)
+    {
+        try {
+            unset($request['_token']);
+            User::where('slug', $request->slug)->delete();
+            return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'User deleted successfully !']);
+        } catch (\Exception $e) {
+            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'User could not deleted !', 'error' => $e]);
+        }
+    }
+
+    public function post_deals(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'dealBanner' => 'required | mimes:jpeg,jpg,png',
+            'title' => 'required | max:250',
+            'desc' => 'required',
+            'price' => 'required',
+            'pr_name' => 'required| max:250',
+            'durationDay' => 'required | min:0 | max:365',
+            'durationHourse' => 'required | min:0 | max:24',
+            'durationMinute' => 'required | min:0 | max:60',
+            'durationSeconds' => 'required | min:0 | max:60',
+            'link' => 'required | max:250'
+        ]);
+
+        if ($validator->fails()) {
+            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Please fill all field correctly for change banner !']);
+        }
+
+        $photo = $request->file('dealBanner');
+        $photo_extention = $request->file('dealBanner')->getClientOriginalExtension();
+        $photo_name = 'banner.' . $photo_extention;
+        Storage::disk('uploads')->makeDirectory('img/DealsBanner');
+        Storage::disk('uploads')->put('img/DealsBanner/' . $photo_name, file_get_contents($photo));
+
+        try {
+            unset($request['_token']);
+
+            $request->merge(['banner' => $photo_name]);
+            Deal::where('id', 1)->update([
+                'banner' => $request->banner,
+                'title' => $request->title,
+                'desc' => $request->desc,
+                'price' => $request->price,
+                'pr_name' => $request->pr_name,
+                'day' => $request->durationDay,
+                'hourse' => $request->durationHourse,
+                'minute' => $request->durationMinute,
+                'second' => $request->durationSeconds,
+                'link' => $request->link,
+            ]);
+            return response(['processStatus' => 'success', 'processTitle' => 'Success', 'processDesc' => 'Congratulations , banner changed successfully!']);
+        } catch (\Exception $e) {
+            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Banner  could not changed !', 'error' => $e]);
+        }
+
+    }
+
+    public function post_switch_deal(Request $request){
+        if($request->switchResult == 1){
+            try {
+                unset($request['_token']);
+                Deal::where('id',1)->update(['enable_disable'=>$request->switchResult]);
+                return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Deal enabled successfully !']);
+            } catch (\Exception $e) {
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'User could not deleted !', 'error' => $e]);
+            }
+        }elseif ($request->switchResult == 0){
+            try {
+                unset($request['_token']);
+                Deal::where('id',1)->update(['enable_disable'=>$request->switchResult]);
+                return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Deal disabled successfully !']);
+            } catch (\Exception $e) {
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'User could not deleted !', 'error' => $e]);
+            }
+        }
     }
 }

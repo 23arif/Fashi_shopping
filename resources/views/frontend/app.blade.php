@@ -200,14 +200,10 @@
                     <i class="ti-menu"></i>
                     <span>All departments</span>
                     <ul class="depart-hover">
-                        <li class="active"><a href="#">Women’s Clothing</a></li>
-                        <li><a href="#">Men’s Clothing</a></li>
-                        <li><a href="#">Underwear</a></li>
-                        <li><a href="#">Kid's Clothing</a></li>
-                        <li><a href="#">Brand Fashion</a></li>
-                        <li><a href="#">Accessories/Shoes</a></li>
-                        <li><a href="#">Luxury Brands</a></li>
-                        <li><a href="#">Brand Outdoor Apparel</a></li>
+                        @foreach($allDepartments as $department)
+{{--                            class="active"--}}
+                            <li><a href="{{route('prCategory',['catName'=>$department->slug])}}">{{$department->category_name}}</a></li>
+                        @endforeach
                     </ul>
                 </div>
             </div>

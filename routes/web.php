@@ -24,7 +24,7 @@ Route::group(['prefix' => 'shop'], function () {
     Route::get('/', 'HomeGetController@get_shop');
     Route::post('/', 'HomePostController@post_priceFilter');
     Route::get('/product-details/{slug}', 'HomeGetController@get_product_details');
-    Route::get('/category/{catName}', 'HomeGetController@get_product_category');
+    Route::get('/category/{catName}', 'HomeGetController@get_product_category')->name('prCategory');
     Route::get('/size/{sizeName}', 'HomeGetController@get_product_size');
     Route::get('/tags/{tags}', 'HomeGetController@get_product_tags');
     Route::get('/brand/{brandName}', 'HomeGetController@get_product_brand');
@@ -54,25 +54,24 @@ Route::group(['prefix' => 'faq'], function () {
     Route::get('/{topic}/{question_details}', 'HomeGetController@get_faq_question_details');
     Route::post('/{topic}/{question_details}', 'HomePostController@post_faq_question_comments');
 });
+
+
 Route::group(['prefix' => 'admin', 'middleware' => 'Admin'], function () {
 
     Route::get('/', 'AdminGetController@get_index');
     Route::get('/settings', 'AdminGetController@get_settings');
     Route::post('/settings', 'AdminPostController@post_settings');
-
     Route::group(['prefix' => 'products'], function () {
         Route::get('/', 'AdminGetController@get_products');
         Route::post('/', 'AdminPostController@post_products');
 
     });
-
     Route::group(['prefix' => 'blog'], function () {
         Route::get('/', 'AdminGetController@get_blog');
         Route::post('/', 'AdminPostController@post_blog');
         Route::get('/edit-blog/{slug}', 'AdminGetController@get_edit_blog');
         Route::post('/edit-blog/{slug}', 'AdminPostController@post_edit_blog');
     });
-
     Route::group(['prefix' => 'category'], function () {
         Route::get('/', 'AdminGetController@get_category');
         Route::post('/', 'AdminPostController@post_category');
@@ -90,8 +89,15 @@ Route::group(['prefix' => 'admin', 'middleware' => 'Admin'], function () {
         Route::post('/{username}', 'AdminPostController@post_profile_user');
 
     });
+    Route::group(['prefix' => 'deals'], function () {
+        Route::get('/', 'AdminGetController@get_deals')->name('getDeal');
+        Route::post('/', 'AdminPostController@post_deals')->name('postDeal');
+        Route::post('/switch-deal', 'AdminPostController@post_switch_deal')->name('switchDeal');
+
+    });
     Route::group(['prefix' => 'users-table','middleware'=>'OnlySuperAdmin'], function () {
         Route::get('/', 'AdminGetController@get_users_table')->name('getUserTable');
+        Route::post('/', 'AdminPostController@post_delete_user')->name('deleteUser');
         Route::get('/edit-user/{getUser}', 'AdminGetController@get_edit_user')->name('getEditUser');
         Route::post('/edit-user/{getUser}', 'AdminPostController@post_edit_user')->name('postEditUser');
 

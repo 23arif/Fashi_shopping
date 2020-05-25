@@ -5,13 +5,13 @@
         <div class="">
             <div class="page-title">
                 <div class="title_left">
-                    <h3>Users Table<small> user count</small></h3>
+                    <h3>Users Table</h3>
                 </div>
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="x_panel">
                             <div class="x_content">
-                                <table id="datatable" class="table table-striped table-bordered">
+                                <table id="userTable" class="table table-striped table-bordered">
                                     <thead>
                                     <tr>
                                         <th>#</th>
@@ -51,10 +51,13 @@
                                                        data-toggle="tooltip" data-placement="left" title="Edit"></i>
                                                 </a>
                                             </td>
+
+                                            <meta name="csrf-token" content="{{ csrf_token() }}">
                                             <td class="td-align"><i class="fa fa-trash"
                                                                     style="color:red;font-size: 18px;cursor:pointer"
                                                                     data-toggle="tooltip" data-placement="left"
-                                                                    title="Delete"></i></td>
+                                                                    title="Delete" onclick="dlt(this,'{{$user->slug}}')"></i>
+                                            </td>
                                         </tr>
                                     @endforeach
                                     </tbody>
@@ -69,14 +72,64 @@
 @endsection
 
 @section('css')
+    {{--Sweet Alert--}}
+    <link rel="stylesheet" href="/css/sweetalert2.min.css">
+    <link rel="stylesheet" href="/css/projectCustom.css">
+    {{--/Sweet Alert--}}
+
     <style>
         .td-align {
-            /*display: flex;*/
-            /*justify-content: center;*/
             text-align: center;
         }
     </style>
 @endsection
 
 @section('js')
+    <script src="/js/jquery.form.min.js"></script>
+    <script src="/js/sweetalert2.min.js"></script>
+
+    <script !src="">
+        function dlt(r,slug) {
+            var row = r.parentNode.parentNode.rowIndex;
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "The user will delete!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Cancel',
+                confirmButtonText: 'Yes, delete it!'
+            }).then(function (result) {
+                if (result.value) {
+                    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                    $.ajax({
+                        type: "POST",
+                        url: '{{route('deleteUser')}}',
+                        data: {
+                            'slug': slug,
+                            '_token': CSRF_TOKEN
+                        },
+                        beforeSubmit: function () {
+                            Swal.fire({
+                                title: '<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>',
+                                text: 'Loading please wait!',
+                                showConfirmButton: false
+                            })
+                        },
+                        success: function (response) {
+                            if (response.processStatus == 'success') {
+                                document.getElementById('userTable').deleteRow(row);
+                            }
+                            Swal.fire(
+                                response.processTitle,
+                                response.processDesc,
+                                response.processStatus
+                                )
+                        }
+                    })
+                }
+            })
+        }
+    </script>
 @endsection

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Blog;
 use App\Category;
+use App\Deal;
 use App\FAQs;
 use App\FaqTopic;
 use App\PrBrand;
@@ -11,11 +12,8 @@ use App\PrCategory;
 use App\PrColor;
 use App\Product;
 use App\PrSize;
-use App\Settings;
 use App\User;
 use App\UserExtraInfo;
-use foo\Foo;
-use http\Env\Request;
 use Illuminate\Support\Facades\Auth;
 
 class HomeGetController extends HomeController
@@ -23,6 +21,7 @@ class HomeGetController extends HomeController
 
     public function get_index()
     {
+
         return view('frontend.index');
     }
 

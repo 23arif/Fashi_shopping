@@ -48,28 +48,34 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-4">
-                    <div class="single-banner">
-                        <img src="/frontend/img/banner-1.jpg" alt="">
-                        <div class="inner-text">
-                            <h4>Men’s</h4>
+                    <a href="{{route('prCategory',['catName'=>'men'])}}">
+                        <div class="single-banner">
+                            <img src="/frontend/img/banner-1.jpg" alt="">
+                            <div class="inner-text">
+                                <h4>Men’s</h4>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col-lg-4">
-                    <div class="single-banner">
-                        <img src="/frontend/img/banner-2.jpg" alt="">
-                        <div class="inner-text">
-                            <h4>Women’s</h4>
+                    <a href="{{route('prCategory',['catName'=>'women'])}}">
+                        <div class="single-banner">
+                            <img src="/frontend/img/banner-2.jpg" alt="">
+                            <div class="inner-text">
+                                <h4>Women’s</h4>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col-lg-4">
-                    <div class="single-banner">
-                        <img src="/frontend/img/banner-3.jpg" alt="">
-                        <div class="inner-text">
-                            <h4>Kid’s</h4>
+                    <a href="{{route('prCategory',['catName'=>'kids'])}}">
+                        <div class="single-banner">
+                            <img src="/frontend/img/banner-3.jpg" alt="">
+                            <div class="inner-text">
+                                <h4>Kid’s</h4>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
@@ -83,7 +89,7 @@
                 <div class="col-lg-3">
                     <div class="product-large set-bg" data-setbg="/frontend/img/products/women-large.jpg">
                         <h2>Women’s</h2>
-                        <a href="#">Discover More</a>
+                        <a href="{{route('prCategory',['catName'=>'women'])}}">Discover More</a>
                     </div>
                 </div>
                 <div class="col-lg-8 offset-lg-1">
@@ -194,40 +200,43 @@
     <!-- Women Banner Section End -->
 
     <!-- Deal Of The Week Section Begin-->
-    <section class="deal-of-week set-bg spad" data-setbg="/frontend/img/time-bg.jpg">
-        <div class="container">
-            <div class="col-lg-6 text-center">
-                <div class="section-title">
-                    <h2>Deal Of The Week</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed<br/> do ipsum dolor sit amet,
-                        consectetur adipisicing elit </p>
-                    <div class="product-price">
-                        $35.00
-                        <span>/ HanBag</span>
+    @if(\App\Deal::where('id',1)->first())
+        @if($deals->enable_disable == 1)
+            <section class="deal-of-week set-bg spad" data-setbg="/frontend/img/time-bg.jpg">
+                <div class="container">
+                    <div class="col-lg-6 text-center">
+                        <div class="section-title">
+                            <h2>{{$deals->title}}</h2>
+                            <p>{{$deals->desc}}</p>
+                            <div class="product-price">
+                                ${{$deals->price}}
+                                <span>/ {{$deals->pr_name}}</span>
+                            </div>
+                        </div>
+                        <div class="countdown-timer" id="countdown">
+                            <div class="cd-item">
+                                <span>{{$deals->day}}</span>
+                                <p>Days</p>
+                            </div>
+                            <div class="cd-item">
+                                <span>{{$deals->hourse}}</span>
+                                <p>Hrs</p>
+                            </div>
+                            <div class="cd-item">
+                                <span>{{$deals->minute}}</span>
+                                <p>Mins</p>
+                            </div>
+                            <div class="cd-item">
+                                <span>{{$deals->second}}</span>
+                                <p>Secs</p>
+                            </div>
+                        </div>
+                        <a href="{{$deals->link}}" class="primary-btn">Shop Now</a>
                     </div>
                 </div>
-                <div class="countdown-timer" id="countdown">
-                    <div class="cd-item">
-                        <span>56</span>
-                        <p>Days</p>
-                    </div>
-                    <div class="cd-item">
-                        <span>12</span>
-                        <p>Hrs</p>
-                    </div>
-                    <div class="cd-item">
-                        <span>40</span>
-                        <p>Mins</p>
-                    </div>
-                    <div class="cd-item">
-                        <span>52</span>
-                        <p>Secs</p>
-                    </div>
-                </div>
-                <a href="#" class="primary-btn">Shop Now</a>
-            </div>
-        </div>
-    </section>
+            </section>
+        @endif
+    @endif
     <!-- Deal Of The Week Section End -->
 
     <!-- Man Banner Section Begin -->
@@ -339,7 +348,7 @@
                 <div class="col-lg-3 offset-lg-1">
                     <div class="product-large set-bg m-large" data-setbg="/frontend/img/products/man-large.jpg">
                         <h2>Men’s</h2>
-                        <a href="#">Discover More</a>
+                        <a href="{{route('prCategory',['catName'=>'men'])}}">Discover More</a>
                     </div>
                 </div>
             </div>
@@ -352,37 +361,37 @@
         <div class="insta-item set-bg" data-setbg="/frontend/img/insta-1.jpg">
             <div class="inside-text">
                 <i class="ti-instagram"></i>
-                <h5><a href="#">colorlib_Collection</a></h5>
+                <h5><a href="#">Fashi_Shopping_Collection</a></h5>
             </div>
         </div>
         <div class="insta-item set-bg" data-setbg="/frontend/img/insta-2.jpg">
             <div class="inside-text">
                 <i class="ti-instagram"></i>
-                <h5><a href="#">colorlib_Collection</a></h5>
+                <h5><a href="#">Fashi_Shopping_Collection</a></h5>
             </div>
         </div>
         <div class="insta-item set-bg" data-setbg="/frontend/img/insta-3.jpg">
             <div class="inside-text">
                 <i class="ti-instagram"></i>
-                <h5><a href="#">colorlib_Collection</a></h5>
+                <h5><a href="#">Fashi_Shopping_Collection</a></h5>
             </div>
         </div>
         <div class="insta-item set-bg" data-setbg="/frontend/img/insta-4.jpg">
             <div class="inside-text">
                 <i class="ti-instagram"></i>
-                <h5><a href="#">colorlib_Collection</a></h5>
+                <h5><a href="#">Fashi_Shopping_Collection</a></h5>
             </div>
         </div>
         <div class="insta-item set-bg" data-setbg="/frontend/img/insta-5.jpg">
             <div class="inside-text">
                 <i class="ti-instagram"></i>
-                <h5><a href="#">colorlib_Collection</a></h5>
+                <h5><a href="#">Fashi_Shopping_Collection</a></h5>
             </div>
         </div>
         <div class="insta-item set-bg" data-setbg="/frontend/img/insta-6.jpg">
             <div class="inside-text">
                 <i class="ti-instagram"></i>
-                <h5><a href="#">colorlib_Collection</a></h5>
+                <h5><a href="#">Fashi_Shopping_Collection</a></h5>
             </div>
         </div>
     </div>
@@ -399,69 +408,30 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-latest-blog">
-                        <img src="/frontend/img/latest-1.jpg" alt="">
-                        <div class="latest-text">
-                            <div class="tag-list">
-                                <div class="tag-item">
-                                    <i class="fa fa-calendar-o"></i>
-                                    May 4,2019
+                @foreach($fromTheBlog->sortByDesc('id')->take(3) as $blog)
+                    @foreach($photos = Storage::disk('uploads')->files('img/blog/'.$blog->slug) as $photo)
+                    @endforeach
+                    <div class="col-lg-4 col-md-6">
+                        <div class="single-latest-blog">
+                            <img src="/uploads/{{$photo}}" width="100" height="150" alt="{{$blog->title}}">
+                            <div class="latest-text">
+                                <div class="tag-list">
+                                    <div class="tag-item">
+                                        <i class="fa fa-calendar-o"></i>
+                                        {{$blog->created_at->formatLocalized('%d')}} {{$blog->created_at->formatLocalized('%b')}},{{$blog->created_at->formatLocalized('%Y')}}
+                                    </div>
+                                    <div class="tag-item">
+                                        <i class="fa fa-comment-o"></i>
+                                        {{$blog->comments->count()}}
+                                    </div>
                                 </div>
-                                <div class="tag-item">
-                                    <i class="fa fa-comment-o"></i>
-                                    5
-                                </div>
+                                <a href="/blog/@if(isset($blog->parent))@php($primaryCategory=$blog->parent)@if(isset($primaryCategory->parent))@php($doubleprimaryCategory= $primaryCategory->parent)@if(isset($doubleprimaryCategory->parent)){{$doubleprimaryCategory->parent->slug}}/@endif{{$primaryCategory->parent->slug}}/@endif{{$blog->parent->slug}}/@endif{{$blog->slug}}">
+                                    <h4>{{$blog->title}}</h4>
+                                </a>
                             </div>
-                            <a href="#">
-                                <h4>The Best Street Style From London Fashion Week</h4>
-                            </a>
-                            <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-latest-blog">
-                        <img src="/frontend/img/latest-2.jpg" alt="">
-                        <div class="latest-text">
-                            <div class="tag-list">
-                                <div class="tag-item">
-                                    <i class="fa fa-calendar-o"></i>
-                                    May 4,2019
-                                </div>
-                                <div class="tag-item">
-                                    <i class="fa fa-comment-o"></i>
-                                    5
-                                </div>
-                            </div>
-                            <a href="#">
-                                <h4>Vogue's Ultimate Guide To Autumn/Winter 2019 Shoes</h4>
-                            </a>
-                            <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-latest-blog">
-                        <img src="/frontend/img/latest-3.jpg" alt="">
-                        <div class="latest-text">
-                            <div class="tag-list">
-                                <div class="tag-item">
-                                    <i class="fa fa-calendar-o"></i>
-                                    May 4,2019
-                                </div>
-                                <div class="tag-item">
-                                    <i class="fa fa-comment-o"></i>
-                                    5
-                                </div>
-                            </div>
-                            <a href="#">
-                                <h4>How To Brighten Your Wardrobe With A Dash Of Lime</h4>
-                            </a>
-                            <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
             <div class="benefit-items">
                 <div class="row">
