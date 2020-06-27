@@ -25,6 +25,9 @@
                     @include('frontend.modules.shop-side-bar')
                 </div>
                 <div class="col-lg-9">
+                    @if (\Session::has('addToCartMsg'))
+                        <div class="alert alert-info text-center">{{session()->get('addToCartMsg')}}</div>
+                    @endif
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="product-pic-zoom">
@@ -46,6 +49,7 @@
                             </div>
                         </div>
                         <div class="col-lg-6">
+
                             <div class="product-details">
                                 <div class="pd-title">
                                     <span>{{$products->pr_name}}</span>
@@ -95,12 +99,17 @@
                                         </div>
                                     @endforeach
                                 </div>
-                                <div class="quantity">
-                                    <div class="pro-qty">
-                                        <input type="text" value="1">
+
+                                <form action="{{route('addToCart',['slug'=>$products->slug])}}" method="post">
+                                    @csrf
+                                    <div class="quantity">
+                                        <div class="pro-qty">
+                                            <input type="text" value="1" name="quantity">
+                                        </div>
+                                        <button class="primary-btn pd-cart" type="submit" style="border: none">Add To Cart</button>
                                     </div>
-                                    <a href="#" class="primary-btn pd-cart">Add To Cart</a>
-                                </div>
+                                </form>
+
                                 <ul class="pd-tags">
                                     <li><span>BRAND</span>: {{$products->prBrand->name}}</li>
                                     <li><span>CATEGORIES</span>: {{$products->prCategory->category_name}}</li>

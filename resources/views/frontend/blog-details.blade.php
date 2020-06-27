@@ -163,13 +163,15 @@
                                                         </div>
                                                         <div class="col-md-10">
                                                             <p>
-                                                            <p><strong>
+                                                            <p>
+                                                                <strong>
                                                                     @if($reply->user_id>'0')
                                                                         {{$reply->user->name}}
                                                                     @else
                                                                         {{$reply->name}}
                                                                     @endif
-                                                                </strong></p>
+                                                                </strong>
+                                                            </p>
                                                             </p>
                                                             <p>{{$reply->content}}</p>
                                                         </div>
@@ -296,8 +298,8 @@
             document.getElementById('reply').innerHTML = hidden;
 
             $('html,body').animate({
-                scrollTop: $(".leave-comment").offset().top
-            },
+                    scrollTop: $(".leave-comment").offset().top
+                },
                 'slow');
             @if(\Illuminate\Support\Facades\Auth::check())
             $('#content').focus().css('border', '2px solid #f39313');
@@ -315,22 +317,22 @@
                         response.processTitle,
                         response.processDesc,
                         response.processStatus
-                        )
-                    .then(function () {
-                        var repliedComment = $('#reply input').val();
+                    )
+                        .then(function () {
+                            var repliedComment = $('#reply input').val();
 
-                        if ($('#reply input').attr('name') == 'prime_comment') {
-                            $('html,body').animate({
-                                scrollTop: $('#' + repliedComment).offset().top
-                            },
-                                'slow');
-                        } else {
-                            $('html,body').animate({
-                                scrollTop: $("#comments").offset().top
-                            },
-                                'slow');
-                        }
-                    })
+                            if ($('#reply input').attr('name') == 'prime_comment') {
+                                $('html,body').animate({
+                                        scrollTop: $('#' + repliedComment).offset().top
+                                    },
+                                    'slow');
+                            } else {
+                                $('html,body').animate({
+                                        scrollTop: $("#comments").offset().top
+                                    },
+                                    'slow');
+                            }
+                        })
                     if (response.processStatus == 'success') {
                         var content = document.getElementById('content').value;
                         if ($('#reply input').attr('name') == 'prime_comment') {

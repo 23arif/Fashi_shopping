@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Basket;
 use App\Blog;
 use App\Category;
 use App\Deal;
 use App\FAQs;
 use App\FaqTopic;
+use App\Order;
 use App\PrBrand;
 use App\PrCategory;
 use App\PrColor;
@@ -14,6 +16,7 @@ use App\Product;
 use App\PrSize;
 use App\User;
 use App\UserExtraInfo;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class HomeGetController extends HomeController
@@ -93,7 +96,16 @@ class HomeGetController extends HomeController
             $sizes = PrSize::all();
             $colors = PrColor::all();
             $payments = UserExtraInfo::all();
-            return view('frontend.product', ['products' => $products, 'brands' => $brands, 'categories' => $categories, 'sizes' => $sizes, 'colors' => $colors, 'payments' => $payments, 'userExtraData' => $userExtraData]);
+
+            return view('frontend.product', [
+                'products' => $products,
+                'brands' => $brands,
+                'categories' => $categories,
+                'sizes' => $sizes,
+                'colors' => $colors,
+                'payments' => $payments,
+                'userExtraData' => $userExtraData,
+            ]);
         } else {
             return redirect()->back();
         }
@@ -150,17 +162,22 @@ class HomeGetController extends HomeController
         return view('frontend.shop-tags', ['tags' => $tags, 'products' => $products, 'brands' => $brands, 'categories' => $categories, 'sizes' => $sizes, 'colors' => $colors]);
     }
 
-//    public function get_priceFilter($minamount,$maxamount)
-//    {
-//        $products = Product::whereBetween('pr_last_price', array($minamount, $maxamount));
-//        return view('frontend.shop',['products'=>$products]);
-//    }
 
     public
     function get_shopping_cart()
     {
-        return view('frontend.shopping-cart');
+        if (Auth::check()) {
+            $user_id = Auth::id();
+            $fetchToCart = Basket::where('user_id', $user_id)->get();
+
+            return view('frontend.shopping-cart', ['fetchToCart' => $fetchToCart]);
+
+        } else {
+            return view('frontend.shopping-cart');
+        }
+
     }
+
 
     public
     function get_checkout()
@@ -168,6 +185,11 @@ class HomeGetController extends HomeController
         return view('frontend.check-out');
     }
 
+    public function get_orders(Request $request){
+        $user_id = Auth::id();
+        $orders=Order::where('user_id',$user_id)->get();
+        return view('frontend.order',['orders'=>$orders]);
+    }
 
     public
     function get_faq()

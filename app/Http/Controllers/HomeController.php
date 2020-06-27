@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Product;
-use App\Settings;
-use Illuminate\Http\Request;
-use Illuminate\View\View;
+use App\Basket;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
 
 class HomeController extends Controller
 {

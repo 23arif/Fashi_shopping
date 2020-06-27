@@ -2,6 +2,7 @@
 @section('icerik')
     <title>Fashi | Shopping cart</title>
     <!-- Breadcrumb Section Begin -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <div class="breacrumb-section">
         <div class="container">
             <div class="row">
@@ -35,81 +36,72 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td class="cart-pic first-row"><img src="/frontend/img/cart-page/product-1.jpg" alt=""></td>
-                                <td class="cart-title first-row">
-                                    <h5>Pure Pineapple</h5>
-                                </td>
-                                <td class="p-price first-row">$60.00</td>
-                                <td class="qua-col first-row">
-                                    <div class="quantity">
-                                        <div class="pro-qty">
-                                            <input type="text" value="1">
+                            @if(isset($fetchToCart))
+                                @foreach($fetchToCart->sortByDesc('id') as $fetch)
+
+                                    @foreach($photos = Storage::disk('uploads')->files('img/products/'.$fetch->getProductInfo->slug) as $photo)
+                                    @endforeach
+                                    <tr>
+                                        <td class="cart-pic first-row"><img src="/uploads/{{$photo}}"
+                                                                            alt=""></td>
+                                        <td class="cart-title first-row">
+                                            <h5>{{$fetch->getProductInfo->pr_name}}</h5>
+                                        </td>
+                                        <td class="p-price first-row">${{$fetch->getProductInfo->pr_last_price}}</td>
+                                        <td class="qua-col first-row">
+                                            <div class="quantity">
+                                                <div class="pro-qtyy">
+                                                    <span class="dec qtybtn"
+                                                          onclick="decQtyy(this,'{{$fetch->product_id}}')">-</span>
+                                                    <input id="productQuantity" type="text"
+                                                           value="{{$fetch->quantity}}"
+                                                           onkeyup="typeQty(this,'{{$fetch->product_id}}')">
+                                                    <span class="inc qtybtn"
+                                                          onclick="incQtyy(this,'{{$fetch->product_id}}')">+</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        @php($eachTotal = intval($fetch->quantity) * $fetch->getProductInfo->pr_last_price)
+                                        <td class="total-price first-row">$ {{$eachTotal}}</td>
+                                        <td class="close-td first-row"><i class="ti-close"
+                                                                          onclick="deleteSelectedProduct(this,'{{$fetch->product_id}}')"></i>
+                                        </td>
+                                    </tr>
+
+                                @endforeach
+                            @endif
+                            @if(count($fetchToCart) == 0)
+                                <tr class="mt-10">
+                                    <td colspan="6">
+                                        <div class="alert alert-info text-center" id="emptyAlert">You don't have any
+                                            items in your
+                                            cart.
                                         </div>
-                                    </div>
-                                </td>
-                                <td class="total-price first-row">$60.00</td>
-                                <td class="close-td first-row"><i class="ti-close"></i></td>
-                            </tr>
-                            <tr>
-                                <td class="cart-pic"><img src="/frontend/img/cart-page/product-2.jpg" alt=""></td>
-                                <td class="cart-title">
-                                    <h5>American lobster</h5>
-                                </td>
-                                <td class="p-price">$60.00</td>
-                                <td class="qua-col">
-                                    <div class="quantity">
-                                        <div class="pro-qty">
-                                            <input type="text" value="1">
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="total-price">$60.00</td>
-                                <td class="close-td"><i class="ti-close"></i></td>
-                            </tr>
-                            <tr>
-                                <td class="cart-pic"><img src="/frontend/img/cart-page/product-3.jpg" alt=""></td>
-                                <td class="cart-title">
-                                    <h5>Guangzhou sweater</h5>
-                                </td>
-                                <td class="p-price">$60.00</td>
-                                <td class="qua-col">
-                                    <div class="quantity">
-                                        <div class="pro-qty">
-                                            <input type="text" value="1">
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="total-price">$60.00</td>
-                                <td class="close-td"><i class="ti-close"></i></td>
-                            </tr>
+                                    </td>
+                                </tr>
+                            @endif
                             </tbody>
                         </table>
                     </div>
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <div class="cart-buttons">
-                                <a href="#" class="primary-btn continue-shop">Continue shopping</a>
-                                <a href="#" class="primary-btn up-cart">Update cart</a>
-                            </div>
-                            <div class="discount-coupon">
-                                <h6>Discount Codes</h6>
-                                <form action="#" class="coupon-form">
-                                    <input type="text" placeholder="Enter your codes">
-                                    <button type="submit" class="site-btn coupon-btn">Apply</button>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 offset-lg-4">
-                            <div class="proceed-checkout">
-                                <ul>
-                                    <li class="subtotal">Subtotal <span>$240.00</span></li>
-                                    <li class="cart-total">Total <span>$240.00</span></li>
-                                </ul>
-                                <a href="#" class="proceed-btn">PROCEED TO CHECK OUT</a>
+                    @if(count($fetchToCart)>0)
+                        <div class="row">
+                            <div class="col-lg-4 offset-lg-8 mb-5">
+                                <div class="proceed-checkout">
+                                    <ul>
+                                        <li class="subtotal">Subtotal
+                                            <span>${{number_format((float)$totalPrice,2,'.','')}}</span></li>
+                                        <li class="subtotal">Shipping <span>$0.00</span></li>
+                                        <li class="cart-total">Total
+                                            <span>$ <span
+                                                    id="cartTotal">{{number_format((float)$totalPrice,2,'.','')}}</span></span>
+                                        </li>
+                                    </ul>
+                                    <a href="{{route('checkoutPage')}}" class="proceed-btn">PROCEED TO CHECK OUT</a>
+
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -119,7 +111,138 @@
 @endsection
 
 @section('css')
+    {{--Sweet Alert--}}
+    <link rel="stylesheet" href="/css/sweetalert2.min.css">
+    {{--/Sweet Alert--}}
+    <style>
+        .cart-table table tr td.qua-col .pro-qtyy {
+            width: 123px;
+            height: 46px;
+            border: 2px solid #ebebeb;
+            padding: 0 15px;
+            float: left;
+        }
+
+        .cart-table table tr td.qua-col .pro-qtyy .qtybtn {
+            font-size: 24px;
+            color: #b2b2b2;
+            float: left;
+            line-height: 38px;
+            cursor: pointer;
+            width: 18px;
+        }
+
+        .cart-table table tr td.qua-col .pro-qtyy .qtybtn.dec {
+            font-size: 30px;
+        }
+
+        .cart-table table tr td.qua-col .pro-qtyy input {
+            text-align: center;
+            width: 52px;
+            font-size: 14px;
+            font-weight: 700;
+            border: none;
+            color: #4c4c4c;
+            line-height: 40px;
+            float: left;
+        }
+
+    </style>
 @endsection
 
 @section('js')
+    {{--Sweet Alert--}}
+    <script src="/js/jquery.form.min.js"></script>
+    <script src="/js/sweetalert2.min.js"></script>
+
+    <script !src="">
+
+        function typeQty(t, product_id) {
+            var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+            var typedQty = $(t).val();
+            $.ajax({
+                type: 'POST',
+                url: '{{route('postShoppingCart')}}',
+                data: {
+                    '_token': CSRF_TOKEN,
+                    'identifier': 'typeQty', // to identify fetch request
+                    'product_id': product_id,
+                    'typedQty': typedQty
+
+                },
+                beforeSubmit: function () {
+                    Swal.fire({
+                        imageUrl: '/frontend/img/Infinity-1s-200px.svg',
+                        imageWidth: 400,
+                        imageHeight: 200,
+                        showConfirmButton: false
+                    })
+                },
+                success: function (response) {
+                    // location.reload();
+                }
+            })
+        }
+
+        function deleteSelectedProduct(t, product_id) {
+            var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+            $.ajax({
+                type: 'POST',
+                url: '{{route('postShoppingCart')}}',
+                data: {
+                    'identifier': 'deleteSelectedProduct', // to identify fetch request
+                    'product_id': product_id,
+                    '_token': CSRF_TOKEN
+                },
+                success: function (response) {
+                    location.reload();
+                }
+            })
+        }
+
+        function decQtyy(t, pr_id) {
+            var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+            var newDecreasedQty = parseInt($(t).next().val()) - 1;
+            $(t).next().val(newDecreasedQty)
+            if (newDecreasedQty < 1) {
+                newDecreasedQty = 'deleteProduct';
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: "{{route('postShoppingCart')}}",
+                data: {
+                    'identifier': 'decQtyy', // to identify fetch request
+                    'pr_id': pr_id,
+                    'newDecreasedQty': newDecreasedQty,
+                    '_token': CSRF_TOKEN
+                },
+                success: function (response) {
+                    location.reload();
+                }
+            })
+        }
+
+        function incQtyy(t, pr_id) {
+            var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+            var newIncreasedQty = parseInt($(t).prev().val()) + 1;
+            $(t).prev().val(newIncreasedQty);
+
+            $.ajax({
+                type: 'POST',
+                url: "{{route('postShoppingCart')}}",
+                data: {
+                    'identifier': 'incQtyy', // to identify fetch request
+                    'pr_id': pr_id,
+                    'newIncreasedQty': newIncreasedQty,
+                    '_token': CSRF_TOKEN
+                },
+                success: function (response) {
+                    location.reload();
+                }
+            })
+        }
+
+    </script>
 @endsection

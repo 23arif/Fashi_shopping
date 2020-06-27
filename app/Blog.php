@@ -23,4 +23,5 @@ class Blog extends Model
     {
         return $this->hasOne('App\User', 'id', 'author');
     }
+
 }

@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,8 +13,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-
 Route::get('/', 'HomeGetController@get_index');
 Route::get('/index', 'HomeGetController@get_index_yonlendir');
 Route::post('/locale', 'HomePostController@post_locale');
@@ -21,15 +20,20 @@ Route::get('/home', 'HomeGetController@get_index_yonlendir');
 Route::get('/contact', 'HomeGetController@get_contact');
 
 Route::group(['prefix' => 'shop'], function () {
-    Route::get('/', 'HomeGetController@get_shop');
-    Route::post('/', 'HomePostController@post_priceFilter');
+    Route::get('/', 'HomeGetController@get_shop')->name('shopPage');
+    Route::post('/priceFilter', 'HomePostController@post_priceFilter')->name('priceFilter');
+    Route::post('/', 'HomePostController@post_add_to_cart_icon')->name('addToCartIcon');
     Route::get('/product-details/{slug}', 'HomeGetController@get_product_details');
+    Route::post('/product-details/{slug}', 'HomePostController@post_add_to_cart')->name('addToCart');
     Route::get('/category/{catName}', 'HomeGetController@get_product_category')->name('prCategory');
     Route::get('/size/{sizeName}', 'HomeGetController@get_product_size');
     Route::get('/tags/{tags}', 'HomeGetController@get_product_tags');
     Route::get('/brand/{brandName}', 'HomeGetController@get_product_brand');
-    Route::get('/shopping-cart', 'HomeGetController@get_shopping_cart');
-    Route::get('/check-out', 'HomeGetController@get_checkout');
+    Route::get('/shopping-cart', 'HomeGetController@get_shopping_cart')->name('shoppingCartPage');
+    Route::post('/shopping-cart', 'HomePostController@post_shopping_cart')->name('postShoppingCart');
+    Route::get('/check-out', 'HomeGetController@get_checkout')->name('checkoutPage')->middleware('GoToCheckOut');
+    Route::post('/check-out', 'HomePostController@post_checkout')->name('checkoutPost');
+    Route::get('/orders', 'HomeGetController@get_orders')->name('ordersPage');
 
 });
 

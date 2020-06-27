@@ -44,7 +44,7 @@
                                             </div>
                                             <div class="col-md-11 text-left"
                                                  style="padding:20px 20px 20px 20px ">
-                                                {{$tag->content}}
+                                                {!! $tag->content !!}
                                             </div>
                                         </div>
                                     </div>

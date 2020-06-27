@@ -61,7 +61,9 @@
                                                 <td>{{$blog->category}}</td>
                                                 <td>{{$blog->hit}}</td>
                                                 <td>{{count($blog->comments)}}</td>
-                                                <td>{{$blog->created_at}}</td>
+                                                <td>
+                                                    {{$blog->created_at->formatLocalized('%d')}} {{$blog->created_at->formatLocalized('%b')}},{{$blog->created_at->formatLocalized('%Y')}}
+                                                </td>
                                                 <td>
                                                     <meta name="csrf-token" content="{{ csrf_token() }}">
                                                     <button class="btn btn-danger" onclick="dlt('{{$blog->slug}}')">

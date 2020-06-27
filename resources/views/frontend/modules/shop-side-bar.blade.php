@@ -20,7 +20,7 @@
 </div>
 <div class="filter-widget">
     <h4 class="fw-title">Price</h4>
-    <form action="/shop" method="post" id="priceFilter">
+    <form action="{{route('priceFilter')}}" method="post" id="priceFilter">
         @csrf
         <div class="filter-range-wrap">
             <div class="range-slider">

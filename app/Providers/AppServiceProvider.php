@@ -2,14 +2,14 @@
 
 namespace App\Providers;
 
-
+use App\Basket;
 use App\Blog;
-use App\Category;
 use App\Deal;
 use App\PrCategory;
 use App\Product;
 use App\Locale;
 use App\Settings;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 
@@ -42,5 +42,18 @@ class AppServiceProvider extends ServiceProvider
             'deals' => $deals,
             'fromTheBlog' => $fromTheBlog,
         ]);
+
+
+        view()->composer('*', function ($view) {
+            $cartProducts = Basket::where('user_id',Auth::id())->get();
+            $totalPrice = 0;
+
+            foreach (Basket::where('user_id', Auth::id())->get() as $fetch) {
+                $totalPrice += $fetch->getProductInfo->pr_last_price * $fetch->quantity;
+            }
+
+            $view->with(['cartProducts' => $cartProducts,'totalPrice'=>$totalPrice]);
+
+        });
     }
 }

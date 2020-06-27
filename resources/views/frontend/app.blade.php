@@ -124,7 +124,6 @@
                 </div>
                 <div class="col-lg-7 col-md-7">
                     <div class="advanced-search">
-                        <button type="button" class="category-btn">All Categories</button>
                         <div class="input-group">
                             <input type="text" placeholder="What do you need?">
                             <button type="button"><i class="ti-search"></i></button>
@@ -133,6 +132,11 @@
                 </div>
                 <div class="col-lg-3 text-right col-md-3">
                     <ul class="nav-right">
+                        <li class="orders-icon">
+                            <a href="{{route('ordersPage')}}">
+                                <i class="ti-clipboard"></i>
+                            </a>
+                        </li>
                         <li class="heart-icon">
                             <a href="#">
                                 <i class="icon_heart_alt"></i>
@@ -142,52 +146,91 @@
                         <li class="cart-icon">
                             <a href="/shop/shopping-cart">
                                 <i class="icon_bag_alt"></i>
-                                <span>3</span>
+                                <span id="basketCounter">
+                                @if(\Illuminate\Support\Facades\Auth::check())
+                                        {{count(\App\Basket::where('user_id', \Illuminate\Support\Facades\Auth::id())->get())}}
+                                    @else
+                                        0
+                                    @endif
+                                </span>
                             </a>
                             <div class="cart-hover">
                                 <div class="select-items">
                                     <table>
                                         <tbody>
-                                        <tr>
-                                            <td class="si-pic"><img src="/frontend/img/select-product-1.jpg" alt="">
-                                            </td>
-                                            <td class="si-text">
-                                                <div class="product-selected">
-                                                    <p>$60.00 x 1</p>
-                                                    <h6>Kabino Bedside Table</h6>
-                                                </div>
-                                            </td>
-                                            <td class="si-close">
-                                                <i class="ti-close"></i>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="si-pic"><img src="/frontend/img/select-product-2.jpg" alt="">
-                                            </td>
-                                            <td class="si-text">
-                                                <div class="product-selected">
-                                                    <p>$60.00 x 1</p>
-                                                    <h6>Kabino Bedside Table</h6>
-                                                </div>
-                                            </td>
-                                            <td class="si-close">
-                                                <i class="ti-close"></i>
-                                            </td>
-                                        </tr>
+
+                                        @if(count($cartProducts) == 0)
+                                            <div class="alert alert-info text-center h6" id="cartEmptyAlert">Cart is empty.</div>
+                                        @else
+                                            @if(count($cartProducts)>3)
+                                                @foreach($cartProducts->take(3) as $cartProduct)
+                                                    @foreach($photos = Storage::disk('uploads')->files('img/products/'.$cartProduct->getProductInfo->slug) as $photo)
+                                                    @endforeach
+                                                    <tr>
+                                                        <td class="si-pic">
+                                                            <img src="/uploads/{{$photo}}" alt="" width="80"
+                                                                 height="80">
+                                                        </td>
+                                                        <td class="si-text">
+                                                            <div class="product-selected">
+                                                                <p>${{$cartProduct->getProductInfo->pr_last_price}}
+                                                                    x {{$cartProduct->quantity}}</p>
+                                                                <h6>{{\Illuminate\Support\Str::limit($cartProduct->getProductInfo->pr_name,15,$end='...')}}</h6>
+
+                                                            </div>
+                                                        </td>
+                                                        <td class="si-close">
+                                                            <i class="ti-close"></i>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+
+                                                <tr>
+                                                    <td colspan="3" align="center">
+                                                        <a href="{{route('shoppingCartPage')}}"
+                                                           style="color: #f39313;font-weight: bold">
+                                                            . . .
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @else
+                                                @foreach($cartProducts as $cartProduct)
+                                                    @foreach($photos = Storage::disk('uploads')->files('img/products/'.$cartProduct->getProductInfo->slug) as $photo)
+                                                    @endforeach
+                                                    <tr>
+                                                        <td class="si-pic">
+                                                            <img src="/uploads/{{$photo}}" alt="" width="80"
+                                                                 height="80">
+                                                        </td>
+                                                        <td class="si-text">
+                                                            <div class="product-selected">
+                                                                <p>${{$cartProduct->getProductInfo->pr_last_price}}
+                                                                    x {{$cartProduct->quantity}}</p>
+                                                                <h6>{{\Illuminate\Support\Str::limit($cartProduct->getProductInfo->pr_name,15,$end='...')}}</h6>
+
+                                                            </div>
+                                                        </td>
+                                                        <td class="si-close">
+                                                            <i class="ti-close"></i>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            @endif
+                                        @endif
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="select-total">
-                                    <span>total:</span>
-                                    <h5>$120.00</h5>
-                                </div>
+                                @if(count($cartProducts) != 0)
+                                    <div class="select-total">
+                                        <span>total:</span>
+                                        <h5>${{number_format((float)$totalPrice,2,',','')}}</h5>
+                                    </div>
+                                @endif
                                 <div class="select-button">
                                     <a href="/shop/shopping-cart" class="primary-btn view-card">VIEW CARD</a>
-                                    <a href="/shop/check-out" class="primary-btn checkout-btn">CHECK OUT</a>
                                 </div>
                             </div>
                         </li>
-                        <li class="cart-price">$150.00</li>
                     </ul>
                 </div>
             </div>
@@ -201,8 +244,10 @@
                     <span>All departments</span>
                     <ul class="depart-hover">
                         @foreach($allDepartments as $department)
-{{--                            class="active"--}}
-                            <li><a href="{{route('prCategory',['catName'=>$department->slug])}}">{{$department->category_name}}</a></li>
+                            {{--                            class="active"--}}
+                            <li>
+                                <a href="{{route('prCategory',['catName'=>$department->slug])}}">{{$department->category_name}}</a>
+                            </li>
                         @endforeach
                     </ul>
                 </div>
@@ -214,17 +259,6 @@
                     <li><a href="/blog">Blog</a></li>
                     <li><a href="/contact">Contact</a></li>
                     <li><a href="/faq">Faqs</a></li>
-
-                    {{--                    <li><a href="#">Pages</a>--}}
-                    {{--                        <ul class="dropdown">--}}
-                    {{--                            <li><a href="/blog-details">Blog Details</a></li>--}}
-                    {{--                            <li><a href="/shopping-cart">Shopping Cart</a></li>--}}
-                    {{--                            <li><a href="/check-out">Checkout</a></li>--}}
-                    {{--                            <li><a href="./faq.html">Faq</a></li>--}}
-                    {{--                            <li><a href="/register">Register</a></li>--}}
-                    {{--                            <li><a href="/login">Login</a></li>--}}
-                    {{--                        </ul>--}}
-                    {{--                    </li>--}}
                 </ul>
             </nav>
             <div id="mobile-menu-wrap"></div>
