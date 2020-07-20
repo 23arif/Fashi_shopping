@@ -132,11 +132,13 @@
                 </div>
                 <div class="col-lg-3 text-right col-md-3">
                     <ul class="nav-right">
-                        <li class="orders-icon">
-                            <a href="{{route('ordersPage')}}">
-                                <i class="ti-clipboard"></i>
-                            </a>
-                        </li>
+                        @if(\Illuminate\Support\Facades\Auth::check())
+                            <li class="orders-icon">
+                                <a href="{{route('ordersPage')}}">
+                                    <i class="ti-clipboard"></i>
+                                </a>
+                            </li>
+                        @endif
                         <li class="heart-icon">
                             <a href="#">
                                 <i class="icon_heart_alt"></i>
@@ -150,7 +152,11 @@
                                 @if(\Illuminate\Support\Facades\Auth::check())
                                         {{count(\App\Basket::where('user_id', \Illuminate\Support\Facades\Auth::id())->get())}}
                                     @else
-                                        0
+                                        @if(isset($basketArray))
+                                            {{count($basketArray)}}
+                                        @else
+                                            0
+                                        @endif
                                     @endif
                                 </span>
                             </a>
@@ -160,7 +166,9 @@
                                         <tbody>
 
                                         @if(count($cartProducts) == 0)
-                                            <div class="alert alert-info text-center h6" id="cartEmptyAlert">Cart is empty.</div>
+                                            <div class="alert alert-info text-center h6" id="cartEmptyAlert">Cart is
+                                                empty.
+                                            </div>
                                         @else
                                             @if(count($cartProducts)>3)
                                                 @foreach($cartProducts->take(3) as $cartProduct)

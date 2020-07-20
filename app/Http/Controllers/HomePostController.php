@@ -18,6 +18,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Str;
 use Validator;
 
@@ -213,7 +214,31 @@ class HomePostController extends HomeController
                 return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Could not added to cart!', 'error' => $e]);
             }
         } else {
-            return 'not registered';
+            try {
+                $product_id = Product::where('slug', $request->slug)->first()->id;
+                $basket = Cookie::get('basket');
+                if (empty($basket)) {
+                    Cookie::queue('basket[' . $product_id . ']', '1', strtotime('+1 day'));
+                    return response(['increase' => 'increase']);
+                } else {
+                    foreach ($basket as $key => $value) {
+                        if ($key == $product_id) {
+//                        $value+1;
+                            return 'increased qty';
+                        } elseif (empty($basket)) {
+                            Cookie::queue('basket[' . $product_id . ']', '1', strtotime('+1 day'));
+                            return response(['increase' => 'increase']);
+
+                        } else {
+                            Cookie::queue('basket[' . $product_id . ']', '1', strtotime('+1 day'));
+                            return response(['increase' => 'increase']);
+                        }
+                    }
+                }
+
+            } catch (\Exception $e) {
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Could not added to cart!', 'error' => $e]);
+            }
         }
     }
 
@@ -303,12 +328,12 @@ class HomePostController extends HomeController
                     Basket::where('user_id', $user_id)->delete();
                     $request->merge(['order_no' => $order_no]);
                     OrderBilling::create($request->all());
-                    return redirect(route('ordersPage'))->with('orderSession', 'Order completed succesfully!');
+                    return redirect(route('ordersPage'))->with('orderSession', 'Orders completed succesfully!');
                 }
             }
 
         } catch (\Exception $e) {
-            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Order could not completed !', 'error' => $e]);
+            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Orders could not completed !', 'error' => $e]);
         }
     }
 

@@ -69,31 +69,95 @@
                                     </tr>
 
                                 @endforeach
-                            @endif
-                            @if(count($fetchToCart) == 0)
-                                <tr class="mt-10">
-                                    <td colspan="6">
-                                        <div class="alert alert-info text-center" id="emptyAlert">You don't have any
-                                            items in your
-                                            cart.
-                                        </div>
-                                    </td>
-                                </tr>
+
+                                @if(count($fetchToCart) == 0)
+                                    <tr class="mt-10">
+                                        <td colspan="6">
+                                            <div class="alert alert-info text-center" id="emptyAlert">You don't have any
+                                                items in your
+                                                cart.
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endif
+                            @else
+                                @if(isset($basketArray))
+                                    @foreach($basketArray as $key=>$value)
+                                        @foreach($photos = Storage::disk('uploads')->files('img/products/'.\App\Product::where('id',$key)->first()->slug) as $photo)
+                                        @endforeach
+                                        <tr>
+                                            <td class="cart-pic first-row"><img src="/uploads/{{$photo}}"
+                                                                                alt=""></td>
+                                            <td class="cart-title first-row">
+                                                <h5>{{\App\Product::where('id',$key)->first()->pr_name}}</h5>
+                                            </td>
+                                            <td class="p-price first-row">
+                                                ${{\App\Product::where('id',$key)->first()->pr_last_price}}</td>
+                                            <td class="qua-col first-row">
+                                                <div class="quantity">
+                                                    <div class="pro-qtyy">
+                                                    <span class="dec qtybtn"
+                                                          onclick="decQtyy(this)">-</span>
+                                                        <input id="productQuantity" type="text"
+                                                               value="{{$value}}"
+                                                               onkeyup="typeQty(this)">
+                                                        <span class="inc qtybtn"
+                                                              onclick="incQtyy(this)">+</span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="total-price first-row">
+                                                ${{number_format((float)$value * \App\Product::where('id',$key)->first()->pr_last_price,2,'.','')}}</td>
+                                            <td class="close-td first-row"><i class="ti-close"
+                                                                              onclick="deleteSelectedProduct(this)"></i>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr class="mt-10">
+                                        <td colspan="6">
+                                            <div class="alert alert-info text-center" id="emptyAlert">You don't have any
+                                                items in your
+                                                cart.
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endif
                             @endif
                             </tbody>
                         </table>
                     </div>
-                    @if(count($fetchToCart)>0)
+                    @if(isset($fetchToCart))
+                        @if(count($fetchToCart)>0)
+                            <div class="row">
+                                <div class="col-lg-4 offset-lg-8 mb-5">
+                                    <div class="proceed-checkout">
+                                        <ul>
+                                            <li class="subtotal">Subtotal
+                                                <span>${{number_format((float)$totalPrice,2,'.','')}}</span></li>
+                                            <li class="subtotal">Shipping <span>$0.00</span></li>
+                                            <li class="cart-total">Total
+                                                <span>$ <span
+                                                        id="cartTotal">{{number_format((float)$totalPrice,2,'.','')}}</span></span>
+                                            </li>
+                                        </ul>
+                                        <a href="{{route('checkoutPage')}}" class="proceed-btn">PROCEED TO CHECK OUT</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    @elseif($basketArray)
                         <div class="row">
                             <div class="col-lg-4 offset-lg-8 mb-5">
                                 <div class="proceed-checkout">
                                     <ul>
                                         <li class="subtotal">Subtotal
-                                            <span>${{number_format((float)$totalPrice,2,'.','')}}</span></li>
+                                            <span>$</span></li>
                                         <li class="subtotal">Shipping <span>$0.00</span></li>
                                         <li class="cart-total">Total
                                             <span>$ <span
-                                                    id="cartTotal">{{number_format((float)$totalPrice,2,'.','')}}</span></span>
+                                                    id="cartTotal"></span></span>
                                         </li>
                                     </ul>
                                     <a href="{{route('checkoutPage')}}" class="proceed-btn">PROCEED TO CHECK OUT</a>

@@ -9,12 +9,12 @@ define(function(require) {
         type: 'visualMap.piecewise',
 
         /**
-         * Order Rule:
+         * Orders Rule:
          *
          * option.categories / option.pieces / option.text / option.selected:
          *     If !option.inverse,
-         *     Order when vertical: ['top', ..., 'bottom'].
-         *     Order when horizontal: ['left', ..., 'right'].
+         *     Orders when vertical: ['top', ..., 'bottom'].
+         *     Orders when horizontal: ['left', ..., 'right'].
          *     If option.inverse, the meaning of
          *     the order should be reversed.
          *
@@ -45,9 +45,9 @@ define(function(require) {
             pieceList: null,            // Each item is Object, with some of those attrs:
                                         // {min, max, value, color, colorSaturation, colorAlpha, opacity,
                                         // symbol, symbolSize}, which customize the range or visual
-                                        // coding of the certain piece. Besides, see "Order Rule".
+                                        // coding of the certain piece. Besides, see "Orders Rule".
             categories: null,           // category names, like: ['some1', 'some2', 'some3'].
-                                        // Attr min/max are ignored when categories set. See "Order Rule"
+                                        // Attr min/max are ignored when categories set. See "Orders Rule"
             splitNumber: 5,             // If set to 5, auto split five pieces equally.
                                         // If set to 0 and component type not set, component type will be
                                         // determined as "continuous". (It is less reasonable but for ec2
@@ -257,7 +257,7 @@ define(function(require) {
                 });
             }, this);
 
-            // See "Order Rule".
+            // See "Orders Rule".
             normalizeReverse(thisOption, this._pieceList);
         },
 
@@ -307,7 +307,7 @@ define(function(require) {
 
             }, this);
 
-            // See "Order Rule".
+            // See "Orders Rule".
             normalizeReverse(thisOption, this._pieceList);
         }
     };

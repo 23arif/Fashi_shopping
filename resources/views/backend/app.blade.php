@@ -81,6 +81,7 @@
                         <ul class="nav side-menu">
                             <li><a href="/admin/"><i class="fa fa-home"></i> Home </a></li>
                             <li><a href="/admin/settings"><i class="fa fa-cog"></i> Settings </a></li>
+                            <li><a href="{{route('sliderPage')}}"><i class="fa fa-magic"></i> Slider </a></li>
                             <li><a href="/admin/products"><i class="fa fa-shopping-basket"></i> Products </a></li>
                             <li><a href="/admin/blog"><i class="fa fa-newspaper-o"></i> Blog </a></li>
                             <li><a href="/admin/category"><i class="fa fa-newspaper-o"></i> Category </a></li>
@@ -88,6 +89,9 @@
                             @if(\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->status() == 9)
                                 <li>
                                     <a href="{{route('getUserTable')}}"><i class="fa fa-users"></i> Users Table </a>
+                                </li>
+                                <li>
+                                    <a href="{{route('getOrdersTable')}}"><i class="fa fa-list-alt"></i> Orders Table </a>
                                 </li>
                             @endif
                             <li><a href="/admin/faq"><i class="fa fa-question-circle-o"></i> FAQs </a></li>
@@ -121,13 +125,6 @@
                                 <li>
                                     <a href="/admin/profile/{{\Illuminate\Support\Facades\Auth::user()->slug}}-{{\Illuminate\Support\Facades\Auth::user()->id}}">
                                         Profile</a></li>
-                                <li>
-                                    <a href="javascript:;">
-                                        <span class="badge bg-red pull-right">50%</span>
-                                        <span>Settings</span>
-                                    </a>
-                                </li>
-                                <li><a href="javascript:;">Help</a></li>
                                 <li>
                                     <a href="/">Back to Web site</a>
                                 </li>

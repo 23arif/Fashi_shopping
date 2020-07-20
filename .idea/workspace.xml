@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fe062701-2626-4d36-af83-5f16dc064468" name="Default Changelist" comment="Admin blog page delet blog button settings. Add FAQ tags input settings.">
+    <list default="true" id="fe062701-2626-4d36-af83-5f16dc064468" name="Default Changelist" comment="Index page Slider settings on admin page and Slider switch.Admin blog page delete blog button settings. Add FAQ tags input settings.">
+      <change afterPath="$PROJECT_DIR$/app/Http/Middleware/CheckRegister.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Slider.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2020_07_19_120803_create_slider_table.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/uploads/img/Slider/slide-2020-07-20-132149.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/uploads/img/Slider/slide-2020-07-20-132648.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/backend/Orders/orders-table.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/backend/Slider/add-slider.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/backend/Slider/edit-slider.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/backend/Slider/slider.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Blog.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Blog.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/AdminGetController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/AdminGetController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/AdminPostController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/AdminPostController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/HomeGetController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/HomeGetController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/HomePostController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/HomePostController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Settings.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Settings.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/backend/vendors/bootstrap/dist/css/bootstrap.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/backend/vendors/bootstrap/dist/css/bootstrap.min.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/uploads/img/profileImages/arif-1324/profileImage.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/public/uploads/img/profileImages/arif-1324/profileImage.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Kernel.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Kernel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Order.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Order.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Providers/AppServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Providers/AppServiceProvider.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/backend/vendors/datatables.net/js/jquery.dataTables.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/backend/vendors/datatables.net/js/jquery.dataTables.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/backend/vendors/echarts/dist/echarts.common.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/backend/vendors/echarts/dist/echarts.common.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/backend/vendors/echarts/dist/echarts.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/backend/vendors/echarts/dist/echarts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/backend/vendors/echarts/dist/echarts.simple.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/backend/vendors/echarts/dist/echarts.simple.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/backend/vendors/echarts/src/component/visualMap/PiecewiseModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/backend/vendors/echarts/src/component/visualMap/PiecewiseModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/backend/vendors/echarts/src/component/visualMap/PiecewiseView.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/backend/vendors/echarts/src/component/visualMap/PiecewiseView.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/backend/vendors/echarts/src/util/layout.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/backend/vendors/echarts/src/util/layout.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/backend/vendors/echarts/test/dataZoom-axes.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/backend/vendors/echarts/test/dataZoom-axes.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/backend/app.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/app.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/backend/blog.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/blog.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/backend/category.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/category.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/backend/faq.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/faq.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/backend/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/backend/profile.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/profile.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/backend/settings.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/settings.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/frontend/add-faq.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/frontend/add-faq.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/frontend/app.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/frontend/app.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/frontend/blog-side-bar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/frontend/blog-side-bar.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/frontend/blog.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/frontend/blog.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/frontend/faq-details.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/frontend/faq-details.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/frontend/faq-tags.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/frontend/faq-tags.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/frontend/faq.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/frontend/faq.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/frontend/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/frontend/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/frontend/modules/shop-side-bar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/frontend/modules/shop-side-bar.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/frontend/product.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/frontend/product.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/frontend/shopping-cart.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/frontend/shopping-cart.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
-    <list id="2cacdfa3-1e9a-4735-ad48-a8df3c478bb8" name="Laravel localization." comment="Laravel localization.">
-      <change beforePath="$PROJECT_DIR$/.idea/Fashi_shopping.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Fashi_shopping.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Kernel.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Kernel.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/frontend/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/frontend/css/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/frontend/app.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/frontend/app.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/frontend/faq.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/frontend/faq.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/frontend/login.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/frontend/login.blade.php" afterDir="false" />
-    </list>
+    <list id="2cacdfa3-1e9a-4735-ad48-a8df3c478bb8" name="Laravel localization." comment="Laravel localization." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -58,23 +58,6 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="LineStatusTrackerManager">
-    <file path="$PROJECT_DIR$/resources/views/frontend/app.blade.php">
-      <ranges>
-        <range start1="87" end1="94" start2="87" end2="96" changelist="2cacdfa3-1e9a-4735-ad48-a8df3c478bb8" />
-        <range start1="97" end1="101" start2="99" end2="103" changelist="fe062701-2626-4d36-af83-5f16dc064468" />
-        <range start1="333" end1="333" start2="335" end2="374" changelist="2cacdfa3-1e9a-4735-ad48-a8df3c478bb8" />
-      </ranges>
-    </file>
-    <file path="$PROJECT_DIR$/resources/views/frontend/faq.blade.php">
-      <ranges>
-        <range start1="61" end1="63" start2="61" end2="63" changelist="fe062701-2626-4d36-af83-5f16dc064468" />
-        <range start1="80" end1="81" start2="80" end2="84" changelist="fe062701-2626-4d36-af83-5f16dc064468" />
-        <range start1="270" end1="272" start2="273" end2="276" changelist="fe062701-2626-4d36-af83-5f16dc064468" />
-        <range start1="326" end1="327" start2="330" end2="330" changelist="2cacdfa3-1e9a-4735-ad48-a8df3c478bb8" />
-      </ranges>
-    </file>
   </component>
   <component name="PackageJsonUpdateNotifier">
     <dismissed value="$PROJECT_DIR$/package.json" />
@@ -123,6 +106,8 @@
       <path value="$PROJECT_DIR$/vendor/guzzlehttp/guzzle" />
       <path value="$PROJECT_DIR$/vendor/guzzlehttp/psr7" />
       <path value="$PROJECT_DIR$/vendor/opis/closure" />
+      <path value="$PROJECT_DIR$/vendor/jakub-onderka/php-console-color" />
+      <path value="$PROJECT_DIR$/vendor/jakub-onderka/php-console-highlighter" />
       <path value="$PROJECT_DIR$/vendor/hamcrest/hamcrest-php" />
       <path value="$PROJECT_DIR$/vendor/phpspec/prophecy" />
       <path value="$PROJECT_DIR$/vendor/voku/portable-ascii" />
@@ -192,7 +177,7 @@
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/public/frontend" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/views/backend/Slider" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -201,11 +186,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="A:\wamp64\www\Fashi_shopping\resources\views\backend\Slider" />
+      <recent name="A:\wamp64\www\Fashi_shopping\resources\views\backend" />
+      <recent name="A:\wamp64\www\Fashi_shopping\resources\views\backend\Order" />
+      <recent name="A:\wamp64\www\Fashi_shopping" />
       <recent name="A:\wamp64\www\Laravel\Fashi_shopping\public\frontend" />
-      <recent name="A:\wamp64\www\Laravel\Fashi_shopping\public\frontend\js" />
-      <recent name="A:\wamp64\www\Laravel\Fashi_shopping\resources\views\frontend" />
-      <recent name="A:\wamp64\www\Laravel\Fashi_shopping\resources\views\backend" />
-      <recent name="A:\wamp64\www\Laravel\Fashi_shopping\resources\lang" />
     </key>
   </component>
   <component name="RunManager">
@@ -225,6 +210,7 @@
         </serviceView>
       </list>
     </option>
+    <option name="showServicesTree" value="false" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -269,6 +255,14 @@
       <workItem from="1587905325918" duration="10666000" />
       <workItem from="1587936367037" duration="6266000" />
       <workItem from="1587991092762" duration="4559000" />
+      <workItem from="1593255938624" duration="3705000" />
+      <workItem from="1593613212652" duration="3526000" />
+      <workItem from="1594636019710" duration="10998000" />
+      <workItem from="1594743355707" duration="2407000" />
+      <workItem from="1595007253030" duration="1498000" />
+      <workItem from="1595067059352" duration="4876000" />
+      <workItem from="1595159989324" duration="18870000" />
+      <workItem from="1595250461958" duration="5582000" />
     </task>
     <task id="LOCAL-00001" summary="insert : category.blade.php">
       <created>1586637432428</created>
@@ -368,7 +362,14 @@
       <option name="project" value="LOCAL" />
       <updated>1587739654556</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Completed cart ,purchase pages. Some changes on add to cart button and button animations/alerts.">
+      <created>1593267663159</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1593267663159</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -402,7 +403,9 @@
     <MESSAGE value="Laravel localization." />
     <MESSAGE value="Fixed image frame on add blog page. Faq comments on faq page.Created Faq title 250 length limit alert." />
     <MESSAGE value="Creating new profile page on admin panel and all other things about profile page" />
-    <option name="LAST_COMMIT_MESSAGE" value="Creating new profile page on admin panel and all other things about profile page" />
+    <MESSAGE value="Completed cart ,purchase pages. Some changes on add to cart button and button animations/alerts." />
+    <MESSAGE value="Index page Slider settings on admin page and Slider switch.Admin blog page delete blog button settings. Add FAQ tags input settings." />
+    <option name="LAST_COMMIT_MESSAGE" value="Index page Slider settings on admin page and Slider switch.Admin blog page delete blog button settings. Add FAQ tags input settings." />
   </component>
   <component name="WindowStateProjectService">
     <state x="275" y="26" key="#Inspections" timestamp="1586872388616">
@@ -421,22 +424,23 @@
       <screen x="0" y="0" width="1366" height="738" />
     </state>
     <state x="434" y="170" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1366.738/1366.-159.1920.1050@0.0.1366.738" timestamp="1587506015256" />
-    <state x="413" y="122" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1587682013286">
+    <state x="413" y="122" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1595182134106">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state x="413" y="122" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.738/1366.-159.1920.1050@0.0.1366.738" timestamp="1587682013286" />
-    <state x="263" y="117" key="CommitChangelistDialog2" timestamp="1587937937997">
+    <state x="413" y="122" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.738/1366.-159.1920.1050@0.0.1366.738" timestamp="1595182134106" />
+    <state x="201" y="0" key="CommitChangelistDialog2" timestamp="1595266944691">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state x="263" y="117" key="CommitChangelistDialog2/0.0.1366.738/1366.-159.1920.1050@0.0.1366.738" timestamp="1587937937997" />
+    <state x="201" y="0" key="CommitChangelistDialog2/0.0.1366.738/1366.-159.1920.1050@0.0.1366.738" timestamp="1595266944691" />
+    <state x="1736" y="7" key="CommitChangelistDialog2/0.0.1366.738/1366.-159.1920.1050@1366.-159.1920.1050" timestamp="1593270276608" />
     <state x="129" y="54" key="DiffContextDialog" timestamp="1587937896504">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
     <state x="129" y="54" key="DiffContextDialog/0.0.1366.738/1366.-159.1920.1050@0.0.1366.738" timestamp="1587937896504" />
-    <state x="463" y="122" key="FileChooserDialogImpl" timestamp="1587555810661">
+    <state x="463" y="122" key="FileChooserDialogImpl" timestamp="1595085132654">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state x="463" y="122" key="FileChooserDialogImpl/0.0.1366.738/1366.-159.1920.1050@0.0.1366.738" timestamp="1587555810661" />
+    <state x="463" y="122" key="FileChooserDialogImpl/0.0.1366.738/1366.-159.1920.1050@0.0.1366.738" timestamp="1595085132654" />
     <state x="433" y="182" key="NewPhpClassDialog" timestamp="1587420282797">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
@@ -457,10 +461,11 @@
       <screen x="0" y="0" width="1366" height="738" />
     </state>
     <state x="530" y="283" key="VCS.ChangelistChooser/0.0.1366.738/1366.-159.1920.1050@0.0.1366.738" timestamp="1587483551510" />
-    <state x="275" y="100" key="Vcs.Push.Dialog.v2" timestamp="1587739658016">
-      <screen x="0" y="0" width="1366" height="738" />
+    <state x="1753" y="-17" key="Vcs.Push.Dialog.v2" timestamp="1593267669695">
+      <screen x="1366" y="-159" width="1920" height="1050" />
     </state>
     <state x="275" y="100" key="Vcs.Push.Dialog.v2/0.0.1366.738/1366.-159.1920.1050@0.0.1366.738" timestamp="1587739658016" />
+    <state x="1753" y="-17" key="Vcs.Push.Dialog.v2/0.0.1366.738/1366.-159.1920.1050@1366.-159.1920.1050" timestamp="1593267669695" />
     <state x="193" y="0" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1587729083603">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
@@ -469,10 +474,10 @@
       <screen x="1366" y="-159" width="1920" height="1050" />
     </state>
     <state x="1366" y="-159" width="1338" height="713" maximized="true" key="dock-window-1/0.0.1366.738/1366.-159.1920.1050@0.0.1366.738" timestamp="1587816380049" />
-    <state x="2014" y="117" width="842" height="616" key="find.popup" timestamp="1587995799477">
+    <state x="2014" y="117" width="842" height="674" key="find.popup" timestamp="1595266584256">
       <screen x="1366" y="-159" width="1920" height="1050" />
     </state>
-    <state x="2014" y="117" width="842" height="616" key="find.popup/0.0.1366.738/1366.-159.1920.1050@0.0.1366.738" timestamp="1587995799477" />
+    <state x="2014" y="117" width="842" height="674" key="find.popup/0.0.1366.738/1366.-159.1920.1050@0.0.1366.738" timestamp="1595266584256" />
     <state x="1900" y="-15" width="852" height="763" key="find.popup/0.0.1366.738/1366.-159.1920.1050@1366.-159.1920.1050" timestamp="1586955655376" />
     <state x="324" y="83" width="700" height="530" key="recent.locations.popup" timestamp="1587238381607">
       <screen x="0" y="0" width="1366" height="738" />
@@ -482,10 +487,10 @@
       <screen x="0" y="0" width="1366" height="738" />
     </state>
     <state x="339" y="159" width="672" height="677" key="run.anything.popup/0.0.1366.738/1366.-159.1920.1050@0.0.1366.738" timestamp="1587938870540" />
-    <state x="346" y="59" width="672" height="678" key="search.everywhere.popup" timestamp="1587764600927">
+    <state x="346" y="59" width="840" height="678" key="search.everywhere.popup" timestamp="1595007453210">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state x="346" y="59" width="672" height="678" key="search.everywhere.popup/0.0.1366.738/1366.-159.1920.1050@0.0.1366.738" timestamp="1587764600927" />
+    <state x="346" y="59" width="840" height="678" key="search.everywhere.popup/0.0.1366.738/1366.-159.1920.1050@0.0.1366.738" timestamp="1595007453210" />
     <state x="1852" y="-75" width="945" height="965" key="search.everywhere.popup/0.0.1366.738/1366.-159.1920.1050@1366.-159.1920.1050" timestamp="1586955560816" />
   </component>
 </project>

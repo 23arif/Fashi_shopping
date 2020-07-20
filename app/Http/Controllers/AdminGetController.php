@@ -6,11 +6,13 @@ use App\Blog;
 use App\Category;
 use App\Deal;
 use App\FAQs;
+use App\Order;
 use App\PrBrand;
 use App\PrCategory;
 use App\Product;
 use App\PrSize;
 use App\Settings;
+use App\Slider;
 use App\User;
 use App\UserExtraInfo;
 use App\UserStatus;
@@ -25,6 +27,25 @@ class AdminGetController extends AdminController
     public function get_settings()
     {
         return view('backend.settings');
+    }
+
+    public function get_slider()
+    {
+        $sliderSwitch = Settings::where('id', 1)->first()->slider;
+        $sliders = Slider::all();
+        return view('backend.Slider.slider', ['sliders' => $sliders, 'sliderSwitch' => $sliderSwitch]);
+    }
+
+    public function get_add_slider()
+    {
+        return view('backend.Slider.add-slider');
+    }
+
+    public function get_edit_slider($slug)
+    {
+        $slider = Slider::where('slug', $slug)->first();
+        return view('backend.Slider.edit-slider',['slider'=>$slider]);
+
     }
 
     public function get_products()
@@ -112,9 +133,17 @@ class AdminGetController extends AdminController
 
     public function get_deals()
     {
-            $deals = Deal::where('id',1)->first();
-            return view('backend.Deals.edit-deal', ['deals'=> $deals]);
+        $deals = Deal::where('id', 1)->first();
+        return view('backend.Deals.edit-deal', ['deals' => $deals]);
+
+    }
+
+    public function get_orders_table()
+    {
+        $orders = Order::all()->sortByDesc('created_at');
+        return view('backend.Orders.orders-table', ['orders' => $orders]);
 
     }
 
 }
+

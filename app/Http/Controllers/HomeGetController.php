@@ -14,18 +14,20 @@ use App\PrCategory;
 use App\PrColor;
 use App\Product;
 use App\PrSize;
+use App\Slider;
 use App\User;
 use App\UserExtraInfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 
 class HomeGetController extends HomeController
 {
 
     public function get_index()
     {
-
-        return view('frontend.index');
+        $slides = Slider::all();
+        return view('frontend.index',['slides'=>$slides]);
     }
 
     public function get_index_yonlendir()
@@ -173,6 +175,8 @@ class HomeGetController extends HomeController
             return view('frontend.shopping-cart', ['fetchToCart' => $fetchToCart]);
 
         } else {
+//            $basketArray = Cookie::get('basket');
+//            return view('frontend.shopping-cart', ['basketArray' => $basketArray]);
             return view('frontend.shopping-cart');
         }
 
@@ -185,10 +189,11 @@ class HomeGetController extends HomeController
         return view('frontend.check-out');
     }
 
-    public function get_orders(Request $request){
+    public function get_orders(Request $request)
+    {
         $user_id = Auth::id();
-        $orders=Order::where('user_id',$user_id)->get();
-        return view('frontend.order',['orders'=>$orders]);
+        $orders = Order::where('user_id', $user_id)->get();
+        return view('frontend.order', ['orders' => $orders]);
     }
 
     public

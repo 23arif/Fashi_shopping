@@ -164,7 +164,7 @@ define(function(require) {
             var orient = visualMapModel.get('orient');
             var inverse = visualMapModel.get('inverse');
 
-            // Order of model pieceList is always [low, ..., high]
+            // Orders of model pieceList is always [low, ..., high]
             if (orient === 'horizontal' ? inverse : !inverse) {
                 viewPieceList.reverse();
             }

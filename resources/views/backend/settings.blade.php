@@ -64,11 +64,11 @@
                                         <div role="tabpanel" class="tab-pane fade active in" id="tab_general"
                                              aria-labelledby="general-tab">
                                             @if($errors->any())
-                                            <ul>
-                                                @foreach($errors->all() as $error)
-                                                <li>{{$error}}</li>
+                                                <ul>
+                                                    @foreach($errors->all() as $error)
+                                                        <li>{{$error}}</li>
                                                     @endforeach
-                                            </ul>
+                                                </ul>
                                             @endif
                                             <div class="form-group">
                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Current
@@ -148,6 +148,7 @@
                                             {{Form::bsText('smtp_port','Smtp Port',$settings[0]->smtp_port)}}
 
                                         </div>
+
                                     </div>
 
                                     <div class="ln_solid"></div>
@@ -196,7 +197,7 @@
                         response.processTitle,
                         response.processDesc,
                         response.processStatus
-                        )
+                    )
 
                 }
             })

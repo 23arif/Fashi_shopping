@@ -6,38 +6,24 @@
     @if($settings[0]->slider == 1)
         <section class="hero-section">
             <div class="hero-items owl-carousel">
-                <div class="single-hero-items set-bg" data-setbg="/frontend/img/hero-1.jpg">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-5">
-                                <span>Bag,kids</span>
-                                <h1>Black friday</h1>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore</p>
-                                <a href="#" class="primary-btn">Shop Now</a>
+                @foreach($slides as $slide)
+                    <div class="single-hero-items set-bg" data-setbg="/uploads/img/Slider/{{$slide->image}}">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <h1>{{$slide->title}}</h1>
+                                    <p>{{$slide->description}}</p>
+                                    <a href="{{$slide->link}}" class="primary-btn">Shop Now</a>
+                                </div>
                             </div>
-                        </div>
-                        <div class="off-card">
-                            <h2>Sale <span>50%</span></h2>
+                            @if(!empty($slide->sale))
+                                <div class="off-card">
+                                    <h2>Sale <span>{{$slide->sale}}%</span></h2>
+                                </div>
+                            @endif
                         </div>
                     </div>
-                </div>
-                <div class="single-hero-items set-bg" data-setbg="/frontend/img/hero-2.jpg">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-5">
-                                <span>Bag,kids</span>
-                                <h1>Black friday</h1>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore</p>
-                                <a href="#" class="primary-btn">Shop Now</a>
-                            </div>
-                        </div>
-                        <div class="off-card">
-                            <h2>Sale <span>50%</span></h2>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </section>
     @endif
@@ -418,7 +404,8 @@
                                 <div class="tag-list">
                                     <div class="tag-item">
                                         <i class="fa fa-calendar-o"></i>
-                                        {{$blog->created_at->formatLocalized('%d')}} {{$blog->created_at->formatLocalized('%b')}},{{$blog->created_at->formatLocalized('%Y')}}
+                                        {{$blog->created_at->formatLocalized('%d')}} {{$blog->created_at->formatLocalized('%b')}}
+                                        ,{{$blog->created_at->formatLocalized('%Y')}}
                                     </div>
                                     <div class="tag-item">
                                         <i class="fa fa-comment-o"></i>

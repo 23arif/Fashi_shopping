@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Blog;
 use App\Category;
 use App\Deal;
+use App\FaqComment;
 use App\FAQs;
+use App\FaqTopic;
 use App\PrBrand;
 use App\PrCategory;
 use App\PrColor;
@@ -13,6 +15,7 @@ use App\Product;
 use App\PrSize;
 use App\PrTag;
 use App\Settings;
+use App\Slider;
 use App\User;
 use App\UserExtraInfo;
 use App\UserStatus;
@@ -316,10 +319,16 @@ class AdminPostController extends AdminController
     {
         if ($request->only('slug')) {
             try {
-                FAQs::where('slug', $request->slug)->delete();
-                return response(['processStatus' => 'success', 'processTitle' => 'Success', 'processDesc' => 'FAQ title deleted successfully !']);
+                $deletingFaqId = FAQs::where('slug', $request->slug)->first()->id;
+                $deletingFaqTopicSlug = FaqTopic::where('prime_title', $deletingFaqId)->first()->slug;
+                $deleteFaq = FAQs::where('slug', $request->slug)->delete();
+                if ($deleteFaq) {
+                    FaqTopic::where('prime_title', $deletingFaqId)->delete();
+                    FaqComment::where('faq', $deletingFaqTopicSlug)->delete();
+                    return response(['processStatus' => 'success', 'processTitle' => 'Success', 'processDesc' => 'FAQ title deleted successfully !']);
+                }
             } catch (\Exception $e) {
-                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'FAQ title could not deleted !']);
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'FAQ title could not deleted !', 'error' => $e]);
             }
 
         } else {
@@ -518,23 +527,139 @@ class AdminPostController extends AdminController
 
     }
 
-    public function post_switch_deal(Request $request){
-        if($request->switchResult == 1){
+    public function post_switch_deal(Request $request)
+    {
+        if ($request->switchResult == 1) {
             try {
                 unset($request['_token']);
-                Deal::where('id',1)->update(['enable_disable'=>$request->switchResult]);
+                Deal::where('id', 1)->update(['enable_disable' => $request->switchResult]);
                 return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Deal enabled successfully !']);
             } catch (\Exception $e) {
                 return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'User could not deleted !', 'error' => $e]);
             }
-        }elseif ($request->switchResult == 0){
+        } elseif ($request->switchResult == 0) {
             try {
                 unset($request['_token']);
-                Deal::where('id',1)->update(['enable_disable'=>$request->switchResult]);
+                Deal::where('id', 1)->update(['enable_disable' => $request->switchResult]);
                 return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Deal disabled successfully !']);
             } catch (\Exception $e) {
                 return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'User could not deleted !', 'error' => $e]);
             }
         }
+    }
+
+    public function post_add_slider(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'img' => 'required | mimes:jpeg,jpg,png',
+            'title' => 'required | max:250',
+            'description' => 'required',
+            'sale' => 'max: 3',
+            'link' => 'required | max:250'
+        ]);
+
+        if ($validator->fails()) {
+            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Please fill all field correctly for add slider !']);
+        }
+
+        $date = Str::slug(Carbon::now());
+        $photo = $request->file('img');
+        $photo_extention = $request->file('img')->getClientOriginalExtension();
+        $photo_name = 'slide-' . $date . '.' . $photo_extention;
+        Storage::disk('uploads')->makeDirectory('img/Slider');
+        Storage::disk('uploads')->put('img/Slider/' . $photo_name, file_get_contents($photo));
+
+        try {
+            $slug = Str::slug($request->title);
+            $request->merge(['image' => $photo_name, 'slug' => $slug]);
+            Slider::create($request->all());
+            return response(['processStatus' => 'success', 'processTitle' => 'Success', 'processDesc' => 'Congratulations , slide added successfully!']);
+        } catch (\Exception $e) {
+            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Slide  could not added !', 'error' => $e]);
+        }
+
+    }
+
+    public function post_edit_slider(Request $request, $slug)
+    {
+        if ($request->img) {
+            $validator = Validator::make($request->all(), [
+                'img' => 'required | mimes:jpeg,jpg,png',
+                'title' => 'required | max:250',
+                'description' => 'required',
+                'sale' => 'max: 3',
+                'link' => 'required | max:250'
+            ]);
+        } else {
+            $validator = Validator::make($request->all(), [
+                'title' => 'required | max:250',
+                'description' => 'required',
+                'sale' => 'max: 3',
+                'link' => 'required | max:250'
+            ]);
+        }
+
+        if ($validator->fails()) {
+            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Please fill all field correctly for update slider !']);
+        }
+        if (!empty($request->img)) {
+            $oldImageName = Slider::where('slug', $slug)->first()->image;
+            $deleteOldImage = unlink(public_path() . '/uploads/img/Slider/' . $oldImageName);
+            if ($deleteOldImage) {
+                $date = Str::slug(Carbon::now());
+                $photo = $request->file('img');
+                $photo_extention = $request->file('img')->getClientOriginalExtension();
+                $photo_name = 'slide-' . $date . '.' . $photo_extention;
+                Storage::disk('uploads')->makeDirectory('img/Slider');
+                Storage::disk('uploads')->put('img/Slider/' . $photo_name, file_get_contents($photo));
+            }
+            $request->merge(['image' => $photo_name]);
+
+        }
+
+        try {
+            $newslug = Str::slug($request->title);
+            $request->merge(['slug' => $newslug]);
+            unset($request['_token']);
+            Slider::where('slug', $slug)->update($request->except('img'));
+            return response(['processStatus' => 'success', 'processTitle' => 'Success', 'processDesc' => 'Congratulations , slide updated successfully!']);
+        } catch (\Exception $e) {
+            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Slide  could not updated !', 'error' => $e]);
+        }
+    }
+
+    public function slider_switcher_and_dlt(Request $request)
+    {
+        if ($request->only('switchResult')) {
+            if ($request->switchResult == 1) {
+                try {
+                    unset($request['_token']);
+                    Settings::where('id', 1)->update(['slider' => $request->switchResult]);
+                    return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Slider enabled successfully !']);
+                } catch (\Exception $e) {
+                    return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Slider could not enabled !', 'error' => $e]);
+                }
+            } elseif ($request->switchResult == 0) {
+                try {
+                    unset($request['_token']);
+                    Settings::where('id', 1)->update(['slider' => $request->switchResult]);
+                    return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Slider disabled successfully !']);
+                } catch (\Exception $e) {
+                    return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Slider could not disabled !', 'error' => $e]);
+                }
+            }
+        } elseif ($request->only('slug')) {
+            try {
+                $getSliderImageName = Slider::where('slug', $request->slug)->first()->image;
+                unlink(public_path() . '/uploads/img/Slider/' . $getSliderImageName);
+                Slider::where('slug', $request->slug)->delete();
+                return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Slider deleted successfully !']);
+
+            } catch (\Exception $e) {
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Slider could not deleted !', 'error' => $e]);
+
+            }
+        }
+
     }
 }

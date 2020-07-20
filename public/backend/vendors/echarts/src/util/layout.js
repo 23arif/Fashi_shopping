@@ -307,8 +307,8 @@ define(function(require) {
      */
     layout.mergeLayoutParam = function (targetOption, newOption, opt) {
         !zrUtil.isObject(opt) && (opt = {});
-        var hNames = ['width', 'left', 'right']; // Order by priority.
-        var vNames = ['height', 'top', 'bottom']; // Order by priority.
+        var hNames = ['width', 'left', 'right']; // Orders by priority.
+        var vNames = ['height', 'top', 'bottom']; // Orders by priority.
         var hResult = merge(hNames);
         var vResult = merge(vNames);
 

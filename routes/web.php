@@ -13,7 +13,8 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', 'HomeGetController@get_index');
+Route::get('/', 'HomeController@index');
+Route::get('/', 'HomeGetController@get_index')->name('homePage');
 Route::get('/index', 'HomeGetController@get_index_yonlendir');
 Route::post('/locale', 'HomePostController@post_locale');
 Route::get('/home', 'HomeGetController@get_index_yonlendir');
@@ -33,7 +34,7 @@ Route::group(['prefix' => 'shop'], function () {
     Route::post('/shopping-cart', 'HomePostController@post_shopping_cart')->name('postShoppingCart');
     Route::get('/check-out', 'HomeGetController@get_checkout')->name('checkoutPage')->middleware('GoToCheckOut');
     Route::post('/check-out', 'HomePostController@post_checkout')->name('checkoutPost');
-    Route::get('/orders', 'HomeGetController@get_orders')->name('ordersPage');
+    Route::get('/orders', 'HomeGetController@get_orders')->name('ordersPage')->middleware('CheckRegister');
 
 });
 
@@ -65,6 +66,18 @@ Route::group(['prefix' => 'admin', 'middleware' => 'Admin'], function () {
     Route::get('/', 'AdminGetController@get_index');
     Route::get('/settings', 'AdminGetController@get_settings');
     Route::post('/settings', 'AdminPostController@post_settings');
+
+    Route::group(['prefix' => 'slider'], function () {
+        Route::get('/', 'AdminGetController@get_slider')->name('sliderPage');
+        Route::post('/', 'AdminPostController@slider_switcher_and_dlt')->name('slider_switcher_and_dlt');
+        Route::get('/add-slider', 'AdminGetController@get_add_slider')->name('addSlider');
+        Route::post('/add-slider', 'AdminPostController@post_add_slider');
+        Route::get('/edit-slider/{sliderSlug}', 'AdminGetController@get_edit_slider')->name('editSlider');
+        Route::post('/edit-slider/{sliderSlug}', 'AdminPostController@post_edit_slider')->name('editSlider');
+//        Route::post('/delete-slider/{sliderSlug}', 'AdminPostController@post_delete_slider')->name('deleteSlider');
+
+    });
+
     Route::group(['prefix' => 'products'], function () {
         Route::get('/', 'AdminGetController@get_products');
         Route::post('/', 'AdminPostController@post_products');
@@ -107,6 +120,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'Admin'], function () {
 
 
     });
+    Route::group(['prefix' => 'orders','middleware'=>'OnlySuperAdmin'], function () {
+        Route::get('/', 'AdminGetController@get_orders_table')->name('getOrdersTable');
+
+    });
 
 
 });
@@ -114,4 +131,4 @@ Route::group(['prefix' => 'admin', 'middleware' => 'Admin'], function () {
 
 Auth::routes();
 
-Route::get('/', 'HomeController@index');
+
