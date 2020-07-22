@@ -27,7 +27,8 @@ class HomeGetController extends HomeController
     public function get_index()
     {
         $slides = Slider::all();
-        return view('frontend.index',['slides'=>$slides]);
+        $allProducts = Product::all();
+        return view('frontend.index',['slides'=>$slides,'allProducts'=>$allProducts]);
     }
 
     public function get_index_yonlendir()

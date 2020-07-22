@@ -89,6 +89,11 @@
     {{--/Sweet Alert--}}
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 
+    <style>
+        .view-first img{
+            height: 100%;
+        }
+    </style>
 @endsection
 
 @section('js')
