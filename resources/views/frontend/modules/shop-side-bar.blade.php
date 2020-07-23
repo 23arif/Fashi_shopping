@@ -10,11 +10,11 @@
     <h4 class="fw-title">Brand</h4>
     <div class="fw-brand-check">
         <div class="bc-item">
-                <ul class="filter-catagories">
-                    @foreach($brands as $brand)
-                        <li><a href="/shop/brand/{{$brand->slug}}">{{$brand->name}}</a></li>
-                    @endforeach
-                </ul>
+            <ul class="filter-catagories">
+                @foreach($brands as $brand)
+                    <li><a href="/shop/brand/{{$brand->slug}}">{{$brand->name}}</a></li>
+                @endforeach
+            </ul>
         </div>
     </div>
 </div>

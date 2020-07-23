@@ -115,10 +115,57 @@
 
                                         <div role="tabpanel" class="tab-pane fade" id="tab_sm"
                                              aria-labelledby="sm-tab">
-                                            {{Form::bsText('facebook','Facebook',$settings[0]->facebook)}}
-                                            {{Form::bsText('twitter','Twitter',$settings[0]->twitter)}}
-                                            {{Form::bsText('instagram','Instagram',$settings[0]->instagram)}}
-                                            {{Form::bsText('youtube','Youtube',$settings[0]->youtube)}}
+
+                                            <div class="form-group">
+                                                <label for="instagram"
+                                                       class="control-label col-md-3 col-sm-3 col-xs-12">Instagram</label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input id="instagram" class="form-control col-md-7 col-xs-12"
+                                                           type="instagram" name="instagram"
+                                                           value="{{$settings[0]->instagram}}">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="facebook"
+                                                       class="control-label col-md-3 col-sm-3 col-xs-12">Facebook</label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input id="facebook" class="form-control col-md-7 col-xs-12"
+                                                           type="facebook" name="facebook"
+                                                           value="{{$settings[0]->facebook}}">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="twitter"
+                                                       class="control-label col-md-3 col-sm-3 col-xs-12">Twitter</label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input id="twitter" class="form-control col-md-7 col-xs-12"
+                                                           type="twitter" name="twitter"
+                                                           value="{{$settings[0]->twitter}}">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="linkedin"
+                                                       class="control-label col-md-3 col-sm-3 col-xs-12">Linkedin</label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input id="linkedin" class="form-control col-md-7 col-xs-12"
+                                                           type="linkedin" name="linkedin"
+                                                           value="{{$settings[0]->linkedin}}">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="youtube"
+                                                       class="control-label col-md-3 col-sm-3 col-xs-12">Youtube</label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input id="youtube" class="form-control col-md-7 col-xs-12"
+                                                           type="youtube" name="youtube"
+                                                           value="{{$settings[0]->youtube}}">
+                                                </div>
+                                            </div>
+
                                         </div>
 
                                         <div role="tabpanel" class="tab-pane fade" id="tab_google"

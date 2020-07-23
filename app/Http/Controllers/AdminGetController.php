@@ -44,7 +44,7 @@ class AdminGetController extends AdminController
     public function get_edit_slider($slug)
     {
         $slider = Slider::where('slug', $slug)->first();
-        return view('backend.Slider.edit-slider',['slider'=>$slider]);
+        return view('backend.Slider.edit-slider', ['slider' => $slider]);
 
     }
 
@@ -144,6 +144,5 @@ class AdminGetController extends AdminController
         return view('backend.Orders.orders-table', ['orders' => $orders]);
 
     }
-
 }
 

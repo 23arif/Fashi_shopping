@@ -22,7 +22,7 @@
         <div class="container">
             <div class="map-inner">
                 <iframe
-                    src="https://maps.google.com/maps?q=baku%20xalqlar&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                    src="{{$settings[0]->map}}"
                     height="610" style="border:0" allowfullscreen="">
                 </iframe>
                 <div class="icon">
@@ -40,8 +40,7 @@
                 <div class="col-lg-5">
                     <div class="contact-title">
                         <h4>Contacts Us</h4>
-                        <p>Contrary to popular belief, Lorem Ipsum is simply random text. It has roots in a piece of
-                            classical Latin literature from 45 BC, maki years old.</p>
+                        <p>{{$settings[0]->description}}</p>
                     </div>
                     <div class="contact-widget">
                         <div class="cw-item">
@@ -71,33 +70,67 @@
                                 <i class="ti-email"></i>
                             </div>
                             <div class="ci-text">
+                                <span>Faks:</span>
+                                <p>
+                                    {{$settings[0]->faks}}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="cw-item">
+                            <div class="ci-icon">
+                                <i class="ti-email"></i>
+                            </div>
+                            <div class="ci-text">
                                 <span>Email:</span>
                                 <p>{{$settings[0]->mail}}</p>
                             </div>
                         </div>
                         <div class="cw-item">
-                            <div class="ci-icon">
-                                <i class="ti-facebook"></i>
-                            </div>
-                            <div class="ci-text">
-                                <span>Facebook:</span>
-                                <p>{{$settings[0]->facebook}}</p>
-                            </div>
-
-                            <div class="ci-icon">
-                                <i class="ti-instagram"></i>
-                            </div>
-                            <div class="ci-text">
-                                <span>Instagram:</span>
-                                <p>{{$settings[0]->instagram}}</p>
-                            </div>
-                            <div class="ci-icon">
-                                <i class="ti-youtube"></i>
-                            </div>
-                            <div class="ci-text">
-                                <span>Youtube:</span>
-                                <p>{{$settings[0]->youtube}}</p>
-                            </div>
+                            @if(!empty($settings[0]->facebook))
+                                <div class="ci-icon">
+                                    <i class="ti-facebook"></i>
+                                </div>
+                                <div class="ci-text">
+                                    <span>Facebook:</span>
+                                    <p>{{$settings[0]->facebook}}</p>
+                                </div>
+                            @endif
+                            @if(!empty($settings[0]->instagram))
+                                <div class="ci-icon">
+                                    <i class="ti-instagram"></i>
+                                </div>
+                                <div class="ci-text">
+                                    <span>Instagram:</span>
+                                    <p>{{$settings[0]->instagram}}</p>
+                                </div>
+                            @endif
+                            @if(!empty($settings[0]->twitter))
+                                <div class="ci-icon">
+                                    <i class="ti-twitter"></i>
+                                </div>
+                                <div class="ci-text">
+                                    <span>Twitter:</span>
+                                    <p>{{$settings[0]->twitter}}</p>
+                                </div>
+                            @endif
+                            @if(!empty($settings[0]->linkedin))
+                                <div class="ci-icon">
+                                    <i class="ti-linkedin"></i>
+                                </div>
+                                <div class="ci-text">
+                                    <span>Linkedin:</span>
+                                    <p>{{$settings[0]->linkedin}}</p>
+                                </div>
+                            @endif
+                                @if(!empty($settings[0]->youtube))
+                                <div class="ci-icon">
+                                    <i class="fa fa-youtube-play"></i>
+                                </div>
+                                <div class="ci-text">
+                                    <span>Youtube:</span>
+                                    <p>{{$settings[0]->youtube}}</p>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>

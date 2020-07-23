@@ -30,11 +30,10 @@
                         <div class="row">
                             <div class="col-lg-7 col-md-7">
                                 <div class="select-option">
-                                    <select class="sorting">
-                                        <option value="">Default Sorting</option>
-                                    </select>
-                                    <select class="p-show">
-                                        <option value="">Show:</option>
+                                    <select class="sorting" id="productSorting" onchange="sortingFunc()">
+                                        <option value="default">Default Sorting</option>
+                                        <option value="aToZ">A-Z Sorting</option>
+                                        <option value="zToA">Z-A Sorting</option>
                                     </select>
                                 </div>
                             </div>
@@ -73,7 +72,6 @@
                                                         </a>
                                                     </li>
                                                     <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                                    <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
                                                 </ul>
                                             </div>
                                             <div class="pi-text">
@@ -192,14 +190,24 @@
                         customClass: 'swal-wide'
                     }).then(function (result) {
                         if (result.value) {
-                           location.href='{{route('shoppingCartPage')}}'
+                            location.href = '{{route('shoppingCartPage')}}'
                         }
                     })
-                    if(basketCounter >0){
-                    $('#cartEmptyAlert').hide()
+                    if (basketCounter > 0) {
+                        $('#cartEmptyAlert').hide()
                     }
                 }
             })
         }
+
+
+        // Change price filter number to filtered number
+            @if(isset($filteredMaxAmount))
+        var filteredMaxNumber = '${{$filteredMaxAmount}}';
+        var filteredMinNumber = '${{$filteredMinAmount}}';
+        $('#maxamount').val(filteredMaxNumber);
+        $('#minamount').val(filteredMinNumber);
+        @endif
+
     </script>
 @endsection

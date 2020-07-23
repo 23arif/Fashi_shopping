@@ -95,7 +95,6 @@
                                     <ul>
                                         <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
                                         <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                        <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="pi-text">
@@ -177,7 +176,6 @@
                                     <ul>
                                         <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
                                         <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                        <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="pi-text">
@@ -203,47 +201,6 @@
         </div>
     </section>
     <!-- Man Banner Section End -->
-
-    <!-- Instagram Section Begin -->
-    <div class="instagram-photo">
-        <div class="insta-item set-bg" data-setbg="/frontend/img/insta-1.jpg">
-            <div class="inside-text">
-                <i class="ti-instagram"></i>
-                <h5><a href="#">Fashi_Shopping_Collection</a></h5>
-            </div>
-        </div>
-        <div class="insta-item set-bg" data-setbg="/frontend/img/insta-2.jpg">
-            <div class="inside-text">
-                <i class="ti-instagram"></i>
-                <h5><a href="#">Fashi_Shopping_Collection</a></h5>
-            </div>
-        </div>
-        <div class="insta-item set-bg" data-setbg="/frontend/img/insta-3.jpg">
-            <div class="inside-text">
-                <i class="ti-instagram"></i>
-                <h5><a href="#">Fashi_Shopping_Collection</a></h5>
-            </div>
-        </div>
-        <div class="insta-item set-bg" data-setbg="/frontend/img/insta-4.jpg">
-            <div class="inside-text">
-                <i class="ti-instagram"></i>
-                <h5><a href="#">Fashi_Shopping_Collection</a></h5>
-            </div>
-        </div>
-        <div class="insta-item set-bg" data-setbg="/frontend/img/insta-5.jpg">
-            <div class="inside-text">
-                <i class="ti-instagram"></i>
-                <h5><a href="#">Fashi_Shopping_Collection</a></h5>
-            </div>
-        </div>
-        <div class="insta-item set-bg" data-setbg="/frontend/img/insta-6.jpg">
-            <div class="inside-text">
-                <i class="ti-instagram"></i>
-                <h5><a href="#">Fashi_Shopping_Collection</a></h5>
-            </div>
-        </div>
-    </div>
-    <!-- Instagram Section End -->
 
     <!-- Latest Blog Section Begin -->
     <section class="latest-blog spad">

@@ -40,7 +40,10 @@ class AppServiceProvider extends ServiceProvider
         $fromTheBlog = Blog::all();
         $basketArray = Cookie::get('basket');
 
-        View::share(['settings' => $settings = Settings::all(), 'locales' => $locales, 'maxPrice' => $maxPrice,
+        View::share([
+            'settings' => $settings = Settings::all(),
+            'locales' => $locales,
+            'maxPrice' => $maxPrice,
             'allDepartments' => $allDepartments,
             'deals' => $deals,
             'fromTheBlog' => $fromTheBlog,

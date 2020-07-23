@@ -18,12 +18,12 @@ Route::get('/', 'HomeGetController@get_index')->name('homePage');
 Route::get('/index', 'HomeGetController@get_index_yonlendir');
 Route::post('/locale', 'HomePostController@post_locale');
 Route::get('/home', 'HomeGetController@get_index_yonlendir');
-Route::get('/contact', 'HomeGetController@get_contact');
+Route::get('/contact', 'HomeGetController@get_contact')->name('contactPage');
 
 Route::group(['prefix' => 'shop'], function () {
     Route::get('/', 'HomeGetController@get_shop')->name('shopPage');
-    Route::post('/priceFilter', 'HomePostController@post_priceFilter')->name('priceFilter');
     Route::post('/', 'HomePostController@post_add_to_cart_icon')->name('addToCartIcon');
+    Route::post('/priceFilter', 'HomePostController@post_priceFilter')->name('priceFilter');
     Route::get('/product-details/{slug}', 'HomeGetController@get_product_details');
     Route::post('/product-details/{slug}', 'HomePostController@post_add_to_cart')->name('addToCart');
     Route::get('/category/{catName}', 'HomeGetController@get_product_category')->name('prCategory');
@@ -48,8 +48,9 @@ Route::group(['prefix' => 'blog'], function () {
 });
 Route::get('/login', 'HomeGetController@showLoginForm');
 Route::get('/register', 'HomeGetController@showRegistrationForm');
+
 Route::group(['prefix' => 'faq'], function () {
-    Route::get('/', 'HomeGetController@get_faq');
+    Route::get('/', 'HomeGetController@get_faq')->name('faqPage');
     Route::get('/add-faq', 'HomeGetController@get_add_faq');
     Route::post('/add-faq', 'HomePostController@post_add_faq');
     Route::post('/delete-faq', 'HomePostController@post_delete_faq');
@@ -63,7 +64,7 @@ Route::group(['prefix' => 'faq'], function () {
 
 Route::group(['prefix' => 'admin', 'middleware' => 'Admin'], function () {
 
-    Route::get('/', 'AdminGetController@get_index');
+    Route::get('/', 'AdminGetController@get_index')->name('adminIndex');
     Route::get('/settings', 'AdminGetController@get_settings');
     Route::post('/settings', 'AdminPostController@post_settings');
 
@@ -74,7 +75,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'Admin'], function () {
         Route::post('/add-slider', 'AdminPostController@post_add_slider');
         Route::get('/edit-slider/{sliderSlug}', 'AdminGetController@get_edit_slider')->name('editSlider');
         Route::post('/edit-slider/{sliderSlug}', 'AdminPostController@post_edit_slider')->name('editSlider');
-//        Route::post('/delete-slider/{sliderSlug}', 'AdminPostController@post_delete_slider')->name('deleteSlider');
 
     });
 

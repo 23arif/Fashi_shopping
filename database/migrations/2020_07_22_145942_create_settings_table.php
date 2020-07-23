@@ -32,6 +32,7 @@ class CreateSettingsTable extends Migration
             $table->string('analystic');
             $table->string('facebook');
             $table->string('twitter');
+            $table->string('linkedin');
             $table->string('instagram');
             $table->string('youtube');
             $table->string('smtp_user');

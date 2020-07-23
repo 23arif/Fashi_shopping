@@ -95,19 +95,28 @@
                                     data-title="{{$locale->abbreviation}}">{{ucfirst($locale->abbreviation)}}
                             </option>
                         @endforeach
-                        {{--                        <option value='yt' data-image="/frontend/img/flag-1.jpg" data-imagecss="flag yt"--}}
-                        {{--                                data-title="English">En--}}
-                        {{--                        </option>--}}
-                        {{--                        <option value='yu' data-image="/frontend/img/flag-2.jpg" data-imagecss="flag yu"--}}
-                        {{--                                data-title="Azerbaijan">Aze--}}
-                        {{--                        </option>--}}
                     </select>
                 </div>
                 <div class="top-social">
-                    <a href="{{$settings[0]->facebook}}"><i class="ti-facebook"></i></a>
-                    <a href="{{$settings[0]->twitter}}"><i class="ti-twitter-alt"></i></a>
-                    <a href="{{$settings[0]->instagram}}"><i class="ti-instagram"></i></a>
-                    <a href="{{$settings[0]->youtube}}"><i class="fa fa-youtube-play"></i></a>
+                    @if(!empty($settings[0]->facebook))
+                        <a href="{{$settings[0]->facebook}}"><i class="ti-facebook"></i></a>
+                    @endif
+                    @if(!empty($settings[0]->twitter))
+                        <a href="{{$settings[0]->twitter}}"><i class="ti-twitter-alt"></i></a>
+                    @endif
+
+                    @if(!empty($settings[0]->instagram))
+                        <a href="{{$settings[0]->instagram}}"><i class="ti-instagram"></i></a>
+                    @endif
+
+                    @if(!empty($settings[0]->linkedin))
+                        <a href="{{$settings[0]->linkedin}}"><i class="fa fa-linkedin-square"></i></a>
+                    @endif
+
+                    @if(!empty($settings[0]->youtube))
+                        <a href="{{$settings[0]->youtube}}"><i class="fa fa-youtube-play"></i></a>
+                    @endif
+
                 </div>
             </div>
         </div>
@@ -290,13 +299,28 @@
                     <ul>
                         <li>Address: {{$settings[0]->address}}</li>
                         <li>Phone: +{{$settings[0]->phone}}</li>
+                        <li>Faks: +{{$settings[0]->faks}}</li>
                         <li>Email: {{$settings[0]->mail}}</li>
                     </ul>
                     <div class="footer-social">
-                        <a href="#"><i class="fa fa-facebook"></i></a>
-                        <a href="#"><i class="fa fa-instagram"></i></a>
-                        <a href="#"><i class="fa fa-twitter"></i></a>
-                        <a href="#"><i class="fa fa-pinterest"></i></a>
+                        @if(!empty($settings[0]->facebook))
+                            <a href="{{$settings[0]->facebook}}"><i class="ti-facebook"></i></a>
+                        @endif
+                        @if(!empty($settings[0]->twitter))
+                            <a href="{{$settings[0]->twitter}}"><i class="ti-twitter-alt"></i></a>
+                        @endif
+
+                        @if(!empty($settings[0]->instagram))
+                            <a href="{{$settings[0]->instagram}}"><i class="ti-instagram"></i></a>
+                        @endif
+
+                        @if(!empty($settings[0]->linkedin))
+                            <a href="{{$settings[0]->linkedin}}"><i class="fa fa-linkedin-square"></i></a>
+                        @endif
+
+                        @if(!empty($settings[0]->youtube))
+                            <a href="{{$settings[0]->youtube}}"><i class="fa fa-youtube-play"></i></a>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -304,9 +328,8 @@
                 <div class="footer-widget">
                     <h5>Information</h5>
                     <ul>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="/contact">Contact</a></li>
-                        <li><a href="/faq">FAQs</a></li>
+                        <li><a href="{{route('contactPage')}}">Contact</a></li>
+                        <li><a href="{{route('faqPage')}}">FAQs</a></li>
                     </ul>
                 </div>
             </div>
@@ -314,9 +337,9 @@
                 <div class="footer-widget">
                     <h5>My Account</h5>
                     <ul>
-                        <li><a href="/admin">My Account</a></li>
-                        <li><a href="/shop">Shop</a></li>
-                        <li><a href="/shop/shopping-cart">Shopping Cart</a></li>
+                        <li><a href="{{route('adminIndex')}}">My Account</a></li>
+                        <li><a href="{{route('shopPage')}}">Shop</a></li>
+                        <li><a href="{{route('shoppingCartPage')}}">Shopping Cart</a></li>
                     </ul>
                 </div>
             </div>
