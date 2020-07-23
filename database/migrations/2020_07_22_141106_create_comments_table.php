@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSliderTable extends Migration
+class CreateCommentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateSliderTable extends Migration
      */
     public function up()
     {
-        Schema::create('slider', function (Blueprint $table) {
+        Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table->string('image');
-            $table->string('title');
-            $table->string('description');
-            $table->integer('sale');
-            $table->string('link');
-            $table->string('slug');
+            $table->integer('prime_comment');
+            $table->integer('user_id');
+            $table->string('blog');
+            $table->string('name');
+            $table->string('email');
+            $table->text('content');
             $table->timestamps();
         });
     }
@@ -32,6 +32,6 @@ class CreateSliderTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('slider');
+        Schema::dropIfExists('comments');
     }
 }

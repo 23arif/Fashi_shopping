@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSliderTable extends Migration
+class CreateFaqTopicTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,16 @@ class CreateSliderTable extends Migration
      */
     public function up()
     {
-        Schema::create('slider', function (Blueprint $table) {
+        Schema::create('faq_topic', function (Blueprint $table) {
             $table->id();
-            $table->string('image');
             $table->string('title');
-            $table->string('description');
-            $table->integer('sale');
-            $table->string('link');
+            $table->text('content');
+            $table->integer('author');
+            $table->string('tags');
             $table->string('slug');
+            $table->integer('prime_title');
+            $table->integer('show_hide');
+            $table->integer('hit');
             $table->timestamps();
         });
     }
@@ -32,6 +34,6 @@ class CreateSliderTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('slider');
+        Schema::dropIfExists('faq_topic');
     }
 }
