@@ -344,6 +344,4 @@ class HomePostController extends HomeController
             return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Orders could not completed !', 'error' => $e]);
         }
     }
-
-
 }

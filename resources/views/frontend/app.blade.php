@@ -134,8 +134,10 @@
                 <div class="col-lg-7 col-md-7">
                     <div class="advanced-search">
                         <div class="input-group">
-                            <input type="text" placeholder="What do you need?">
-                            <button type="button"><i class="ti-search"></i></button>
+                            <form action="{{route('searchPage')}}" method="GET" id="searchForm">
+                                <input type="text"  name="result" placeholder="What do you need?" autocomplete="off">
+                                <button type="submit"><i class="ti-search"></i></button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -271,11 +273,11 @@
             </div>
             <nav id="spcMenu" class="nav-menu mobile-menu">
                 <ul>
-                    <li class="active"><a href="/">Home</a></li>
-                    <li><a href="/shop">Shop</a></li>
-                    <li><a href="/blog">Blog</a></li>
-                    <li><a href="/contact">Contact</a></li>
-                    <li><a href="/faq">Faqs</a></li>
+                    <li class="active"><a href="{{route('homePage')}}">Home</a></li>
+                    <li><a href="{{route('shopPage')}}">Shop</a></li>
+                    <li><a href="{{route('blogPage')}}">Blog</a></li>
+                    <li><a href="{{route('contactPage')}}">Contact</a></li>
+                    <li><a href="{{route('faqPage')}}">Faqs</a></li>
                 </ul>
             </nav>
             <div id="mobile-menu-wrap"></div>

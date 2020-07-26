@@ -181,7 +181,7 @@
                         response.processStatus
                         ).then(() => {
                         if (response.processStatus == "success") {
-                            location.href = '/admin/blog';
+                            location.href = '{{route("adminBlogPage")}}';
                         }
                     })
 

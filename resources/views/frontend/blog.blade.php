@@ -41,7 +41,7 @@
                                         </a>
                                         <p>
                                             <i class="ti-user"></i> - <a
-                                                href="blog/author/{{$blog->user->slug}}-{{$blog->user->id}}"
+                                                href="{{route('blogAuthorName',['authorName'=>$authorName=$blog->user->slug.'-'.$blog->user->id])}}"
                                                 class="href">{{$blog->user->name}}</a>&nbsp;
                                             <i class="ti-comments"></i> - {{$blog->comments->count()}}
                                             <span class="pull-right"><i

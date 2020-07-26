@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Banner;
 use App\Blog;
 use App\Category;
 use App\Deal;
 use App\FaqComment;
 use App\FAQs;
 use App\FaqTopic;
+use App\Menu;
 use App\PrBrand;
 use App\PrCategory;
-use App\PrColor;
 use App\Product;
 use App\PrSize;
 use App\PrTag;
@@ -20,10 +21,8 @@ use App\User;
 use App\UserExtraInfo;
 use App\UserStatus;
 use Carbon\Carbon;
-use foo\bar;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
-use Symfony\Component\Console\Input\Input;
 use Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -77,7 +76,7 @@ class AdminPostController extends AdminController
         }
     }
 
-    public function post_blog(Request $request)
+      public function post_blog(Request $request)
     {
 //        Add Blog Section
 
@@ -660,5 +659,51 @@ class AdminPostController extends AdminController
             }
         }
 
+    }
+
+    public function post_update_banner(Request $request,$slug){
+
+        if ($request->img) {
+            $validator = Validator::make($request->all(), [
+                'img' => 'required | mimes:jpeg,jpg,png',
+                'title' => 'required | max:250',
+                'link' => 'required | max:250'
+            ]);
+        } else {
+            $validator = Validator::make($request->all(), [
+                'title' => 'required | max:250',
+                'link' => 'required | max:250'
+            ]);
+        }
+
+        if ($validator->fails()) {
+            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Please fill all field correctly for update banner !']);
+        }
+
+        $newslug = Str::slug($request->title);
+        $request->merge(['slug' => $newslug]);
+
+        if (!empty($request->img)) {
+            $oldImageName = Banner::where('slug', $slug)->first()->image;
+            $deleteOldImage = unlink(public_path() . '/uploads/img/Banners/' . $oldImageName);
+            if ($deleteOldImage) {
+                $photo = $request->file('img');
+                $photo_extention = $request->file('img')->getClientOriginalExtension();
+                $photo_name = 'banner-' . $request->slug . '.' . $photo_extention;
+                Storage::disk('uploads')->makeDirectory('img/Banners');
+                Storage::disk('uploads')->put('img/Banners/' . $photo_name, file_get_contents($photo));
+            }
+            $request->merge(['image' => $photo_name]);
+
+        }
+
+        try {
+
+            unset($request['_token']);
+            Banner::where('slug', $slug)->update($request->except('img'));
+            return response(['processStatus' => 'success', 'processTitle' => 'Success', 'processDesc' => 'Congratulations , banner updated successfully!']);
+        } catch (\Exception $e) {
+            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Banner could not updated !', 'error' => $e]);
+        }
     }
 }

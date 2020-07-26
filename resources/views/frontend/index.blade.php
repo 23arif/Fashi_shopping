@@ -33,36 +33,18 @@
     <div class="banner-section spad">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-4">
-                    <a href="{{route('prCategory',['catName'=>'men'])}}">
-                        <div class="single-banner">
-                            <img src="/frontend/img/banner-1.jpg" alt="">
-                            <div class="inner-text">
-                                <h4>Men’s</h4>
+                @foreach($banners->take(3) as $banner)
+                    <div class="col-lg-4">
+                        <a href="{{$banner->link}}">
+                            <div class="single-banner">
+                                <img src="/uploads/img/Banners/{{$banner->image}}" alt="">
+                                <div class="inner-text">
+                                    <h4>{{$banner->title}}</h4>
+                                </div>
                             </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-4">
-                    <a href="{{route('prCategory',['catName'=>'women'])}}">
-                        <div class="single-banner">
-                            <img src="/frontend/img/banner-2.jpg" alt="">
-                            <div class="inner-text">
-                                <h4>Women’s</h4>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-4">
-                    <a href="{{route('prCategory',['catName'=>'kids'])}}">
-                        <div class="single-banner">
-                            <img src="/frontend/img/banner-3.jpg" alt="">
-                            <div class="inner-text">
-                                <h4>Kid’s</h4>
-                            </div>
-                        </div>
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                @endforeach
             </div>
         </div>
     </div>
@@ -72,12 +54,14 @@
     <section class="women-banner spad">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-3">
-                    <div class="product-large set-bg" data-setbg="/frontend/img/products/women-large.jpg">
-                        <h2>Women’s</h2>
-                        <a href="{{route('prCategory',['catName'=>'women'])}}">Discover More</a>
+                @foreach($banners->skip(3)->take(1) as $banner)
+                    <div class="col-lg-3">
+                        <div class="product-large set-bg" data-setbg="/uploads/img/Banners/{{$banner->image}}">
+                            <h2>{{$banner->title}}</h2>
+                            <a href="{{$banner->link}}">Discover More</a>
+                        </div>
                     </div>
-                </div>
+                @endforeach
                 <div class="col-lg-8 offset-lg-1">
                     <div class="product-slider owl-carousel">
                         @foreach($allProducts->where('pr_category',2) as $product)
@@ -191,12 +175,14 @@
                         @endforeach
                     </div>
                 </div>
-                <div class="col-lg-3 offset-lg-1">
-                    <div class="product-large set-bg m-large" data-setbg="/frontend/img/products/man-large.jpg">
-                        <h2>Men’s</h2>
-                        <a href="{{route('prCategory',['catName'=>'men'])}}">Discover More</a>
+                @foreach($banners->skip(4)->take(1) as $banner)
+                    <div class="col-lg-3 offset-lg-1">
+                        <div class="product-large set-bg m-large" data-setbg="/uploads/img/Banners/{{$banner->image}}">
+                            <h2>{{$banner->title}}</h2>
+                            <a href="{{$banner->link}}">Discover More</a>
+                        </div>
                     </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>

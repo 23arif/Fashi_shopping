@@ -79,12 +79,12 @@
                         <h3>General</h3>
 
                         <ul class="nav side-menu">
-                            <li><a href="/admin/"><i class="fa fa-home"></i> Home </a></li>
-                            <li><a href="/admin/settings"><i class="fa fa-cog"></i> Settings </a></li>
+                            <li><a href="{{route('adminIndex')}}"><i class="fa fa-home"></i> Home </a></li>
+                            <li><a href="{{route('adminSettingsPage')}}"><i class="fa fa-cog"></i> Settings </a></li>
                             <li><a href="{{route('sliderPage')}}"><i class="fa fa-magic"></i> Slider </a></li>
-                            <li><a href="/admin/products"><i class="fa fa-shopping-basket"></i> Products </a></li>
-                            <li><a href="/admin/blog"><i class="fa fa-newspaper-o"></i> Blog </a></li>
-                            <li><a href="/admin/category"><i class="fa fa-newspaper-o"></i> Category </a></li>
+                            <li><a href="{{route('adminCategoryPage')}}"><i class="fa fa-newspaper-o"></i> Category </a></li>
+                            <li><a href="{{route('adminProductsPage')}}"><i class="fa fa-shopping-basket"></i> Products </a></li>
+                            <li><a href="{{route('adminBlogPage')}}"><i class="fa fa-newspaper-o"></i> Blog </a></li>
                             <li><a href="{{route('getDeal')}}"><i class="fa fa-gift"></i> Deals </a></li>
                             @if(\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->status() == 9)
                                 <li>
@@ -94,7 +94,8 @@
                                     <a href="{{route('getOrdersTable')}}"><i class="fa fa-list-alt"></i> Orders Table </a>
                                 </li>
                             @endif
-                            <li><a href="/admin/faq"><i class="fa fa-question-circle-o"></i> FAQs </a></li>
+                            <li><a href="{{route('getBanners')}}"><i class="fa fa-image"></i> Banners </a></li>
+                            <li><a href="{{route('adminFaqPage')}}"><i class="fa fa-question-circle-o"></i> FAQs </a></li>
 
                         </ul>
                     </div>

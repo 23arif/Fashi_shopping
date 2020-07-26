@@ -443,15 +443,25 @@ ol {
     /*max-width: 100%;*/
     min-width: 100%;
     height: 100%;
+
+}
+
+.inner-header .advanced-search .input-group #searchForm {
+    width: 100%;
 }
 
 .inner-header .advanced-search .input-group input {
-    width: 100%;
+    min-width: 100%;
     height: 100%;
     border: none;
     font-size: 16px;
-    color: #d1d1d1;
+    color: #f39313;
     padding-left: 20px;
+}
+
+.inner-header .advanced-search .input-group input:after {
+    background: red;
+
 }
 
 .inner-header .advanced-search .input-group button {

@@ -33,9 +33,6 @@
                                     <select class="sorting">
                                         <option value="">Default Sorting</option>
                                     </select>
-                                    <select class="p-show">
-                                        <option value="">Show:</option>
-                                    </select>
                                 </div>
                             </div>
 

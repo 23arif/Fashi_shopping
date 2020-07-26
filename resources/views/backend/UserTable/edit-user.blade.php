@@ -23,14 +23,6 @@
                             <form method="post" id="editUserForm" data-parsley-validate
                                   class="form-horizontal form-label-left">
                                 {{csrf_field()}}
-                                {{--                                <div class="form-group">--}}
-                                {{--                                    <label--}}
-                                {{--                                        class="control-label col-md-3 col-sm-3 col-xs-12">Add new images</label>--}}
-                                {{--                                    <div class="col-md-6 col-sm-6 col-xs-12">--}}
-                                {{--                                        <input type="file" name="photos[]" multiple--}}
-                                {{--                                               class="form-control col-md-6 col-sm-6 col-xs-12">--}}
-                                {{--                                    </div>--}}
-                                {{--                                </div>--}}
 
                                 <div class="form-group">
                                     <label for="name"

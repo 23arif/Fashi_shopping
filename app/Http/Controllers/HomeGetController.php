@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Banner;
 use App\Basket;
 use App\Blog;
 use App\Category;
-use App\Deal;
 use App\FAQs;
 use App\FaqTopic;
 use App\Order;
@@ -19,7 +19,6 @@ use App\User;
 use App\UserExtraInfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
 
 class HomeGetController extends HomeController
 {
@@ -28,7 +27,8 @@ class HomeGetController extends HomeController
     {
         $slides = Slider::all();
         $allProducts = Product::all();
-        return view('frontend.index',['slides'=>$slides,'allProducts'=>$allProducts]);
+        $banners = Banner::all();
+        return view('frontend.index', ['slides' => $slides, 'allProducts' => $allProducts,'banners'=>$banners]);
     }
 
     public function get_index_yonlendir()
@@ -86,7 +86,7 @@ class HomeGetController extends HomeController
         $categories = PrCategory::all();
         $sizes = PrSize::all();
         $colors = PrColor::all();
-        return view('frontend.shop', ['products' => $products, 'brands' => $brands, 'categories' => $categories, 'sizes' => $sizes, 'colors' => $colors]);
+        return view('frontend.shop',['products' => $products, 'brands' => $brands, 'categories' => $categories, 'sizes' => $sizes, 'colors' => $colors]);
     }
 
     public function get_product_details($slug)
@@ -248,5 +248,17 @@ class HomeGetController extends HomeController
         if ($faqs) {
             return redirect('/faq');
         }
+    }
+
+    public
+    function get_search(Request $request)
+    {
+        $categories = PrCategory::all();
+        $brands = PrBrand::all();
+        $sizes = PrSize::all();
+        $colors = PrColor::all();
+        $result = $request->get('result');
+        $products = Product::where('pr_name', 'LIKE', $result . '%')->orderBy('id', 'desc')->get();
+        return view('frontend.search-result', ['products' => $products, 'brands' => $brands, 'categories' => $categories, 'sizes' => $sizes, 'colors' => $colors]);
     }
 }

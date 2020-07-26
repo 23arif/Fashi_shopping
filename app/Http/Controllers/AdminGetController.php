@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Banner;
 use App\Blog;
 use App\Category;
 use App\Deal;
 use App\FAQs;
+use App\Menu;
 use App\Order;
 use App\PrBrand;
 use App\PrCategory;
@@ -143,6 +145,18 @@ class AdminGetController extends AdminController
         $orders = Order::all()->sortByDesc('created_at');
         return view('backend.Orders.orders-table', ['orders' => $orders]);
 
+    }
+
+    public function get_banners()
+    {
+        $banners = Banner::all();
+        return view('backend.Banners.banner', ['banners' => $banners]);
+    }
+
+    public function get_update_banner($slug)
+    {
+        $banner = Banner::where('slug', $slug)->first();
+        return view('backend.Banners.update-banner', ['banner' => $banner]);
     }
 }
 
