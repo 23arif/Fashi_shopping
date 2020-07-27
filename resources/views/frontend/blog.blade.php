@@ -26,41 +26,78 @@
                 </div>
                 <div class="col-lg-9 order-1 order-lg-2">
                     <div class="row">
-                        @foreach($blogs as $blog)
-                            <div class="col-lg-6 col-sm-6">
-                                <div class="blog-item">
-                                    @foreach($photos = Storage::disk('uploads')->files('img/blog/'.$blog->slug) as $photo)
-                                    @endforeach
-                                    <div class="bi-pic">
-                                        <img src="/uploads/{{$photo}}" alt="" width="100" height="150">
-                                    </div>
+                        @if(isset($blogs))
+                            @foreach($blogs as $blog)
+                                <div class="col-lg-6 col-sm-6">
+                                    <div class="blog-item">
+                                        @foreach($photos = Storage::disk('uploads')->files('img/blog/'.$blog->slug) as $photo)
+                                        @endforeach
+                                        <div class="bi-pic">
+                                            <img src="/uploads/{{$photo}}" alt="" width="100" height="150">
+                                        </div>
 
-                                    <div class="bi-text">
-                                        <a href="/blog/@if(isset($blog->parent))@php($primaryCategory=$blog->parent)@if(isset($primaryCategory->parent))@php($doubleprimaryCategory= $primaryCategory->parent)@if(isset($doubleprimaryCategory->parent)){{$doubleprimaryCategory->parent->slug}}/@endif{{$primaryCategory->parent->slug}}/@endif{{$blog->parent->slug}}/@endif{{$blog->slug}}">
-                                            <h4>{{$blog->title}}</h4>
-                                        </a>
-                                        <p>
-                                            <i class="ti-user"></i> - <a
-                                                href="{{route('blogAuthorName',['authorName'=>$authorName=$blog->user->slug.'-'.$blog->user->id])}}"
-                                                class="href">{{$blog->user->name}}</a>&nbsp;
-                                            <i class="ti-comments"></i> - {{$blog->comments->count()}}
-                                            <span class="pull-right"><i
-                                                    class="fa fa-clock-o"></i> {{$blog->created_at->formatLocalized('%d')}} {{$blog->created_at->formatLocalized('%b')}},{{$blog->created_at->formatLocalized('%Y')}}</span>
+                                        <div class="bi-text">
+                                            <a href="/blog/@if(isset($blog->parent))@php($primaryCategory=$blog->parent)@if(isset($primaryCategory->parent))@php($doubleprimaryCategory= $primaryCategory->parent)@if(isset($doubleprimaryCategory->parent)){{$doubleprimaryCategory->parent->slug}}/@endif{{$primaryCategory->parent->slug}}/@endif{{$blog->parent->slug}}/@endif{{$blog->slug}}">
+                                                <h4>{{$blog->title}}</h4>
+                                            </a>
+                                            <p>
+                                                <i class="ti-user"></i> - <a
+                                                    href="{{route('blogAuthorName',['authorName'=>$authorName=$blog->user->slug.'-'.$blog->user->id])}}"
+                                                    class="href">{{$blog->user->name}}</a>&nbsp;
+                                                <i class="ti-comments"></i> - {{$blog->comments->count()}}
+                                                <span class="pull-right"><i
+                                                        class="fa fa-clock-o"></i> {{$blog->created_at->formatLocalized('%d')}} {{$blog->created_at->formatLocalized('%b')}},{{$blog->created_at->formatLocalized('%Y')}}</span>
 
-                                            <br>
-                                            <i class="fa fa-tags"></i>
-                                            @foreach(explode(',',$blog->tags) as $tag)
-                                                <a href="/blog/tags/{{$tag}}" class="href">{{$tag}}</a>
-                                            @endforeach
-                                        </p>
+                                                <br>
+                                                <i class="fa fa-tags"></i>
+                                                @foreach(explode(',',$blog->tags) as $tag)
+                                                    <a href="/blog/tags/{{$tag}}" class="href">{{$tag}}</a>
+                                                @endforeach
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
+                            @endforeach
+                        @else
+                            <div class="col-lg-12 col-md-12">
+                                <div class="alert alert-info text-center">
+                                    Result of search :
+                                    <b>{{count($searchedBlogs)}}</b> {{count($searchedBlogs)>1 ? 'products' : 'product'}}
+                                </div>
                             </div>
-                        @endforeach
+                            @foreach($searchedBlogs as $searchedBlog)
 
-                        <div class="col-lg-12">
-{{--                            {{$blogs->links('vendor.pagination.bootstrap-4')}}--}}
-                        </div>
+                                <div class="col-lg-6 col-sm-6">
+                                    <div class="blog-item">
+                                        @foreach($photos = Storage::disk('uploads')->files('img/blog/'.$searchedBlog->slug) as $photo)
+                                        @endforeach
+                                        <div class="bi-pic">
+                                            <img src="/uploads/{{$photo}}" alt="" width="100" height="150">
+                                        </div>
+
+                                        <div class="bi-text">
+                                            <a href="/blog/@if(isset($searchedBlog->parent))@php($primaryCategory=$searchedBlog->parent)@if(isset($primaryCategory->parent))@php($doubleprimaryCategory= $primaryCategory->parent)@if(isset($doubleprimaryCategory->parent)){{$doubleprimaryCategory->parent->slug}}/@endif{{$primaryCategory->parent->slug}}/@endif{{$searchedBlog->parent->slug}}/@endif{{$searchedBlog->slug}}">
+                                                <h4>{{$searchedBlog->title}}</h4>
+                                            </a>
+                                            <p>
+                                                <i class="ti-user"></i> - <a
+                                                    href="{{route('blogAuthorName',['authorName'=>$authorName=$searchedBlog->user->slug.'-'.$searchedBlog->user->id])}}"
+                                                    class="href">{{$searchedBlog->user->name}}</a>&nbsp;
+                                                <i class="ti-comments"></i> - {{$searchedBlog->comments->count()}}
+                                                <span class="pull-right"><i
+                                                        class="fa fa-clock-o"></i> {{$searchedBlog->created_at->formatLocalized('%d')}} {{$searchedBlog->created_at->formatLocalized('%b')}},{{$searchedBlog->created_at->formatLocalized('%Y')}}</span>
+
+                                                <br>
+                                                <i class="fa fa-tags"></i>
+                                                @foreach(explode(',',$searchedBlog->tags) as $tag)
+                                                    <a href="/blog/tags/{{$tag}}" class="href">{{$tag}}</a>
+                                                @endforeach
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endif
                     </div>
                 </div>
             </div>
@@ -68,39 +105,6 @@
     </section>
     <!-- Blog Section End -->
 
-    <!-- Partner Logo Section Begin -->
-    <div class="partner-logo">
-        <div class="container">
-            <div class="logo-carousel owl-carousel">
-                <div class="logo-item">
-                    <div class="tablecell-inner">
-                        <img src="/frontend/img/logo-carousel/logo-1.png" alt="">
-                    </div>
-                </div>
-                <div class="logo-item">
-                    <div class="tablecell-inner">
-                        <img src="/frontend/img/logo-carousel/logo-2.png" alt="">
-                    </div>
-                </div>
-                <div class="logo-item">
-                    <div class="tablecell-inner">
-                        <img src="/frontend/img/logo-carousel/logo-3.png" alt="">
-                    </div>
-                </div>
-                <div class="logo-item">
-                    <div class="tablecell-inner">
-                        <img src="/frontend/img/logo-carousel/logo-4.png" alt="">
-                    </div>
-                </div>
-                <div class="logo-item">
-                    <div class="tablecell-inner">
-                        <img src="/frontend/img/logo-carousel/logo-5.png" alt="">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Partner Logo Section End -->
 @endsection
 
 @section('css')

@@ -21,9 +21,6 @@ Route::get('/home', 'HomeGetController@get_index_yonlendir');
 Route::get('/contact', 'HomeGetController@get_contact')->name('contactPage');
 
 Route::get('/search', 'HomeGetController@get_search')->name('searchPage');
-//Route::group(['prefix' => 'search'], function () {
-//    Route::post('/', 'HomePostController@post_search')->name('postSearch');
-//});
 
 Route::group(['prefix' => 'shop'], function () {
     Route::get('/', 'HomeGetController@get_shop')->name('shopPage');
@@ -45,9 +42,10 @@ Route::group(['prefix' => 'shop'], function () {
 
 Route::group(['prefix' => 'blog'], function () {
     Route::get('/', 'HomeGetController@get_blog')->name('blogPage');
-    Route::get('?result={result}', 'HomeGetController@get_blog_search');
+//    Route::get('?result={result}', 'HomeGetController@get_blog_search');
     Route::get('/author/{authorName}', 'HomeGetController@get_blog_author')->name('blogAuthorName');
     Route::get('/tags/{tagName}', 'HomeGetController@get_blog_tags');
+    Route::get('/search', 'HomeGetController@get_blog_search')->name('blogSearch');
     Route::get('/{slug}', 'HomeGetController@get_blog_content')->where('slug', '^[a-zA-Z0-9-_\/]+$');
     Route::post('/{slug}', 'HomePostController@post_blog_comment')->where('slug', '^[a-zA-Z0-9-_\/]+$');
 });

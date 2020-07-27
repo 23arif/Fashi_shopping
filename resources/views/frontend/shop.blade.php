@@ -71,7 +71,7 @@
                                                             <i class="icon_bag_alt"></i>
                                                         </a>
                                                     </li>
-                                                    <li class="quick-view"><a href="#">+ Quick View</a></li>
+                                                    <li class="quick-view"><a href="shop/product-details/{{$product->slug}}">+ Quick View</a></li>
                                                 </ul>
                                             </div>
                                             <div class="pi-text">

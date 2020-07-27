@@ -9,7 +9,7 @@
                     <div class="breadcrumb-text product-more">
                         <a href="/"><i class="fa fa-home"></i> Home</a>
                         <a href="/shop">Shop</a>
-                        <span>Detail</span>
+                        <span>Details</span>
                     </div>
                 </div>
             </div>
@@ -33,7 +33,7 @@
                             <div class="product-pic-zoom">
                                 @foreach($photos = Storage::disk('uploads')->files('img/products/'.$products->slug) as $photo)
                                 @endforeach
-                                <img class="product-big-img" src="/uploads/{{$photo}}" alt="">
+                                <img class="product-big-img" src="/uploads/{{$photo}}" alt="{{$products->pr_name}}">
                                 <div class="zoom-icon">
                                     <i class="fa fa-search-plus"></i>
                                 </div>
@@ -72,23 +72,23 @@
                                         @endif
                                     </h4>
                                 </div>
-{{--                                <div class="pd-color">--}}
-{{--                                    <h6>Color</h6>--}}
-{{--                                    <div class="pd-color-choose">--}}
-{{--                                        <div class="cc-item">--}}
-{{--                                            <input type="radio" id="cc-black">--}}
-{{--                                            <label for="cc-black"></label>--}}
-{{--                                        </div>--}}
-{{--                                        <div class="cc-item">--}}
-{{--                                            <input type="radio" id="cc-yellow">--}}
-{{--                                            <label for="cc-yellow" class="cc-yellow"></label>--}}
-{{--                                        </div>--}}
-{{--                                        <div class="cc-item">--}}
-{{--                                            <input type="radio" id="cc-violet">--}}
-{{--                                            <label for="cc-violet" class="cc-violet"></label>--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
+                                {{--                                <div class="pd-color">--}}
+                                {{--                                    <h6>Color</h6>--}}
+                                {{--                                    <div class="pd-color-choose">--}}
+                                {{--                                        <div class="cc-item">--}}
+                                {{--                                            <input type="radio" id="cc-black">--}}
+                                {{--                                            <label for="cc-black"></label>--}}
+                                {{--                                        </div>--}}
+                                {{--                                        <div class="cc-item">--}}
+                                {{--                                            <input type="radio" id="cc-yellow">--}}
+                                {{--                                            <label for="cc-yellow" class="cc-yellow"></label>--}}
+                                {{--                                        </div>--}}
+                                {{--                                        <div class="cc-item">--}}
+                                {{--                                            <input type="radio" id="cc-violet">--}}
+                                {{--                                            <label for="cc-violet" class="cc-violet"></label>--}}
+                                {{--                                        </div>--}}
+                                {{--                                    </div>--}}
+                                {{--                                </div>--}}
                                 <div class="pd-size-choose">
                                     @php($pr = explode(',',$products->pr_size))
                                     @foreach($pr as $size)
@@ -106,7 +106,9 @@
                                         <div class="pro-qty">
                                             <input type="text" value="1" name="quantity">
                                         </div>
-                                        <button class="primary-btn pd-cart" type="submit" style="border: none">Add To Cart</button>
+                                        <button class="primary-btn pd-cart" type="submit" style="border: none">Add To
+                                            Cart
+                                        </button>
                                     </div>
                                 </form>
 
@@ -117,11 +119,6 @@
                                 </ul>
                                 <div class="pd-share">
                                     <div class="p-code">Sku : #{{$products->pr_sku}}</div>
-                                    <div class="pd-social">
-                                        <a href="#"><i class="ti-facebook"></i></a>
-                                        <a href="#"><i class="ti-twitter-alt"></i></a>
-                                        <a href="#"><i class="ti-linkedin"></i></a>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -152,7 +149,7 @@
                                                 </p>
                                             </div>
                                             <div class="col-lg-5">
-                                                <img src="/uploads/{{$photo}}" alt="">
+                                                <img src="/uploads/{{$photo}}" alt="{{$products->pr_name}}">
                                             </div>
                                         </div>
                                     </div>
@@ -332,104 +329,39 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-3 col-sm-6">
-                    <div class="product-item">
-                        <div class="pi-pic">
-                            <img src="/frontend/img/products/women-1.jpg" alt="">
-                            <div class="sale">Sale</div>
-                            <div class="icon">
-                                <i class="icon_heart_alt"></i>
+                @foreach($relatedProducts as $relatedProduct)
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="product-item">
+                            <div class="pi-pic">
+                                @foreach($photos = Storage::disk('uploads')->files('img/products/'.$relatedProduct->slug) as $photo)
+                                @endforeach
+                                <img src="/uploads/{{$photo}}" alt="{{$relatedProduct->pr_name}}">
+                                @if($relatedProduct->pr_last_price != $relatedProduct->pr_prev_price)
+                                    <div class="sale">Sale</div>
+                                @endif
+                                <div class="icon">
+                                    <i class="icon_heart_alt"></i>
+                                </div>
+                                <ul>
+                                    <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
+                                    <li class="quick-view"><a href="{{$relatedProduct->slug}}">+ Quick View</a></li>
+                                </ul>
                             </div>
-                            <ul>
-                                <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="pi-text">
-                            <div class="catagory-name">Coat</div>
-                            <a href="#">
-                                <h5>Pure Pineapple</h5>
-                            </a>
-                            <div class="product-price">
-                                $14.00
-                                <span>$35.00</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="product-item">
-                        <div class="pi-pic">
-                            <img src="/frontend/img/products/women-2.jpg" alt="">
-                            <div class="icon">
-                                <i class="icon_heart_alt"></i>
-                            </div>
-                            <ul>
-                                <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="pi-text">
-                            <div class="catagory-name">Shoes</div>
-                            <a href="#">
-                                <h5>Guangzhou sweater</h5>
-                            </a>
-                            <div class="product-price">
-                                $13.00
+                            <div class="pi-text">
+                                <a href="{{$relatedProduct->slug}}">
+                                    <div class="catagory-name">{{$relatedProduct->pr_name}}</div>
+                                </a>
+                                <div class="product-price">
+                                    ${{$relatedProduct->pr_last_price}}
+                                    @if($relatedProduct->pr_last_price != $relatedProduct->pr_prev_price)
+                                        <span>${{$relatedProduct->pr_prev_price}}</span>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="product-item">
-                        <div class="pi-pic">
-                            <img src="/frontend/img/products/women-3.jpg" alt="">
-                            <div class="icon">
-                                <i class="icon_heart_alt"></i>
-                            </div>
-                            <ul>
-                                <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="pi-text">
-                            <div class="catagory-name">Towel</div>
-                            <a href="#">
-                                <h5>Pure Pineapple</h5>
-                            </a>
-                            <div class="product-price">
-                                $34.00
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="product-item">
-                        <div class="pi-pic">
-                            <img src="/frontend/img/products/women-4.jpg" alt="">
-                            <div class="icon">
-                                <i class="icon_heart_alt"></i>
-                            </div>
-                            <ul>
-                                <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="pi-text">
-                            <div class="catagory-name">Towel</div>
-                            <a href="#">
-                                <h5>Converse Shoes</h5>
-                            </a>
-                            <div class="product-price">
-                                $34.00
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
+
             </div>
         </div>
     </div>

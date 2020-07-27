@@ -28,7 +28,7 @@ class HomeGetController extends HomeController
         $slides = Slider::all();
         $allProducts = Product::all();
         $banners = Banner::all();
-        return view('frontend.index', ['slides' => $slides, 'allProducts' => $allProducts,'banners'=>$banners]);
+        return view('frontend.index', ['slides' => $slides, 'allProducts' => $allProducts, 'banners' => $banners]);
     }
 
     public function get_index_yonlendir()
@@ -44,8 +44,24 @@ class HomeGetController extends HomeController
     public function get_blog()
     {
         $blogs = Blog::orderBy('id', 'desc')->get();
+        $recentBlogs = Blog::orderBy('id', 'desc')->get();
         $categories = Category::where('up_category', '0')->get();
-        return view('frontend.blog', ['blogs' => $blogs, 'categories' => $categories]);
+        return view('frontend.blog', ['blogs' => $blogs,
+            'categories' => $categories,
+            'recentBlogs' => $recentBlogs
+        ]);
+    }
+
+    public function get_blog_search(Request $request)
+    {
+        $searchedBlogs = Blog::where('title', 'LIKE', $request->get('result') . '%')->get();
+        $recentBlogs = Blog::orderBy('id', 'desc')->get();
+        $categories = Category::where('up_category', '0')->get();
+        return view('frontend.blog', [
+            'categories' => $categories,
+            'recentBlogs' => $recentBlogs,
+            'searchedBlogs' => $searchedBlogs
+        ]);
     }
 
     public function get_blog_author($authorName)
@@ -86,7 +102,7 @@ class HomeGetController extends HomeController
         $categories = PrCategory::all();
         $sizes = PrSize::all();
         $colors = PrColor::all();
-        return view('frontend.shop',['products' => $products, 'brands' => $brands, 'categories' => $categories, 'sizes' => $sizes, 'colors' => $colors]);
+        return view('frontend.shop', ['products' => $products, 'brands' => $brands, 'categories' => $categories, 'sizes' => $sizes, 'colors' => $colors]);
     }
 
     public function get_product_details($slug)
@@ -99,6 +115,7 @@ class HomeGetController extends HomeController
             $sizes = PrSize::all();
             $colors = PrColor::all();
             $payments = UserExtraInfo::all();
+            $relatedProducts = Product::where('pr_category', $products->pr_category)->where('slug', '!=', $slug)->get();
 
             return view('frontend.product', [
                 'products' => $products,
@@ -108,6 +125,7 @@ class HomeGetController extends HomeController
                 'colors' => $colors,
                 'payments' => $payments,
                 'userExtraData' => $userExtraData,
+                'relatedProducts' => $relatedProducts
             ]);
         } else {
             return redirect()->back();
