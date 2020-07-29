@@ -54,30 +54,32 @@
 
                         <div class="blog-post">
                             <div class="row">
-                                <div class="col-lg-5 col-md-6">
-                                    <a href="#" class="prev-blog">
-                                        <div class="pb-pic">
-                                            <i class="ti-arrow-left"></i>
-                                            <img src="/frontend/img/blog/prev-blog.png" alt="">
-                                        </div>
-                                        <div class="pb-text">
-                                            <span>Previous Post:</span>
-                                            <h5>The Personality Trait That Makes People Happier</h5>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-lg-5 offset-lg-2 col-md-6">
-                                    <a href="#" class="next-blog">
-                                        <div class="nb-pic">
-                                            <img src="/frontend/img/blog/next-blog.png" alt="">
-                                            <i class="ti-arrow-right"></i>
-                                        </div>
-                                        <div class="nb-text">
-                                            <span>Next Post:</span>
-                                            <h5>The Personality Trait That Makes People Happier</h5>
-                                        </div>
-                                    </a>
-                                </div>
+                                @if($prevQuestion)
+                                    <div class="col-lg-5 col-md-6">
+                                        <a href="/faq/{{$prevQuestion->primeTitle->slug}}/{{$prevQuestion->slug}}" class="prev-blog">
+                                            <div class="pb-pic">
+                                                <i class="ti-arrow-left"></i>
+                                            </div>
+                                            <div class="pb-text">
+                                                <span>Previous Question:</span>
+                                                <h5>{{$prevQuestion->title}}</h5>
+                                            </div>
+                                        </a>
+                                    </div>
+                                @endif
+                                @if($nextQuestion)
+                                    <div class="col-lg-5 {{$prevQuestion ? 'offset-lg-2' : 'offset-lg-7'}} col-md-6">
+                                        <a href="/faq/{{$nextQuestion->primeTitle->slug}}/{{$nextQuestion->slug}}" class="next-blog">
+                                            <div class="nb-pic">
+                                                <i class="ti-arrow-right"></i>
+                                            </div>
+                                            <div class="nb-text">
+                                                <span>Next Question:</span>
+                                                <h5>{{$nextQuestion->title}}</h5>
+                                            </div>
+                                        </a>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                         <hr>

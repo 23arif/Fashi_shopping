@@ -83,13 +83,27 @@ class HomeGetController extends HomeController
     {
         $category = explode('/', $slug); //Explodes category slugs
         $blogs = Blog::where('slug', $category[count($category) - 1])->first();
-        if (isset($blogs)) {
-            return view('frontend.blog-details')->with('blogs', $blogs)->with('blogCategory', $category);
+        $prevBlog = Blog::where('id', '<', $blogs->id)->latest('id')->first();
+        $nextBlog = Blog::where('id', '>', $blogs->id)->first();
+        if (!is_null($blogs)) {
+            if (isset($blogs)) {
+                return view('frontend.blog-details')->with(['blogs' => $blogs,
+                    'blogCategory' => $category,
+                    'prevBlog' => $prevBlog,
+                    'nextBlog' => $nextBlog,
+                ]);
+            } else {
+                $getLastCat = $category[count($category) - 1];
+                $getCat = Category::where('slug', $getLastCat)->get();
+                $blogs = $getCat[0]->classifiedBlogs;
+                return view('frontend.blog')->with(['blogs' => $blogs,
+                    'categories' => $getCat,
+                    'prevBlog' => $prevBlog,
+                    'nextBlog' => $nextBlog,
+                ]);
+            }
         } else {
-            $getLastCat = $category[count($category) - 1];
-            $getCat = Category::where('slug', $getLastCat)->get();
-            $blogs = $getCat[0]->classifiedBlogs;
-            return view('frontend.blog')->with('blogs', $blogs)->with('categories', $getCat);
+            return redirect()->back();
 
         }
 
@@ -256,7 +270,19 @@ class HomeGetController extends HomeController
     {
 
         $question = FaqTopic::where('slug', $slug)->first();
-        return view('frontend.faq-details')->with('question', $question)->with('topic', $topic);
+        $prevQuestion = FaqTopic::where('id', '<', $question->id)->latest('id')->first();
+        $nextQuestion = FaqTopic::where('id', '>', $question->id)->first();
+        if (!is_null($question)) {
+            return view('frontend.faq-details')->with([
+                'question' => $question,
+                'topic' => $topic,
+                'prevQuestion' => $prevQuestion,
+                'nextQuestion' => $nextQuestion
+            ]);
+
+        } else {
+            return redirect()->back();
+        }
     }
 
     public

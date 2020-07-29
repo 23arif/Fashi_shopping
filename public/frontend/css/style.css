@@ -2257,7 +2257,7 @@ ol {
     color: #252525;
     font-weight: 700;
     height: 40px;
-    width: 47px;
+    min-width: 47px;
     border: 1px solid #ebebeb;
     text-align: center;
     line-height: 40px;
@@ -3449,6 +3449,10 @@ ol {
 .blog-details-inner .blog-post .prev-blog .pb-pic img {
     height: 70px;
     width: 70px;
+    /*Modified for blog details prev blog buttons*/
+    border-radius: 50%;
+    /*---Modified for blog details prev blog buttons*/
+
 }
 
 .blog-details-inner .blog-post .prev-blog .pb-text {
@@ -3491,6 +3495,9 @@ ol {
 .blog-details-inner .blog-post .next-blog .nb-pic img {
     height: 70px;
     width: 70px;
+    /*Modified for blog details next post button*/
+    border-radius: 50%;
+    /*Modified for blog details next post button*/
 }
 
 .blog-details-inner .blog-post .next-blog .nb-text {

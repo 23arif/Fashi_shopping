@@ -64,8 +64,6 @@
                                     <span>(5)</span>
                                 </div>
                                 <div class="pd-desc">
-                                    {{--                                    <p>Lorem ipsum dolor sit amet, consectetur ing elit, sed do eiusmod tempor sum dolor--}}
-                                    {{--                                        sit amet, consectetur adipisicing elit, sed do mod tempor</p>--}}
                                     <h4>${{$products->pr_last_price}}
                                         @if($products->pr_last_price != $products->pr_prev_price)
                                             <span>${{$products->pr_prev_price}}</span>

@@ -83,30 +83,38 @@
 
                         <div class="blog-post">
                             <div class="row">
-                                <div class="col-lg-5 col-md-6">
-                                    <a href="#" class="prev-blog">
-                                        <div class="pb-pic">
-                                            <i class="ti-arrow-left"></i>
-                                            <img src="/frontend/img/blog/prev-blog.png" alt="">
-                                        </div>
-                                        <div class="pb-text">
-                                            <span>Previous Post:</span>
-                                            <h5>The Personality Trait That Makes People Happier</h5>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-lg-5 offset-lg-2 col-md-6">
-                                    <a href="#" class="next-blog">
-                                        <div class="nb-pic">
-                                            <img src="/frontend/img/blog/next-blog.png" alt="">
-                                            <i class="ti-arrow-right"></i>
-                                        </div>
-                                        <div class="nb-text">
-                                            <span>Next Post:</span>
-                                            <h5>The Personality Trait That Makes People Happier</h5>
-                                        </div>
-                                    </a>
-                                </div>
+                                @if($prevBlog)
+                                    @foreach($photos = Storage::disk('uploads')->files('img/blog/'.$prevBlog->slug) as $photo)
+                                    @endforeach
+                                    <div class="col-lg-5 col-md-6">
+                                        <a href="/blog/@if(isset($prevBlog->parent))@php($primaryCategory=$prevBlog->parent)@if(isset($primaryCategory->parent))@php($doubleprimaryCategory= $primaryCategory->parent)@if(isset($doubleprimaryCategory->parent)){{$doubleprimaryCategory->parent->slug}}/@endif{{$primaryCategory->parent->slug}}/@endif{{$prevBlog->parent->slug}}/@endif{{$prevBlog->slug}}" class="prev-blog">
+                                            <div class="pb-pic">
+                                                <i class="ti-arrow-left"></i>
+                                                <img src="/uploads/{{$photo}}" alt="{{$prevBlog->title}}">
+                                            </div>
+                                            <div class="pb-text">
+                                                <span>Previous Blog:</span>
+                                                <h5>{{$prevBlog->title}}</h5>
+                                            </div>
+                                        </a>
+                                    </div>
+                                @endif
+                                @if($nextBlog)
+                                        @foreach($photos = Storage::disk('uploads')->files('img/blog/'.$nextBlog->slug) as $photo)
+                                        @endforeach
+                                    <div class="col-lg-5 {{$prevBlog ? 'offset-lg-2' : 'offset-lg-7'}} col-md-6">
+                                        <a href="/blog/@if(isset($nextBlog->parent))@php($primaryCategory=$nextBlog->parent)@if(isset($primaryCategory->parent))@php($doubleprimaryCategory= $primaryCategory->parent)@if(isset($doubleprimaryCategory->parent)){{$doubleprimaryCategory->parent->slug}}/@endif{{$primaryCategory->parent->slug}}/@endif{{$nextBlog->parent->slug}}/@endif{{$nextBlog->slug}}" class="next-blog">
+                                            <div class="nb-pic">
+                                                <img src="/uploads/{{$photo}}" alt="{{$nextBlog->title}}">
+                                                <i class="ti-arrow-right"></i>
+                                            </div>
+                                            <div class="nb-text">
+                                                <span>Next Blog:</span>
+                                                <h5>{{$nextBlog->title}}</h5>
+                                            </div>
+                                        </a>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                         <hr>
