@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Basket;
 use App\Comment;
+use App\ContactComment;
 use App\FaqComment;
 use App\FaqTopic;
 use App\Order;
@@ -39,7 +40,7 @@ class HomePostController extends HomeController
             ]);
         }
         if ($validator->fails()) {
-            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Fill the required fields !']);
+            return response(['processStatus' => 'warning', 'processTitle' => 'Warning', 'processDesc' => 'Fill the required fields !']);
         }
         $category = explode('/', $slug); //Explodes category slugs
         $request->merge(['blog' => $category[count($category) - 1]]);
@@ -65,7 +66,7 @@ class HomePostController extends HomeController
             return response(['processStatus' => 'warning', 'processTitle' => 'Warning', 'processDesc' => 'Question title have to be less than 250 character']);
         }
         if ($validator->fails()) {
-            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Please fill required blanks !']);
+            return response(['processStatus' => 'warning', 'processTitle' => 'Warning', 'processDesc' => 'Please fill required blanks !']);
         }
 
         try {
@@ -87,7 +88,7 @@ class HomePostController extends HomeController
             'faq_content' => 'required',
         ]);
         if ($validator->fails()) {
-            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Fill the required fields !']);
+            return response(['processStatus' => 'warning', 'processTitle' => 'Warning', 'processDesc' => 'Fill the required fields !']);
         }
         $request->merge(['user_id' => Auth::user()->id, 'faq' => $question_details]);
 
@@ -155,8 +156,8 @@ class HomePostController extends HomeController
             'categories' => $categories,
             'sizes' => $sizes,
             'colors' => $colors,
-            'filteredMaxAmount'=>$maxamount,
-            'filteredMinAmount'=>$minamount
+            'filteredMaxAmount' => $maxamount,
+            'filteredMinAmount' => $minamount
         ]);
     }
 
@@ -342,6 +343,40 @@ class HomePostController extends HomeController
 
         } catch (\Exception $e) {
             return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Orders could not completed !', 'error' => $e]);
+        }
+    }
+
+    public function post_contact_comment(Request $request)
+    {
+        if (Auth::check()) {
+            $validator = Validator::make($request->all(), [
+                'message' => 'required',
+            ]);
+        } else {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required| max:250',
+                'email' => 'required| email |max:250',
+                'message' => 'required',
+            ]);
+        }
+
+
+        if ($validator->fails()) {
+            return response(['processStatus' => 'warning', 'processTitle' => 'Warning', 'processDesc' => 'Please fill required blanks !']);
+        }
+
+        try {
+            if (Auth::check()) {
+                $request->merge(['name' => Auth::user()->name, 'email' => Auth::user()->email]);
+            }
+            $date = Carbon::now();
+            $slug = Str::slug($request->name . '-' . $date);
+            $request->merge(['slug' => $slug]);
+            ContactComment::create($request->all());
+
+            return response(['processStatus' => 'success', 'processTitle' => 'Successfully', 'processDesc' => 'Comment sent successfully !']);
+        } catch (\Exception $e) {
+            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Comment could not sent !', 'error' => $e]);
         }
     }
 }

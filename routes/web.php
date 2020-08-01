@@ -18,9 +18,12 @@ Route::get('/', 'HomeGetController@get_index')->name('homePage');
 Route::get('/index', 'HomeGetController@get_index_yonlendir');
 Route::post('/locale', 'HomePostController@post_locale');
 Route::get('/home', 'HomeGetController@get_index_yonlendir');
-Route::get('/contact', 'HomeGetController@get_contact')->name('contactPage');
-
 Route::get('/search', 'HomeGetController@get_search')->name('searchPage');
+
+Route::group(['prefix' => 'contact'], function () {
+    Route::get('/', 'HomeGetController@get_contact')->name('contactPage');
+    Route::post('/', 'HomePostController@post_contact_comment')->name('commentPost');
+});
 
 Route::group(['prefix' => 'shop'], function () {
     Route::get('/', 'HomeGetController@get_shop')->name('shopPage');
@@ -128,6 +131,13 @@ Route::group(['prefix' => 'admin', 'middleware' => 'Admin'], function () {
     });
     Route::group(['prefix' => 'orders', 'middleware' => 'OnlySuperAdmin'], function () {
         Route::get('/', 'AdminGetController@get_orders_table')->name('getOrdersTable');
+
+    });
+
+    Route::group(['prefix' => 'messages'], function () {
+        Route::get('/', 'AdminGetController@get_messages_table')->name('adminMessagesPage');
+        Route::post('/', 'AdminPostController@post_delete_message')->name('deleteMessage');
+        Route::get('/{slug}', 'AdminGetController@get_read_message')->name('readMessage');
 
     });
 

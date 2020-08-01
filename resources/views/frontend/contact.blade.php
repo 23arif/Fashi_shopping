@@ -122,7 +122,7 @@
                                     <p>{{$settings[0]->linkedin}}</p>
                                 </div>
                             @endif
-                                @if(!empty($settings[0]->youtube))
+                            @if(!empty($settings[0]->youtube))
                                 <div class="ci-icon">
                                     <i class="fa fa-youtube-play"></i>
                                 </div>
@@ -139,16 +139,20 @@
                         <div class="leave-comment">
                             <h4>Leave A Comment</h4>
                             <p>Our staff will call back later and answer your questions.</p>
-                            <form action="#" class="comment-form">
+                            <form method="post" class="comment-form" id="commentForm">
+                                @csrf
                                 <div class="row">
-                                    <div class="col-lg-6">
-                                        <input type="text" placeholder="Your name">
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <input type="text" placeholder="Your email">
-                                    </div>
+                                    @if(!\Illuminate\Support\Facades\Auth::check())
+                                        <div class="col-lg-6">
+                                            <input type="text" name="name" id="commentName" placeholder="Your name">
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <input type="text" name="email" id="commentEmail" placeholder="Your email">
+                                        </div>
+                                    @endif
                                     <div class="col-lg-12">
-                                        <textarea placeholder="Your message"></textarea>
+                                        <textarea placeholder="Your message" name="message"
+                                                  id="commentMessage"></textarea>
                                         <button type="submit" class="site-btn">Send message</button>
                                     </div>
                                 </div>
@@ -165,8 +169,43 @@
 @endsection
 
 @section('css')
+    <link rel="stylesheet" href="/css/sweetalert2.min.css">
+
+
+    <style>
+        #commentName:focus, #commentEmail:focus, #commentMessage:focus {
+            border: 1px solid #e7ab3c
+        }
+    </style>
 @endsection
 
 @section('js')
+    <script src="/js/jquery.form.min.js"></script>
+    <script src="/js/sweetalert2.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#commentForm').ajaxForm({
+                beforeSubmit: function () {
+                    Swal.fire({
+                        title: '<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>',
+                        text: 'Loading please wait!',
+                        showConfirmButton: false
+                    })
+                },
+                success: function (response) {
+                    Swal.fire(
+                        response.processTitle,
+                        response.processDesc,
+                        response.processStatus
+                    ).then(() => {
+                        if (response.processStatus == 'success') {
+                            location.reload();
+                        }
+                    })
+                }
+            })
+        })
+    </script>
 @endsection
 

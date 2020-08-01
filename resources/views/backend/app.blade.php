@@ -82,8 +82,10 @@
                             <li><a href="{{route('adminIndex')}}"><i class="fa fa-home"></i> Home </a></li>
                             <li><a href="{{route('adminSettingsPage')}}"><i class="fa fa-cog"></i> Settings </a></li>
                             <li><a href="{{route('sliderPage')}}"><i class="fa fa-magic"></i> Slider </a></li>
-                            <li><a href="{{route('adminCategoryPage')}}"><i class="fa fa-newspaper-o"></i> Category </a></li>
-                            <li><a href="{{route('adminProductsPage')}}"><i class="fa fa-shopping-basket"></i> Products </a></li>
+                            <li><a href="{{route('adminCategoryPage')}}"><i class="fa fa-newspaper-o"></i> Category </a>
+                            </li>
+                            <li><a href="{{route('adminProductsPage')}}"><i class="fa fa-shopping-basket"></i> Products
+                                </a></li>
                             <li><a href="{{route('adminBlogPage')}}"><i class="fa fa-newspaper-o"></i> Blog </a></li>
                             <li><a href="{{route('getDeal')}}"><i class="fa fa-gift"></i> Deals </a></li>
                             @if(\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->status() == 9)
@@ -91,11 +93,15 @@
                                     <a href="{{route('getUserTable')}}"><i class="fa fa-users"></i> Users Table </a>
                                 </li>
                                 <li>
-                                    <a href="{{route('getOrdersTable')}}"><i class="fa fa-list-alt"></i> Orders Table </a>
+                                    <a href="{{route('getOrdersTable')}}"><i class="fa fa-list-alt"></i> Orders Table
+                                    </a>
                                 </li>
                             @endif
                             <li><a href="{{route('getBanners')}}"><i class="fa fa-image"></i> Banners </a></li>
-                            <li><a href="{{route('adminFaqPage')}}"><i class="fa fa-question-circle-o"></i> FAQs </a></li>
+                            <li><a href="{{route('adminFaqPage')}}"><i class="fa fa-question-circle-o"></i> FAQs </a>
+                            </li>
+                            <li><a href="{{route('adminMessagesPage')}}"><i class="fa fa-envelope-o"></i> Messages </a>
+                            </li>
 
                         </ul>
                     </div>
@@ -146,66 +152,26 @@
                             <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown"
                                aria-expanded="false">
                                 <i class="fa fa-envelope-o"></i>
-                                <span class="badge bg-green">6</span>
+                                <span
+                                    class="badge bg-green">{{count(\App\ContactComment::where('check_message', 0)->get())}}</span>
                             </a>
                             <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
-                                <li>
-                                    <a>
-                                        <span class="image"><img src=""
-                                                                 alt="Profile Image"/></span>
+                                @foreach(\App\ContactComment::where('check_message', 0)->get() as $message)
+                                    <li>
+                                        <a href="{{route('readMessage',['slug'=>$message->slug])}}">
+                                        <span class="image">
+{{--                                            <img src="/uploads/img/profileImages/{{$message->getUserInfoFromComment->profile_image ? $message->getUserInfoFromComment->profile_image : 'default.png'}}"/>--}}
+                                        </span>
                                         <span>
-                          <span>John Smith</span>
-                          <span class="time">3 mins ago</span>
-                        </span>
+                                          <span><b>{{$message->name}}</b></span>
+                                          <span class="time"> {{$message->created_at->diffForHumans()}}</span>
+                                        </span>
                                         <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where...
-                        </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a>
-                                        <span class="image"><img src="" alt="Profile Image"/></span>
-                                        <span>
-                          <span>John Smith</span>
-                          <span class="time">3 mins ago</span>
-                        </span>
-                                        <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where...
-                        </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a>
-                                        <span class="image"><img src="" alt="Profile Image"/></span>
-                                        <span>
-                          <span>John Smith</span>
-                          <span class="time">3 mins ago</span>
-                        </span>
-                                        <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where...
-                        </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a>
-                                        <span class="image"><img src="" alt="Profile Image"/></span>
-                                        <span>
-                          <span>John Smith</span>
-                          <span class="time">3 mins ago</span>
-                        </span>
-                                        <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where...
-                        </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <div class="text-center">
-                                        <a>
-                                            <strong>See All Alerts</strong>
-                                            <i class="fa fa-angle-right"></i>
+                                            {{\Illuminate\Support\Str::limit($message->message,150,$end='...')}}
+                                        </span>
                                         </a>
-                                    </div>
-                                </li>
+                                    </li>
+                                @endforeach
                             </ul>
                         </li>
                     </ul>
@@ -214,7 +180,7 @@
         </div>
         <!-- /top navigation -->
 
-    @yield('icerik')
+        @yield('icerik')
     </div>
 </div>
 

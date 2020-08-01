@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Banner;
 use App\Blog;
 use App\Category;
+use App\ContactComment;
 use App\Deal;
 use App\FaqComment;
 use App\FAQs;
@@ -76,7 +77,7 @@ class AdminPostController extends AdminController
         }
     }
 
-      public function post_blog(Request $request)
+    public function post_blog(Request $request)
     {
 //        Add Blog Section
 
@@ -661,7 +662,8 @@ class AdminPostController extends AdminController
 
     }
 
-    public function post_update_banner(Request $request,$slug){
+    public function post_update_banner(Request $request, $slug)
+    {
 
         if ($request->img) {
             $validator = Validator::make($request->all(), [
@@ -704,6 +706,16 @@ class AdminPostController extends AdminController
             return response(['processStatus' => 'success', 'processTitle' => 'Success', 'processDesc' => 'Congratulations , banner updated successfully!']);
         } catch (\Exception $e) {
             return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Banner could not updated !', 'error' => $e]);
+        }
+    }
+
+    public function post_delete_message(Request $request)
+    {
+        try {
+            ContactComment::where('slug', $request->slug)->delete();
+            return response(['processStatus' => 'success', 'processTitle' => 'Success', 'processDesc' => 'Congratulations , message deleted successfully!']);
+        } catch (\Exception $e) {
+            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Message could not deleted !', 'error' => $e]);
         }
     }
 }

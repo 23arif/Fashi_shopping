@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Banner;
 use App\Blog;
 use App\Category;
+use App\ContactComment;
 use App\Deal;
 use App\FAQs;
 use App\Menu;
@@ -157,6 +158,23 @@ class AdminGetController extends AdminController
     {
         $banner = Banner::where('slug', $slug)->first();
         return view('backend.Banners.update-banner', ['banner' => $banner]);
+    }
+
+    public function get_messages_table()
+    {
+        $messages = ContactComment::all();
+        return view('backend.Messages.messages-table', ['messages' => $messages]);
+    }
+
+    public function get_read_message($slug)
+    {
+        $message = ContactComment::where('slug', $slug)->first();
+        if($message){
+            ContactComment::where('slug',$slug)->update(['check_message'=>1]);
+            return view('backend.Messages.read-message', ['message' => $message]);
+        }else{
+            return redirect()->back();
+        }
     }
 }
 
