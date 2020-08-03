@@ -301,7 +301,7 @@
         function dlt(slug) {
             Swal.fire({
                 title: 'Are you sure?',
-                text: "The category will delete!",
+                text: "The blog will delete!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',

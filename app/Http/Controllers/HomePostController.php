@@ -104,8 +104,12 @@ class HomePostController extends HomeController
             $status = $request->status;
             if ($status == 'delete') {
                 try {
-                    FaqTopic::where('id', $request->id)->delete();
-                    return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Question deleted successfully !']);
+                    $getFaqTopicSlug = FaqTopic::where('id',$request->id)->first()->slug;
+                    $deletingFaqTopic = FaqTopic::where('id', $request->id)->delete();
+                    if ($deletingFaqTopic) {
+                        FaqComment::where('faq',$getFaqTopicSlug)->delete();
+                        return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Question deleted successfully !']);
+                    }
                 } catch (\Exception $e) {
                     return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Question could not deleted !', 'error' => $e]);
                 }

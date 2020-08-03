@@ -1,6 +1,7 @@
 @extends('frontend.app')
 @section('icerik')
 <title>Fashi | Login</title>
+<meta name="google-signin-client_id" content="YOUR_CLIENT_ID.apps.googleusercontent.com">
     <!-- Breadcrumb Section Begin -->
     <div class="breacrumb-section">
         <div class="container">

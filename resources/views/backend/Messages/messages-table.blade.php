@@ -119,7 +119,9 @@
                                 response.processTitle,
                                 response.processDesc,
                                 response.processStatus
-                            )
+                            ).then(() => {
+                                location.reload();
+                            })
                         }
                     })
                 }

@@ -87,7 +87,8 @@
                                     @foreach($photos = Storage::disk('uploads')->files('img/blog/'.$prevBlog->slug) as $photo)
                                     @endforeach
                                     <div class="col-lg-5 col-md-6">
-                                        <a href="/blog/@if(isset($prevBlog->parent))@php($primaryCategory=$prevBlog->parent)@if(isset($primaryCategory->parent))@php($doubleprimaryCategory= $primaryCategory->parent)@if(isset($doubleprimaryCategory->parent)){{$doubleprimaryCategory->parent->slug}}/@endif{{$primaryCategory->parent->slug}}/@endif{{$prevBlog->parent->slug}}/@endif{{$prevBlog->slug}}" class="prev-blog">
+                                        <a href="/blog/@if(isset($prevBlog->parent))@php($primaryCategory=$prevBlog->parent)@if(isset($primaryCategory->parent))@php($doubleprimaryCategory= $primaryCategory->parent)@if(isset($doubleprimaryCategory->parent)){{$doubleprimaryCategory->parent->slug}}/@endif{{$primaryCategory->parent->slug}}/@endif{{$prevBlog->parent->slug}}/@endif{{$prevBlog->slug}}"
+                                           class="prev-blog">
                                             <div class="pb-pic">
                                                 <i class="ti-arrow-left"></i>
                                                 <img src="/uploads/{{$photo}}" alt="{{$prevBlog->title}}">
@@ -100,10 +101,11 @@
                                     </div>
                                 @endif
                                 @if($nextBlog)
-                                        @foreach($photos = Storage::disk('uploads')->files('img/blog/'.$nextBlog->slug) as $photo)
-                                        @endforeach
+                                    @foreach($photos = Storage::disk('uploads')->files('img/blog/'.$nextBlog->slug) as $photo)
+                                    @endforeach
                                     <div class="col-lg-5 {{$prevBlog ? 'offset-lg-2' : 'offset-lg-7'}} col-md-6">
-                                        <a href="/blog/@if(isset($nextBlog->parent))@php($primaryCategory=$nextBlog->parent)@if(isset($primaryCategory->parent))@php($doubleprimaryCategory= $primaryCategory->parent)@if(isset($doubleprimaryCategory->parent)){{$doubleprimaryCategory->parent->slug}}/@endif{{$primaryCategory->parent->slug}}/@endif{{$nextBlog->parent->slug}}/@endif{{$nextBlog->slug}}" class="next-blog">
+                                        <a href="/blog/@if(isset($nextBlog->parent))@php($primaryCategory=$nextBlog->parent)@if(isset($primaryCategory->parent))@php($doubleprimaryCategory= $primaryCategory->parent)@if(isset($doubleprimaryCategory->parent)){{$doubleprimaryCategory->parent->slug}}/@endif{{$primaryCategory->parent->slug}}/@endif{{$nextBlog->parent->slug}}/@endif{{$nextBlog->slug}}"
+                                           class="next-blog">
                                             <div class="nb-pic">
                                                 <img src="/uploads/{{$photo}}" alt="{{$nextBlog->title}}">
                                                 <i class="ti-arrow-right"></i>
@@ -117,24 +119,27 @@
                                 @endif
                             </div>
                         </div>
-                        <hr>
+                        @if($prevBlog || $nextBlog)
+                            <hr>
+                        @endif
+
                         <div class="container">
                             <div id="comments" style="margin-bottom: 25px"></div>
                             @php($comments = $blogs->comments()->latest()->paginate(10))
                             @foreach($comments->where('prime_comment','0') as $comment)
-                                <div class="card" style="margin-bottom: 25px">
+                                <div class="card" style="margin-bottom: 25px;">
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-md-2">
-                                                <img src="https://image.ibb.co/jw55Ex/def_face.jpg"
-                                                     class="img img-rounded img-fluid"/>
+                                            <div class="col-md-2 imgAndTime">
+                                                <img
+                                                    src="/uploads/img/profileImages/{{$comment->user->profile_image ? $comment->user->slug."/".$comment->user->profile_image : "default.png" }}"
+                                                    class="roundImg"/>
                                                 <p class="text-secondary text-center" style="font-size: 13px"><i
                                                         class="fa fa-clock-o"></i> {{$comment->created_at->diffForHumans()}}
                                                 </p>
 
                                             </div>
                                             <div class="col-md-10">
-                                                <p>
                                                 <p><strong>
                                                         @if($comment->user_id>'0')
                                                             {{$comment->user->name}}
@@ -142,7 +147,6 @@
                                                             {{$comment->name}}
                                                         @endif
                                                     </strong></p>
-                                                </p>
                                                 <div class="clearfix"></div>
                                                 <p>{{$comment->content}}</p>
                                                 <p>
@@ -161,16 +165,16 @@
                                             <div class="card card-inner">
                                                 <div class="card-body">
                                                     <div class="row">
-                                                        <div class="col-md-2">
-                                                            <img src="https://image.ibb.co/jw55Ex/def_face.jpg"
-                                                                 class="img img-rounded img-fluid"/>
+                                                        <div class="col-md-2 imgAndTime">
+                                                            <img
+                                                                src="/uploads/img/profileImages/{{$reply->user->profile_image ? $reply->user->slug."/".$reply->user->profile_image : "default.png" }}"
+                                                                class="roundImg"/>
                                                             <p class="text-secondary text-center"
                                                                style="font-size: 13px"><i
                                                                     class="fa fa-clock-o"></i> {{$reply->created_at->diffForHumans()}}
                                                             </p>
                                                         </div>
                                                         <div class="col-md-10">
-                                                            <p>
                                                             <p>
                                                                 <strong>
                                                                     @if($reply->user_id>'0')
@@ -179,7 +183,6 @@
                                                                         {{$reply->name}}
                                                                     @endif
                                                                 </strong>
-                                                            </p>
                                                             </p>
                                                             <p>{{$reply->content}}</p>
                                                         </div>
@@ -193,29 +196,37 @@
                             {{$comments->links()}}
                         </div>
 
-                        <div class="leave-comment">
-                            <h4>Leave A Comment</h4>
-                            <form method="post" class="comment-form">
-                                {{csrf_field()}}
-                                <div id="reply"></div>
-                                <div class="row">
-                                    @if(!\Illuminate\Support\Facades\Auth::check())
-                                        <div class="col-lg-6">
-                                            <input type="text" placeholder="Name *" name="name" id="name">
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <input type="text" placeholder="Email *" name="email" id="email">
-                                        </div>
-                                    @endif
-                                    <div class="col-lg-12">
+                        @if(\Illuminate\Support\Facades\Auth::check())
+                            <div class="leave-comment">
+                                <h4>Leave A Comment</h4>
+                                <form method="post" class="comment-form">
+                                    {{csrf_field()}}
+                                    <div id="reply"></div>
+                                    <div class="row">
+                                        @if(!\Illuminate\Support\Facades\Auth::check())
+                                            <div class="col-lg-6">
+                                                <input type="text" placeholder="Name *" name="name" id="name">
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <input type="text" placeholder="Email *" name="email" id="email">
+                                            </div>
+                                        @endif
+                                        <div class="col-lg-12">
                                                 <textarea placeholder="Comment *" name="content"
                                                           id="content"></textarea>
-                                        <button type="submit" class="site-btn">Send message</button>
+                                            <button type="submit" class="site-btn">Send message</button>
+                                        </div>
                                     </div>
+                                </form>
+                            </div>
+                        @else
+                            <div class="leave-comment">
+                                <div class="alert alert-info text-center">Please <a href="/login"
+                                                                                    class="href"><b>Login</b></a> or <a
+                                        href="/register" class="href"><b>Register</b></a> for comment
                                 </div>
-                            </form>
-                        </div>
-
+                            </div>
+                        @endif
 
                     </div>
                 </div>
@@ -224,39 +235,6 @@
     </section>
     <!-- Blog Details Section End -->
 
-    <!-- Partner Logo Section Begin -->
-    <div class="partner-logo">
-        <div class="container">
-            <div class="logo-carousel owl-carousel">
-                <div class="logo-item">
-                    <div class="tablecell-inner">
-                        <img src="/frontend/img/logo-carousel/logo-1.png" alt="">
-                    </div>
-                </div>
-                <div class="logo-item">
-                    <div class="tablecell-inner">
-                        <img src="/frontend/img/logo-carousel/logo-2.png" alt="">
-                    </div>
-                </div>
-                <div class="logo-item">
-                    <div class="tablecell-inner">
-                        <img src="/frontend/img/logo-carousel/logo-3.png" alt="">
-                    </div>
-                </div>
-                <div class="logo-item">
-                    <div class="tablecell-inner">
-                        <img src="/frontend/img/logo-carousel/logo-4.png" alt="">
-                    </div>
-                </div>
-                <div class="logo-item">
-                    <div class="tablecell-inner">
-                        <img src="/frontend/img/logo-carousel/logo-5.png" alt="">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Partner Logo Section End -->
 @endsection
 
 @section('css')
@@ -293,6 +271,19 @@
             color: #e7ab3c;
             text-decoration: underline;
             transition: all .2s;
+        }
+
+        .roundImg {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+        }
+
+        .imgAndTime {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
     </style>
 @endsection
@@ -348,8 +339,8 @@
                             var comment = '<div class="card card-inner">' +
                                 '<div class="card-body" style="border:1px solid #f39313!important">' +
                                 '<div class="row">' +
-                                '<div class="col-md-2">' +
-                                '<img src="https://image.ibb.co/jw55Ex/def_face.jpg" class="img img-rounded img-fluid"/>' +
+                                '<div class="col-md-2 imgAndTime">' +
+                                '<img src="/uploads/img/profileImages/default.png" class="roundImg"/>' +
                                 '<p class="text-secondary text-center" style="font-size: 13px"><i class="fa fa-clock-o"> </i> Just now</p>' +
                                 '</div>' +
                                 '<div class="col-md-10">' +
@@ -367,8 +358,8 @@
                             var comment = '<div class="card">' +
                                 '<div class="card-body" style="border:1px solid #f39313!important">' +
                                 '<div class="row">' +
-                                '<div class="col-md-2">' +
-                                '<img src="https://image.ibb.co/jw55Ex/def_face.jpg" class="img img-rounded img-fluid"/>' +
+                                '<div class="col-md-2 imgAndTime">' +
+                                '<img src="/uploads/img/profileImages/default.png" class="roundImg"/>' +
                                 '<p class="text-secondary text-center" style="font-size: 13px"><i class="fa fa-clock-o"> </i> Just now</p>' +
                                 '</div>' +
                                 '<div class="col-md-10">' +

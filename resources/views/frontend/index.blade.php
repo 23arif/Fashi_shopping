@@ -77,12 +77,15 @@
                                         <i class="icon_heart_alt"></i>
                                     </div>
                                     <ul>
-                                        <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                        <li class="quick-view"><a href="#">+ Quick View</a></li>
+                                        {{--                                        <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>--}}
+                                        <li class="quick-view"><a href="shop/product-details/{{$product->slug}}">+ Quick
+                                                View</a></li>
                                     </ul>
                                 </div>
                                 <div class="pi-text">
-                                    <div class="catagory-name">{{$product->pr_name}}</div>
+                                    <a href="shop/product-details/{{$product->slug}}">
+                                        <div class="catagory-name">{{$product->pr_name}}</div>
+                                    </a>
                                     <div class="product-price">
                                         ${{$product->pr_last_price}}
                                         @if($product->pr_prev_price != $product->pr_last_price)
@@ -158,12 +161,14 @@
                                         <i class="icon_heart_alt"></i>
                                     </div>
                                     <ul>
-                                        <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                        <li class="quick-view"><a href="#">+ Quick View</a></li>
+                                        {{--                                        <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>--}}
+                                        <li class="quick-view"><a href="shop/product-details/{{$product->slug}}">+ Quick View</a></li>
                                     </ul>
                                 </div>
                                 <div class="pi-text">
-                                    <div class="catagory-name">{{$product->pr_name}}</div>
+                                    <a href="shop/product-details/{{$product->slug}}">
+                                        <div class="catagory-name">{{$product->pr_name}}</div>
+                                    </a>
                                     <div class="product-price">
                                         ${{$product->pr_last_price}}
                                         @if($product->pr_prev_price != $product->pr_last_price)

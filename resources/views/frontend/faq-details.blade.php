@@ -56,7 +56,8 @@
                             <div class="row">
                                 @if($prevQuestion)
                                     <div class="col-lg-5 col-md-6">
-                                        <a href="/faq/{{$prevQuestion->primeTitle->slug}}/{{$prevQuestion->slug}}" class="prev-blog">
+                                        <a href="/faq/{{$prevQuestion->primeTitle->slug}}/{{$prevQuestion->slug}}"
+                                           class="prev-blog">
                                             <div class="pb-pic">
                                                 <i class="ti-arrow-left"></i>
                                             </div>
@@ -69,7 +70,8 @@
                                 @endif
                                 @if($nextQuestion)
                                     <div class="col-lg-5 {{$prevQuestion ? 'offset-lg-2' : 'offset-lg-7'}} col-md-6">
-                                        <a href="/faq/{{$nextQuestion->primeTitle->slug}}/{{$nextQuestion->slug}}" class="next-blog">
+                                        <a href="/faq/{{$nextQuestion->primeTitle->slug}}/{{$nextQuestion->slug}}"
+                                           class="next-blog">
                                             <div class="nb-pic">
                                                 <i class="ti-arrow-right"></i>
                                             </div>
@@ -82,7 +84,9 @@
                                 @endif
                             </div>
                         </div>
-                        <hr>
+                        @if($nextQuestion || $prevQuestion)
+                            <hr>
+                        @endif
 
 
                         <div class="container">
@@ -92,20 +96,19 @@
                                 <div class="card" style="margin-bottom: 25px">
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-md-2">
-                                                <img src="https://image.ibb.co/jw55Ex/def_face.jpg"
-                                                     class="img img-rounded img-fluid"/>
+                                            <div class="col-md-2 imgAndTime">
+                                                <img
+                                                    src="/uploads/img/profileImages/{{$comment->commentOwner->profile_image ? $comment->commentOwner->slug."/".$comment->commentOwner->profile_image : "default.png" }}"
+                                                    class="roundImg"/>
                                                 <p class="text-secondary text-center" style="font-size: 13px"><i
                                                         class="fa fa-clock-o"></i> {{$comment->created_at->diffForHumans()}}
                                                 </p>
 
                                             </div>
                                             <div class="col-md-10">
-                                                <p>
                                                 <p><strong>
                                                         {{$comment->commentOwner->name}}
                                                     </strong></p>
-                                                </p>
                                                 <div class="clearfix"></div>
                                                 <p>{{$comment->faq_content}}</p>
                                                 <p>
@@ -124,20 +127,19 @@
                                             <div class="card card-inner">
                                                 <div class="card-body">
                                                     <div class="row">
-                                                        <div class="col-md-2">
-                                                            <img src="https://image.ibb.co/jw55Ex/def_face.jpg"
-                                                                 class="img img-rounded img-fluid"/>
+                                                        <div class="col-md-2 imgAndTime">
+                                                            <img
+                                                                src="/uploads/img/profileImages/{{$reply->commentOwner->profile_image ? $reply->commentOwner->slug."/".$reply->commentOwner->profile_image : "default.png" }}"
+                                                                class="roundImg"/>
                                                             <p class="text-secondary text-center"
                                                                style="font-size: 13px"><i
                                                                     class="fa fa-clock-o"></i> {{$reply->created_at->diffForHumans()}}
                                                             </p>
                                                         </div>
                                                         <div class="col-md-10">
-                                                            <p>
                                                             <p><strong>
                                                                     {{$reply->commentOwner->name}}
                                                                 </strong></p>
-                                                            </p>
                                                             <p>{{$reply->faq_content}}</p>
                                                         </div>
                                                     </div>
@@ -180,40 +182,6 @@
         </div>
     </section>
     <!-- Blog Details Section End -->
-
-    <!-- Partner Logo Section Begin -->
-    <div class="partner-logo">
-        <div class="container">
-            <div class="logo-carousel owl-carousel">
-                <div class="logo-item">
-                    <div class="tablecell-inner">
-                        <img src="/frontend/img/logo-carousel/logo-1.png" alt="">
-                    </div>
-                </div>
-                <div class="logo-item">
-                    <div class="tablecell-inner">
-                        <img src="/frontend/img/logo-carousel/logo-2.png" alt="">
-                    </div>
-                </div>
-                <div class="logo-item">
-                    <div class="tablecell-inner">
-                        <img src="/frontend/img/logo-carousel/logo-3.png" alt="">
-                    </div>
-                </div>
-                <div class="logo-item">
-                    <div class="tablecell-inner">
-                        <img src="/frontend/img/logo-carousel/logo-4.png" alt="">
-                    </div>
-                </div>
-                <div class="logo-item">
-                    <div class="tablecell-inner">
-                        <img src="/frontend/img/logo-carousel/logo-5.png" alt="">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Partner Logo Section End -->
 @endsection
 
 @section('css')
@@ -251,6 +219,19 @@
             text-decoration: underline;
             transition: all .2s;
         }
+
+        .roundImg {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+        }
+
+        .imgAndTime {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
     </style>
 @endsection
 
@@ -263,8 +244,8 @@
             document.getElementById('reply').innerHTML = hidden;
 
             $('html,body').animate({
-                scrollTop: $(".leave-comment").offset().top
-            },
+                    scrollTop: $(".leave-comment").offset().top
+                },
                 'slow');
             $('#content').focus().css('border', '2px solid #f39313');
 
@@ -278,19 +259,19 @@
                         response.processTitle,
                         response.processDesc,
                         response.processStatus
-                        )
+                    )
                         .then(function () {
                             var repliedComment = $('#reply input').val();
 
                             if ($('#reply input').attr('name') == 'primary_comment') {
                                 $('html,body').animate({
-                                    scrollTop: $('#' + repliedComment).offset().top
-                                },
+                                        scrollTop: $('#' + repliedComment).offset().top
+                                    },
                                     'slow');
                             } else {
                                 $('html,body').animate({
-                                    scrollTop: $("#comments").offset().top
-                                },
+                                        scrollTop: $("#comments").offset().top
+                                    },
                                     'slow');
                             }
                         })
@@ -302,7 +283,7 @@
                                 '<div class="card-body" style="border:1px solid #f39313!important">' +
                                 '<div class="row">' +
                                 '<div class="col-md-2">' +
-                                '<img src="https://image.ibb.co/jw55Ex/def_face.jpg" class="img img-rounded img-fluid"/>' +
+                                '<img src="/uploads/img/profileImages/default.png" class="img img-rounded img-fluid"/>' +
                                 '<p class="text-secondary text-center" style="font-size: 13px"><i class="fa fa-clock-o"> </i> Just now</p>' +
                                 '</div>' +
                                 '<div class="col-md-10">' +
@@ -321,7 +302,7 @@
                                 '<div class="card-body" style="border:1px solid #f39313!important">' +
                                 '<div class="row">' +
                                 '<div class="col-md-2">' +
-                                '<img src="https://image.ibb.co/jw55Ex/def_face.jpg" class="img img-rounded img-fluid"/>' +
+                                '<img src="/uploads/img/profileImages/default.png" class="img img-rounded img-fluid"/>' +
                                 '<p class="text-secondary text-center" style="font-size: 13px"><i class="fa fa-clock-o"> </i> Just now</p>' +
                                 '</div>' +
                                 '<div class="col-md-10">' +

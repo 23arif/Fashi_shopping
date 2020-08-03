@@ -159,9 +159,6 @@
                                 @foreach(\App\ContactComment::where('check_message', 0)->get() as $message)
                                     <li>
                                         <a href="{{route('readMessage',['slug'=>$message->slug])}}">
-                                        <span class="image">
-{{--                                            <img src="/uploads/img/profileImages/{{$message->getUserInfoFromComment->profile_image ? $message->getUserInfoFromComment->profile_image : 'default.png'}}"/>--}}
-                                        </span>
                                         <span>
                                           <span><b>{{$message->name}}</b></span>
                                           <span class="time"> {{$message->created_at->diffForHumans()}}</span>

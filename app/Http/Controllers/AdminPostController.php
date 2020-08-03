@@ -3,14 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Banner;
+use App\Basket;
 use App\Blog;
 use App\Category;
+use App\Comment;
 use App\ContactComment;
 use App\Deal;
 use App\FaqComment;
 use App\FAQs;
 use App\FaqTopic;
 use App\Menu;
+use App\Order;
 use App\PrBrand;
 use App\PrCategory;
 use App\Product;
@@ -124,9 +127,12 @@ class AdminPostController extends AdminController
 //           Delete Blog Section
 
             try {
-                Blog::where('slug', $request->slug)->delete();
-                Storage::disk('uploads')->deleteDirectory('img/blog/' . $request->slug);
-                return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Blog deleted successfully !']);
+                $deletingBlog = Blog::where('slug', $request->slug)->delete();
+                if ($deletingBlog) {
+                    Storage::disk('uploads')->deleteDirectory('img/blog/' . $request->slug);
+                    Comment::where('blog', $request->slug)->delete();
+                    return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Blog deleted successfully !']);
+                }
             } catch (\Exception $e) {
                 return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Blog could not deleted !', $e]);
             }
@@ -305,9 +311,11 @@ class AdminPostController extends AdminController
             }
         } else {
             try {
-                Category::where('id', $request->id)->delete();
-                return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Category deleted successfully !']);
-
+                $deletingCategory = Category::where('id', $request->id)->delete();
+                if ($deletingCategory) {
+                    Blog::where('category',$request->id)->delete();
+                    return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Category deleted successfully !']);
+                }
             } catch (\Exception $e) {
                 return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Category could not deleted !', 'error' => $e]);
             }
@@ -471,8 +479,19 @@ class AdminPostController extends AdminController
     {
         try {
             unset($request['_token']);
-            User::where('slug', $request->slug)->delete();
-            return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'User deleted successfully !']);
+            $getUserId = User::where('slug', $request->slug)->first()->id;
+            $deletingUser = User::where('slug', $request->slug)->delete();
+            if ($deletingUser) {
+                Basket::where('user_id', $getUserId)->delete();
+                Blog::where('author', $getUserId)->delete();
+                Comment::where('user_id', $getUserId)->delete();
+                FaqComment::where('user_id', $getUserId)->delete();
+                FaqTopic::where('author', $getUserId)->delete();
+                Order::where('user_id', $getUserId)->delete();
+                Product::where('seller_id', $getUserId)->delete();
+                UserExtraInfo::where('user_id', $getUserId)->delete();
+                return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'User deleted successfully !']);
+            }
         } catch (\Exception $e) {
             return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'User could not deleted !', 'error' => $e]);
         }
