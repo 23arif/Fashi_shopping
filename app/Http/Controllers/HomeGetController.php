@@ -13,6 +13,7 @@ use App\PrBrand;
 use App\PrCategory;
 use App\PrColor;
 use App\Product;
+use App\ProductComment;
 use App\PrSize;
 use App\Slider;
 use App\User;
@@ -129,6 +130,7 @@ class HomeGetController extends HomeController
             $sizes = PrSize::all();
             $colors = PrColor::all();
             $payments = UserExtraInfo::all();
+            $comments = ProductComment::where('product_id',$products->id)->get();
             $relatedProducts = Product::where('pr_category', $products->pr_category)->where('slug', '!=', $slug)->get();
 
             return view('frontend.product', [
@@ -139,7 +141,8 @@ class HomeGetController extends HomeController
                 'colors' => $colors,
                 'payments' => $payments,
                 'userExtraData' => $userExtraData,
-                'relatedProducts' => $relatedProducts
+                'relatedProducts' => $relatedProducts,
+                'comments'=>$comments,
             ]);
         } else {
             return redirect()->back();

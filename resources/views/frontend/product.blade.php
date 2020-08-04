@@ -131,7 +131,7 @@
                                     <a data-toggle="tab" href="#tab-2" role="tab">SPECIFICATIONS</a>
                                 </li>
                                 <li>
-                                    <a data-toggle="tab" href="#tab-3" role="tab">Customer Reviews (02)</a>
+                                    <a data-toggle="tab" href="#tab-3" role="tab">Customer Reviews ({{count($comments)}})</a>
                                 </li>
                             </ul>
                         </div>
@@ -243,40 +243,27 @@
                                 </div>
                                 <div class="tab-pane fade" id="tab-3" role="tabpanel">
                                     <div class="customer-review-option">
-                                        <h4>2 Comments</h4>
+                                        <h4>{{count($comments)}} Comments</h4>
                                         <div class="comment-option">
-                                            <div class="co-item">
-                                                <div class="avatar-pic">
-                                                    <img src="/frontend/img/product-single/avatar-1.png" alt="">
-                                                </div>
-                                                <div class="avatar-text">
-                                                    <div class="at-rating">
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star-o"></i>
+                                            @foreach($comments as $comment)
+                                                <div class="co-item">
+                                                    <div class="avatar-pic">
+                                                        <img
+                                                            src="/uploads/img/profileImages/{{$comment->getCommentUser->profile_image ? $comment->getCommentUser->slug."/".$comment->getCommentUser->profile_image : "default.png" }}"/>
                                                     </div>
-                                                    <h5>Brandon Kelley <span>27 Aug 2019</span></h5>
-                                                    <div class="at-reply">Nice !</div>
-                                                </div>
-                                            </div>
-                                            <div class="co-item">
-                                                <div class="avatar-pic">
-                                                    <img src="/frontend/img/product-single/avatar-2.png" alt="">
-                                                </div>
-                                                <div class="avatar-text">
-                                                    <div class="at-rating">
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star-o"></i>
+                                                    <div class="avatar-text">
+                                                        <div class="at-rating">
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star-o"></i>
+                                                        </div>
+                                                        <h5>{{ucfirst($comment->getCommentUser->name)}}&nbsp;{{ucfirst($comment->getCommentUser->surname )}} <span>{{$comment->created_at->formatLocalized('%d')}} {{$comment->created_at->formatLocalized('%b')}},{{$comment->created_at->formatLocalized('%Y')}}</span></h5>
+                                                        <div class="at-reply">{{$comment->comment}}</div>
                                                     </div>
-                                                    <h5>Roy Banks <span>27 Aug 2019</span></h5>
-                                                    <div class="at-reply">Nice !</div>
                                                 </div>
-                                            </div>
+                                            @endforeach
                                         </div>
                                         <div class="personal-rating">
                                             <h6>Your Ratind</h6>
@@ -288,23 +275,30 @@
                                                 <i class="fa fa-star-o"></i>
                                             </div>
                                         </div>
-                                        <div class="leave-comment">
-                                            <h4>Leave A Comment</h4>
-                                            <form action="#" class="comment-form">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <input type="text" placeholder="Name">
+                                        @if(\Illuminate\Support\Facades\Auth::check())
+                                            <div class="leave-comment">
+                                                <h4>Leave A Comment</h4>
+                                                <form method="post"
+                                                      action="{{route('productComment',['slug'=>$products->slug])}}"
+                                                      id="productCommentForm" class="comment-form">
+                                                    @csrf
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <textarea placeholder="Messages" name="message"></textarea>
+                                                            <button type="submit" class="site-btn">Send message</button>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-lg-6">
-                                                        <input type="text" placeholder="Email">
-                                                    </div>
-                                                    <div class="col-lg-12">
-                                                        <textarea placeholder="Messages"></textarea>
-                                                        <button type="submit" class="site-btn">Send message</button>
-                                                    </div>
+                                                </form>
+                                            </div>
+                                        @else
+                                            <div class="leave-comment">
+                                                <div class="alert alert-info text-center">Please <a href="/login"
+                                                                                                    class="href"><b>Login</b></a>
+                                                    or <a
+                                                        href="/register" class="href"><b>Register</b></a> for comment
                                                 </div>
-                                            </form>
-                                        </div>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -367,7 +361,122 @@
 @endsection
 
 @section('css')
+    <link rel="stylesheet" href="/css/sweetalert2.min.css">
+
+    <style>
+        .href {
+            color: #252525;
+            font-size: 16px;
+            font-weight: 400;
+            transition: all .2s;
+
+        }
+
+        .href:hover, .href:focus {
+            color: #e7ab3c;
+            transition: all .1s;
+        }
+
+    </style>
 @endsection
 
 @section('js')
+    <script src="/js/jquery.form.min.js"></script>
+    <script src="/js/sweetalert2.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#productCommentForm').ajaxForm({
+                beforeSubmit: function () {
+                    Swal.fire({
+                        title: '<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>',
+                        text: 'Loading please wait!',
+                        showConfirmButton: false
+                    })
+                },
+                success: function (response) {
+                    Swal.fire(
+                        response.processTitle,
+                        response.processDesc,
+                        response.processStatus
+                    ).then(() => {
+                        if (response.processStatus == "success") {
+                            location.reload();
+                        }
+                    })
+                }
+            })
+        })
+
+
+        // $(document).ready(function () {
+        //     $('.comment-form').ajaxForm({
+        //         success: function (response) {
+        //             Swal.fire(
+        //                 response.processTitle,
+        //                 response.processDesc,
+        //                 response.processStatus
+        //             )
+        //                 .then(function () {
+        //                     var repliedComment = $('#reply input').val();
+        //
+        //                     if ($('#reply input').attr('name') == 'primary_comment') {
+        //                         $('html,body').animate({
+        //                                 scrollTop: $('#' + repliedComment).offset().top
+        //                             },
+        //                             'slow');
+        //                     } else {
+        //                         $('html,body').animate({
+        //                                 scrollTop: $("#comments").offset().top
+        //                             },
+        //                             'slow');
+        //                     }
+        //                 })
+        //             if (response.processStatus == 'success') {
+        //                 var content = document.getElementById('content').value;
+        //                 if ($('#reply input').attr('name') == 'primary_comment') {
+        //                     var repliedComment = $('#reply input').val();
+        //                     var comment = '<div class="card card-inner">' +
+        //                         '<div class="card-body" style="border:1px solid #f39313!important">' +
+        //                         '<div class="row">' +
+        //                         '<div class="col-md-2">' +
+        //                         '<img src="/uploads/img/profileImages/default.png" class="img img-rounded img-fluid"/>' +
+        //                         '<p class="text-secondary text-center" style="font-size: 13px"><i class="fa fa-clock-o"> </i> Just now</p>' +
+        //                         '</div>' +
+        //                         '<div class="col-md-10">' +
+        //                         '<p>' +
+        //                         '<p style="color:#f39313"><strong>You</strong></p>' +
+        //                         '</p>' +
+        //                         '<p>' + content + '</p>' +
+        //                         '</div>' +
+        //                         '</div>' +
+        //                         '</div>' +
+        //                         '</div>';
+        //                     document.getElementById(repliedComment).innerHTML = comment;
+        //
+        //                 } else {
+        //                     var comment = '<div class="card">' +
+        //                         '<div class="card-body" style="border:1px solid #f39313!important">' +
+        //                         '<div class="row">' +
+        //                         '<div class="col-md-2">' +
+        //                         '<img src="/uploads/img/profileImages/default.png" class="img img-rounded img-fluid"/>' +
+        //                         '<p class="text-secondary text-center" style="font-size: 13px"><i class="fa fa-clock-o"> </i> Just now</p>' +
+        //                         '</div>' +
+        //                         '<div class="col-md-10">' +
+        //                         '<p>' +
+        //                         '<p style="color:#f39313"><strong>You</strong></p>' +
+        //                         '</p>' +
+        //                         '<p>' + content + '</p>' +
+        //                         '</div>' +
+        //                         '</div>' +
+        //                         '</div>' +
+        //                         '</div>';
+        //                     document.getElementById('comments').innerHTML = comment;
+        //                 }
+        //
+        //             }
+        //         }
+        //     })
+        // })
+    </script>
 @endsection

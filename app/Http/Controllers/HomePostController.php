@@ -14,6 +14,7 @@ use App\PrBrand;
 use App\PrCategory;
 use App\PrColor;
 use App\Product;
+use App\ProductComment;
 use App\PrSize;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -104,10 +105,10 @@ class HomePostController extends HomeController
             $status = $request->status;
             if ($status == 'delete') {
                 try {
-                    $getFaqTopicSlug = FaqTopic::where('id',$request->id)->first()->slug;
+                    $getFaqTopicSlug = FaqTopic::where('id', $request->id)->first()->slug;
                     $deletingFaqTopic = FaqTopic::where('id', $request->id)->delete();
                     if ($deletingFaqTopic) {
-                        FaqComment::where('faq',$getFaqTopicSlug)->delete();
+                        FaqComment::where('faq', $getFaqTopicSlug)->delete();
                         return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Question deleted successfully !']);
                     }
                 } catch (\Exception $e) {
@@ -383,4 +384,28 @@ class HomePostController extends HomeController
             return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Comment could not sent !', 'error' => $e]);
         }
     }
+
+    public function post_product_comment(Request $request, $slug)
+    {
+        $validator = Validator::make($request->all(), [
+            'message' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response(['processStatus' => 'warning', 'processTitle' => 'Warning', 'processDesc' => 'Please fill required blanks !']);
+        }
+
+        try {
+            $user_id = Auth::id();
+            $product_id = Product::where('slug', $slug)->first()->id;
+            $request->merge(['user_id' => $user_id, 'product_id' => $product_id,'comment'=>$request->message]);
+            ProductComment::create($request->all());
+            return response(['processStatus' => 'success', 'processTitle' => 'Successfully', 'processDesc' => 'Comment sent successfully !']);
+
+        } catch (\Exception $e) {
+            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Comment could not sent !', 'error' => $e]);
+        }
+    }
+
+
 }
