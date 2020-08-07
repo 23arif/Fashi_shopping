@@ -2162,7 +2162,7 @@ ol {
     font-size: 12px;
     display: inline-block;
     color: #FAC451;
-    margin-right: -3px;
+    margin-right: 3px;
 }
 
 .product-details .pd-rating span {
@@ -2447,7 +2447,7 @@ ol {
     font-size: 12px;
     display: inline-block;
     color: #FAC451;
-    margin-right: -3px;
+    margin-right: 3px;
 }
 
 .specification-table table tr td .pd-rating span {
@@ -2531,7 +2531,7 @@ ol {
     font-size: 12px;
     display: inline-block;
     color: #FAC451;
-    margin-right: -3px;
+    margin-right: 3px;
 }
 
 .customer-review-option .comment-option .co-item .avatar-text h5 {
@@ -4437,5 +4437,8 @@ ol {
     .benefit-items .single-benefit {
         padding-left: 15px;
         padding-right: 15px;
+    }
+    .leave-comment .customize{
+        display: inherit;
     }
 }

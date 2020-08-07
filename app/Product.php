@@ -29,7 +29,8 @@ class Product extends Model
         return $this->hasOne('App\User', 'id', 'seller_id');
     }
 
-    public function prCategory(){
+    public function prCategory()
+    {
         return $this->hasOne('App\PrCategory', 'id', 'pr_category');
     }
 }

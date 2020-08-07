@@ -135,7 +135,7 @@
                     <div class="advanced-search">
                         <div class="input-group">
                             <form action="{{route('searchPage')}}" method="GET" id="searchForm">
-                                <input type="text"  name="result" placeholder="What do you need?" autocomplete="off">
+                                <input type="text" name="result" placeholder="What do you need?" autocomplete="off">
                                 <button type="submit"><i class="ti-search"></i></button>
                             </form>
                         </div>
@@ -273,11 +273,12 @@
             </div>
             <nav id="spcMenu" class="nav-menu mobile-menu">
                 <ul>
-                    <li class="active"><a href="{{route('homePage')}}">Home</a></li>
-                    <li><a href="{{route('shopPage')}}">Shop</a></li>
-                    <li><a href="{{route('blogPage')}}">Blog</a></li>
-                    <li><a href="{{route('contactPage')}}">Contact</a></li>
-                    <li><a href="{{route('faqPage')}}">Faqs</a></li>
+                    <li {{$activeUrl =='127.0.0.1:8000' ? "class=active" : ' '}}><a href="{{route('homePage')}}">Home</a></li>
+                    <li {{$activeUrl=='shop' ? "class=active" : ' '}}><a href="{{route('shopPage')}}">Shop</a></li>
+                    <li {{$activeUrl=='blog' ? "class=active" : ' '}}><a href="{{route('blogPage')}}">Blog</a></li>
+                    <li {{$activeUrl=='contact' ? "class=active" : ' '}}><a href="{{route('contactPage')}}">Contact</a>
+                    </li>
+                    <li {{$activeUrl=='faq' ? "class=active" : ' '}}><a href="{{route('faqPage')}}">Faqs</a></li>
                 </ul>
             </nav>
             <div id="mobile-menu-wrap"></div>

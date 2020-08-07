@@ -41,12 +41,12 @@ Route::group(['prefix' => 'shop'], function () {
     Route::get('/check-out', 'HomeGetController@get_checkout')->name('checkoutPage')->middleware('GoToCheckOut');
     Route::post('/check-out', 'HomePostController@post_checkout')->name('checkoutPost');
     Route::get('/orders', 'HomeGetController@get_orders')->name('ordersPage')->middleware('CheckRegister');
+    Route::get('/orders/{slug}', 'HomeGetController@get_order_details')->name('orderDetailsPage')->middleware('CheckRegister');
 
 });
 
 Route::group(['prefix' => 'blog'], function () {
     Route::get('/', 'HomeGetController@get_blog')->name('blogPage');
-//    Route::get('?result={result}', 'HomeGetController@get_blog_search');
     Route::get('/author/{authorName}', 'HomeGetController@get_blog_author')->name('blogAuthorName');
     Route::get('/tags/{tagName}', 'HomeGetController@get_blog_tags');
     Route::get('/search', 'HomeGetController@get_blog_search')->name('blogSearch');

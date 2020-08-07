@@ -387,24 +387,24 @@ class HomePostController extends HomeController
 
     public function post_product_comment(Request $request, $slug)
     {
-        $validator = Validator::make($request->all(), [
-            'message' => 'required',
-        ]);
+            $validator = Validator::make($request->all(), [
+                'message' => 'required',
+            ]);
 
-        if ($validator->fails()) {
-            return response(['processStatus' => 'warning', 'processTitle' => 'Warning', 'processDesc' => 'Please fill required blanks !']);
-        }
+            if ($validator->fails()) {
+                return response(['processStatus' => 'warning', 'processTitle' => 'Warning', 'processDesc' => 'Please fill required blanks !']);
+            }
 
-        try {
-            $user_id = Auth::id();
-            $product_id = Product::where('slug', $slug)->first()->id;
-            $request->merge(['user_id' => $user_id, 'product_id' => $product_id,'comment'=>$request->message]);
-            ProductComment::create($request->all());
-            return response(['processStatus' => 'success', 'processTitle' => 'Successfully', 'processDesc' => 'Comment sent successfully !']);
+            try {
+                $user_id = Auth::id();
+                $product_id = Product::where('slug', $slug)->first()->id;
+                $request->merge(['user_id' => $user_id, 'product_id' => $product_id,'comment'=>$request->message]);
+                ProductComment::create($request->all());
+                return response(['processStatus' => 'success', 'processTitle' => 'Successfully', 'processDesc' => 'Comment sent successfully !']);
 
-        } catch (\Exception $e) {
-            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Comment could not sent !', 'error' => $e]);
-        }
+            } catch (\Exception $e) {
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Comment could not sent !', 'error' => $e]);
+            }
     }
 
 

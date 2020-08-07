@@ -178,7 +178,6 @@ return [
 //        My added packets
         App\Providers\FormServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
-
     ],
 
     /*

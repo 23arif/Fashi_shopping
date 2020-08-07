@@ -84,33 +84,36 @@ class HomeGetController extends HomeController
     {
         $category = explode('/', $slug); //Explodes category slugs
         $blogs = Blog::where('slug', $category[count($category) - 1])->first();
-        $prevBlog = Blog::where('id', '<', $blogs->id)->latest('id')->first();
-        $nextBlog = Blog::where('id', '>', $blogs->id)->first();
-        if (!is_null($blogs)) {
-            if (isset($blogs)) {
-                return view('frontend.blog-details')->with(['blogs' => $blogs,
-                    'blogCategory' => $category,
-                    'prevBlog' => $prevBlog,
-                    'nextBlog' => $nextBlog,
-                ]);
+
+        if (isset($blogs->id)) {
+            $prevBlog = Blog::where('id', '<', $blogs->id)->latest('id')->first();
+            $nextBlog = Blog::where('id', '>', $blogs->id)->first();
+        }
+
+        if (isset($blogs)) {
+            return view('frontend.blog-details')->with(['blogs' => $blogs,
+                'blogCategory' => $category,
+                'prevBlog' => $prevBlog,
+                'nextBlog' => $nextBlog,
+            ]);
+        } elseif (isset($category)) {
+            $recentBlogs = Blog::orderBy('id', 'desc')->get();
+            $getLastCat = $category[count($category) - 1];
+            $getCat = Category::where('slug', $getLastCat)->get();
+            if (count($getCat) == 0) {
+                return redirect()->back();
             } else {
-                $getLastCat = $category[count($category) - 1];
-                $getCat = Category::where('slug', $getLastCat)->get();
                 $blogs = $getCat[0]->classifiedBlogs;
                 return view('frontend.blog')->with(['blogs' => $blogs,
                     'categories' => $getCat,
-                    'prevBlog' => $prevBlog,
-                    'nextBlog' => $nextBlog,
+                    'recentBlogs' => $recentBlogs,
                 ]);
             }
-        } else {
-            return redirect()->back();
-
         }
-
     }
 
-    public function get_shop()
+    public
+    function get_shop()
     {
         $products = Product::orderBy('id', 'desc');
         $brands = PrBrand::all();
@@ -120,7 +123,8 @@ class HomeGetController extends HomeController
         return view('frontend.shop', ['products' => $products, 'brands' => $brands, 'categories' => $categories, 'sizes' => $sizes, 'colors' => $colors]);
     }
 
-    public function get_product_details($slug)
+    public
+    function get_product_details($slug)
     {
         if (!is_null(Product::where('slug', $slug)->first())) {
             $products = Product::where('slug', $slug)->first();
@@ -130,8 +134,9 @@ class HomeGetController extends HomeController
             $sizes = PrSize::all();
             $colors = PrColor::all();
             $payments = UserExtraInfo::all();
-            $comments = ProductComment::where('product_id',$products->id)->get();
+            $comments = ProductComment::where('product_id', $products->id)->get();
             $relatedProducts = Product::where('pr_category', $products->pr_category)->where('slug', '!=', $slug)->get();
+            $productRating = round(ProductComment::where('product_id', $products->id)->avg('rating'));
 
             return view('frontend.product', [
                 'products' => $products,
@@ -142,10 +147,28 @@ class HomeGetController extends HomeController
                 'payments' => $payments,
                 'userExtraData' => $userExtraData,
                 'relatedProducts' => $relatedProducts,
-                'comments'=>$comments,
+                'comments' => $comments,
+                'productRating' => $productRating,
             ]);
         } else {
             return redirect()->back();
+        }
+    }
+
+    public
+    function starRating($rating)
+    {
+        $fullNumber = intval($rating);
+        $remainder = $rating - $fullNumber;
+        $emptyStar = 5 - round($rating);
+        for ($i = 0; $i < $fullNumber; $i++) {
+            echo '<i class="fa fa-star"></i>';
+        };
+        for ($k = 0; $k < $remainder; $k++) {
+            echo '<i class="fa fa-star-half-empty"></i>';
+        }
+        for ($j = 0; $j < $emptyStar; $j++) {
+            echo '<i class="fa fa-star-o"></i>';
         }
     }
 
@@ -225,11 +248,19 @@ class HomeGetController extends HomeController
         return view('frontend.check-out');
     }
 
-    public function get_orders(Request $request)
+    public
+    function get_orders(Request $request)
     {
         $user_id = Auth::id();
         $orders = Order::where('user_id', $user_id)->get();
         return view('frontend.order', ['orders' => $orders]);
+    }
+
+    public
+    function get_order_details($slug)
+    {
+        $orderDetails = Order::where('order_no', $slug)->first();
+        return view('frontend.order', ['orderDetails' => $orderDetails]);
     }
 
     public
@@ -273,8 +304,10 @@ class HomeGetController extends HomeController
     {
 
         $question = FaqTopic::where('slug', $slug)->first();
-        $prevQuestion = FaqTopic::where('id', '<', $question->id)->latest('id')->first();
-        $nextQuestion = FaqTopic::where('id', '>', $question->id)->first();
+        if (isset($question->id)) {
+            $prevQuestion = FaqTopic::where('id', '<', $question->id)->latest('id')->first();
+            $nextQuestion = FaqTopic::where('id', '>', $question->id)->first();
+        }
         if (!is_null($question)) {
             return view('frontend.faq-details')->with([
                 'question' => $question,

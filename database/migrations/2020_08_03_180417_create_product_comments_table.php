@@ -18,7 +18,7 @@ class CreateProductCommentsTable extends Migration
             $table->integer('user_id');
             $table->integer('product_id');
             $table->longText('comment');
-            $table->double('rating');
+            $table->double('rating')->nullable();
             $table->timestamps();
         });
     }

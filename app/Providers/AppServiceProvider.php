@@ -39,7 +39,13 @@ class AppServiceProvider extends ServiceProvider
         $deals = Deal::where('id', 1)->first();
         $fromTheBlog = Blog::all();
         $basketArray = Cookie::get('basket');
-
+        $fullUrl = url()->current();
+        $currentUrl = explode('/', $fullUrl);
+        if (!isset($currentUrl[3])) {
+            $activeUrl ='127.0.0.1:8000';
+        }else{
+            $activeUrl =$currentUrl[3];
+        }
         View::share([
             'settings' => $settings = Settings::all(),
             'locales' => $locales,
@@ -47,7 +53,8 @@ class AppServiceProvider extends ServiceProvider
             'allDepartments' => $allDepartments,
             'deals' => $deals,
             'fromTheBlog' => $fromTheBlog,
-            'basketArray' => $basketArray
+            'basketArray' => $basketArray,
+            'activeUrl' => $activeUrl
         ]);
 
 
