@@ -82,10 +82,9 @@
                             <li><a href="{{route('adminIndex')}}"><i class="fa fa-home"></i> Home </a></li>
                             <li><a href="{{route('adminSettingsPage')}}"><i class="fa fa-cog"></i> Settings </a></li>
                             <li><a href="{{route('sliderPage')}}"><i class="fa fa-magic"></i> Slider </a></li>
-                            <li><a href="{{route('adminCategoryPage')}}"><i class="fa fa-newspaper-o"></i> Category </a>
-                            </li>
                             <li><a href="{{route('adminProductsPage')}}"><i class="fa fa-shopping-basket"></i> Products
                                 </a></li>
+                            <li><a href="{{route('adminCategoryPage')}}"><i class="fa fa-newspaper-o"></i> Blog Category </a></li>
                             <li><a href="{{route('adminBlogPage')}}"><i class="fa fa-newspaper-o"></i> Blog </a></li>
                             <li><a href="{{route('getDeal')}}"><i class="fa fa-gift"></i> Deals </a></li>
                             @if(\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->status() == 9)

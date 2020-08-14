@@ -52,7 +52,7 @@
                                                 @foreach($photos = Storage::disk('uploads')->files('img/products/'.$product->slug) as $photo)
                                                 @endforeach
                                                 <img src="/uploads/{{$photo}}" alt="">
-                                                @if($product->pr_last_price != $product->pr_prev_price)
+                                                @if($product->pr_last_price < $product->pr_prev_price)
                                                     <div class="sale pp-sale">Sale</div>
                                                 @endif
                                                 <div class="icon">
@@ -72,7 +72,7 @@
                                                 </a>
                                                 <div class="product-price">
                                                     ${{$product->pr_last_price}}
-                                                    @if($product->pr_last_price != $product->pr_prev_price)
+                                                    @if($product->pr_last_price < $product->pr_prev_price)
                                                         <span>${{$product->pr_prev_price}}</span>
                                                     @endif
 

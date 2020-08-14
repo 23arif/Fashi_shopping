@@ -155,7 +155,11 @@
                         response.processTitle,
                         response.processDesc,
                         response.processStatus
-                        )
+                        ).then(() => {
+                        if (response.processStatus == "success") {
+                            location.reload();
+                        }
+                    })
                 }
             })
         })

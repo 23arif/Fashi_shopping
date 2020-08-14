@@ -168,8 +168,8 @@
             var row = r.parentNode.parentNode.rowIndex;
             Swal.fire({
                 title: 'Are you sure?',
-                text: "The category will delete!",
-                icon: 'warning',
+                text: "The category and products with this category will be delete!",
+                icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',

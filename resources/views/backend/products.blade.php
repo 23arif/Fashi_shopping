@@ -97,7 +97,7 @@
                                                 <td>{{$product->prBrand->name}}</td>
                                                 <td>{{strtoupper($product->prSize->size)}}</td>
                                                 <td>
-                                                    <a href="product/edit-product/{{$product->slug}}"
+                                                    <a href="{{route('adminEditProduct',['slug'=>$product->slug])}}"
                                                        class="btn btn-primary">Edit</a>
                                                 </td>
                                                 <td>
@@ -134,7 +134,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="shortContent"
+                                            <label for="pr_brand"
                                                    class="control-label col-md-3 col-sm-3 col-xs-12">Brand *</label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                 <select class="form-control" name="pr_brand">
@@ -148,7 +148,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="shortContent"
+                                            <label for="pr_size"
                                                    class="control-label col-md-3 col-sm-3 col-xs-12">Size *</label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                 <select class="form-control" name="pr_size">

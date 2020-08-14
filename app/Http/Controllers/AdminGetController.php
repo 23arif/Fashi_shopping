@@ -54,8 +54,6 @@ class AdminGetController extends AdminController
     public function get_products()
     {
         $tags = Product::pluck('pr_tags');
-
-
         $products = Product::all();
         $categories = PrCategory::all();
         $brands = PrBrand::all();
@@ -63,6 +61,14 @@ class AdminGetController extends AdminController
         return view('backend.products', ['tags' => $tags, 'products' => $products, 'categories' => $categories, 'brands' => $brands, 'sizes' => $sizes]);
     }
 
+    public function edit_product($slug)
+    {
+        $categories = PrCategory::all();
+        $brands = PrBrand::all();
+        $sizes = PrSize::all();
+        $getProduct = Product::where('slug', $slug)->first();
+        return view('backend.edit-products', ['product' => $getProduct, 'categories' => $categories, 'brands' => $brands, 'sizes' => $sizes]);
+    }
 
     public function get_blog()
     {
@@ -169,10 +175,10 @@ class AdminGetController extends AdminController
     public function get_read_message($slug)
     {
         $message = ContactComment::where('slug', $slug)->first();
-        if($message){
-            ContactComment::where('slug',$slug)->update(['check_message'=>1]);
+        if ($message) {
+            ContactComment::where('slug', $slug)->update(['check_message' => 1]);
             return view('backend.Messages.read-message', ['message' => $message]);
-        }else{
+        } else {
             return redirect()->back();
         }
     }

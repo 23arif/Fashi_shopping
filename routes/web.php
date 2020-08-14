@@ -86,6 +86,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'Admin'], function () {
     Route::group(['prefix' => 'products'], function () {
         Route::get('/', 'AdminGetController@get_products')->name('adminProductsPage');
         Route::post('/', 'AdminPostController@post_products');
+        Route::get('/edit-product/{slug}', 'AdminGetController@edit_product')->name('adminEditProduct');
+        Route::post('/edit-product/{slug}', 'AdminPostController@post_edit_product')->name('adminPostEditProduct');
 
     });
     Route::group(['prefix' => 'blog'], function () {
