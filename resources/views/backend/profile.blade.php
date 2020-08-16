@@ -113,7 +113,7 @@
                                                         <label class="control-label">Visa</label>
                                                         <div>
                                                             <input name="visa" value="
-                                                            @if($extraData->visa)
+                                                            @if(isset($extraData->visa))
                                                             {{$extraData->visa}}
                                                             @endif"
                                                                    type="text"
@@ -128,7 +128,7 @@
                                                         <label class="control-label">PayPal</label>
                                                         <div>
                                                             <input name="paypal" value="
-                                                            @if($extraData->paypal)
+                                                            @if(isset($extraData->paypal))
                                                             {{$extraData->paypal}}
                                                             @endif"
                                                                    type="text" class="form-control"
@@ -161,7 +161,7 @@
                                                         <div>
                                                             <input name="master_card"
                                                                    value="
-                                                            @if($extraData->master_card)
+                                                            @if(isset($extraData->master_card))
                                                                    {{$extraData->master_card}}
                                                                    @endif"
                                                                    type="text"

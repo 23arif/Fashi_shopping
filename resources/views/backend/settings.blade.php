@@ -87,15 +87,6 @@
                                                     <input type="hidden" name="prevLogo" value="{{$settings[0]->logo}}">
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <label class="control-label col-md-3 col-sm-3 col-xs-12"
-                                                >Slider</label>
-                                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <input id="check" type="checkbox" name="slider" class="js-switch"
-                                                           @if($settings[0]->slider == '1')
-                                                           checked @endif />
-                                                </div>
-                                            </div>
                                             {{Form::bsText('title','Web Page Title',$settings[0]->title)}}
                                             {{Form::bsText('keywords','Keywords',$settings[0]->keywords)}}
                                             {{Form::bsText('description','Description',$settings[0]->description)}}

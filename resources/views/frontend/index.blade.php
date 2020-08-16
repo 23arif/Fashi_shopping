@@ -37,7 +37,7 @@
                     <div class="col-lg-4">
                         <a href="{{$banner->link}}">
                             <div class="single-banner">
-                                <img src="/uploads/img/Banners/{{$banner->image}}" alt="">
+                                <img src="/uploads/img/Banners/{{$banner->image}}" alt="{{$banner->title}}" width="573" height="322">
                                 <div class="inner-text">
                                     <h4>{{$banner->title}}</h4>
                                 </div>

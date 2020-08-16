@@ -21,9 +21,9 @@
                             <label for="title"
                                    class="control-label col-md-1 col-sm-2 col-xs-4">
                                 @if($sliderSwitch== 1)
-                                    Disable banner
+                                    Disable slider
                                 @else
-                                    Enable banner
+                                    Enable slider
                                 @endif
                             </label>
                             <input type="checkbox" data-toggle="toggle" id="switcher"

@@ -9,6 +9,7 @@ use App\PrCategory;
 use App\Product;
 use App\Locale;
 use App\Settings;
+use Illuminate\Database\Schema\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\ServiceProvider;
@@ -33,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Builder::defaultStringLength(191); // Update defaultStringLength
         $maxPrice = Product::max('pr_last_price');
         $locales = Locale::all();
         $allDepartments = PrCategory::all();

@@ -26,13 +26,12 @@ use App\User;
 use App\UserExtraInfo;
 use App\UserStatus;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
-use Intervention\Image\Facades\Image;
-use Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use function GuzzleHttp\Promise\all;
+use Intervention\Image\Facades\Image;
+use Validator;
 
 class AdminPostController extends AdminController
 {
@@ -354,9 +353,9 @@ class AdminPostController extends AdminController
                         Image::make($photo->getRealPath())->resize(226, 226)->save('uploads/img/products/' . $slug . '/' . $image_name);
                     }
                 }
-                $pr_prev_price = Product::where('slug',$slug)->first()->pr_last_price;
-                $request->merge(['pr_prev_price'=>$pr_prev_price]);
-                Product::where('slug',$slug)->update($request->except('photos'));
+                $pr_prev_price = Product::where('slug', $slug)->first()->pr_last_price;
+                $request->merge(['pr_prev_price' => $pr_prev_price]);
+                Product::where('slug', $slug)->update($request->except('photos'));
                 return response(['processStatus' => 'success', 'processTitle' => 'Success', 'processDesc' => 'Congratulations , product updated successfully !']);
             } catch (\Exception $e) {
                 return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Product could not added !', 'error' => $e]);
@@ -778,8 +777,8 @@ class AdminPostController extends AdminController
         if ($validator->fails()) {
             return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Please fill all field correctly for update banner !']);
         }
-
-        $newslug = Str::slug($request->title);
+        $date = Str::slug(Carbon::now());
+        $newslug = Str::slug($request->title).'-'.$date;
         $request->merge(['slug' => $newslug]);
 
         if (!empty($request->img)) {
@@ -788,9 +787,9 @@ class AdminPostController extends AdminController
             if ($deleteOldImage) {
                 $photo = $request->file('img');
                 $photo_extention = $request->file('img')->getClientOriginalExtension();
-                $photo_name = 'banner-' . $request->slug . '.' . $photo_extention;
+                $photo_name = 'banner-' . $request->slug.'-'. $date . '.' . $photo_extention;
                 Storage::disk('uploads')->makeDirectory('img/Banners');
-                Storage::disk('uploads')->put('img/Banners/' . $photo_name, file_get_contents($photo));
+                Image::make($photo->getRealPath())->resize(570, 503)->save('uploads/img/Banners/' . $photo_name);
             }
             $request->merge(['image' => $photo_name]);
 

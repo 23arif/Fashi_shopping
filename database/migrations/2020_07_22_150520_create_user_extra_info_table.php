@@ -16,9 +16,9 @@ class CreateUserExtraInfoTable extends Migration
         Schema::create('user_extra_info', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
-            $table->string('paypal');
-            $table->string('master_card');
-            $table->string('visa');
+            $table->string('paypal')->nullable();
+            $table->string('master_card')->nullable();
+            $table->string('visa')->nullable();
             $table->timestamps();
         });
     }

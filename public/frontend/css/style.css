@@ -1031,6 +1031,7 @@ ol {
 }
 
 .product-large {
+    width: 442px;
     height: 500px;
     margin-left: -15px;
     margin-right: -15px;

@@ -15,16 +15,16 @@ class CreateDealsTable extends Migration
     {
         Schema::create('deals', function (Blueprint $table) {
             $table->id();
-            $table->integer('enable_disable');
-            $table->string('banner');
-            $table->string('title');
-            $table->text('desc');
-            $table->float('price');
-            $table->string('pr_name');
-            $table->integer('day');
-            $table->integer('hourse');
-            $table->integer('minute');
-            $table->string('second');
+            $table->integer('enable_disable')->default(0);
+            $table->string('banner')->nullable();
+            $table->string('title')->nullable();
+            $table->text('desc')->nullable();
+            $table->float('price')->nullable();
+            $table->string('pr_name')->nullable();
+            $table->integer('day')->nullable();
+            $table->integer('hourse')->nullable();
+            $table->integer('minute')->nullable();
+            $table->string('second')->nullable();
             $table->timestamps();
         });
     }
