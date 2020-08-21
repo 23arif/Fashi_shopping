@@ -127,7 +127,7 @@
                 <div class="col-lg-2 col-md-2">
                     <div class="logo">
                         <a href="/">
-                            <img src="/uploads/img/{{$settings[0]->logo}}" alt="">
+                            <img src="/uploads/img/Logo/{{$settings[0]->header_logo}}" alt="{{$settings[0]->title}}">
                         </a>
                     </div>
                 </div>
@@ -218,7 +218,7 @@
                                                     @endforeach
                                                     <tr>
                                                         <td class="si-pic">
-                                                            <img src="/uploads/{{$photo}}" alt="" width="80"
+                                                            <img src="/uploads/{{$photo}}" width="80"
                                                                  height="80">
                                                         </td>
                                                         <td class="si-text">
@@ -246,7 +246,7 @@
                                     </div>
                                 @endif
                                 <div class="select-button">
-                                    <a href="/shop/shopping-cart" class="primary-btn view-card">VIEW CARD</a>
+                                    <a href="{{route('shoppingCartPage')}}" class="primary-btn view-card">VIEW CARD</a>
                                 </div>
                             </div>
                         </li>
@@ -297,7 +297,7 @@
             <div class="col-lg-3">
                 <div class="footer-left">
                     <div class="footer-logo">
-                        <a href="#"><img src="/frontend/img/footer-logo.png" alt=""></a>
+                        <a href="/"><img src="/uploads/img/Logo/{{$settings[0]->footer_logo}}" alt="{{$settings[0]->title}}"></a>
                     </div>
                     <ul>
                         <li>Address: {{$settings[0]->address}}</li>

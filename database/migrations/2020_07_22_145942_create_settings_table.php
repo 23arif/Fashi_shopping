@@ -15,7 +15,8 @@ class CreateSettingsTable extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->string('logo')->nullable();
+            $table->string('header_logo')->nullable();
+            $table->string('footer_logo')->nullable();
             $table->integer('slider')->default(0);
             $table->string('url')->nullable();
             $table->string('title')->nullable();

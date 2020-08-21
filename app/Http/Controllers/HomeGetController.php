@@ -15,6 +15,7 @@ use App\PrColor;
 use App\Product;
 use App\ProductComment;
 use App\PrSize;
+use App\PrTag;
 use App\Slider;
 use App\User;
 use App\UserExtraInfo;
@@ -116,11 +117,7 @@ class HomeGetController extends HomeController
     function get_shop()
     {
         $products = Product::orderBy('id', 'desc');
-        $brands = PrBrand::all();
-        $categories = PrCategory::all();
-        $sizes = PrSize::all();
-        $colors = PrColor::all();
-        return view('frontend.shop', ['products' => $products, 'brands' => $brands, 'categories' => $categories, 'sizes' => $sizes, 'colors' => $colors]);
+        return view('frontend.shop', ['products' => $products]);
     }
 
     public
@@ -129,26 +126,19 @@ class HomeGetController extends HomeController
         if (!is_null(Product::where('slug', $slug)->first())) {
             $products = Product::where('slug', $slug)->first();
             $userExtraData = UserExtraInfo::all();
-            $brands = PrBrand::all();
-            $categories = PrCategory::all();
-            $sizes = PrSize::all();
-            $colors = PrColor::all();
             $payments = UserExtraInfo::all();
             $comments = ProductComment::where('product_id', $products->id)->get();
             $relatedProducts = Product::where('pr_category', $products->pr_category)->where('slug', '!=', $slug)->get();
             $productRating = round(ProductComment::where('product_id', $products->id)->avg('rating'));
-
+            $productSizes = PrSize::where('pr_id', $products->id)->pluck('size');
             return view('frontend.product', [
                 'products' => $products,
-                'brands' => $brands,
-                'categories' => $categories,
-                'sizes' => $sizes,
-                'colors' => $colors,
                 'payments' => $payments,
                 'userExtraData' => $userExtraData,
                 'relatedProducts' => $relatedProducts,
                 'comments' => $comments,
                 'productRating' => $productRating,
+                'productSizes' => $productSizes,
             ]);
         } else {
             return redirect()->back();
@@ -177,11 +167,8 @@ class HomeGetController extends HomeController
     {
         $getCatId = PrCategory::where('slug', $catName)->value('id');
         $products = Product::where('pr_category', $getCatId)->get();
-        $brands = PrBrand::all();
-        $categories = PrCategory::all();
-        $sizes = PrSize::all();
-        $colors = PrColor::all();
-        return view('frontend.shop-categories', ['catName' => $catName, 'products' => $products, 'brands' => $brands, 'categories' => $categories, 'sizes' => $sizes, 'colors' => $colors]);
+
+        return view('frontend.shop-categories', ['catName' => $catName, 'products' => $products]);
     }
 
     public
@@ -190,11 +177,8 @@ class HomeGetController extends HomeController
         if (!is_null(PrBrand::where('slug', $brandName)->first())) {
             $getBrand = PrBrand::where('slug', $brandName)->first();
             $products = Product::where('pr_brand', $getBrand->id)->get();
-            $brands = PrBrand::all();
-            $categories = PrCategory::all();
-            $sizes = PrSize::all();
-            $colors = PrColor::all();
-            return view('frontend.shop-brand', ['getBrand' => $getBrand, 'products' => $products, 'brands' => $brands, 'categories' => $categories, 'sizes' => $sizes, 'colors' => $colors]);
+
+            return view('frontend.shop-brand', ['getBrand' => $getBrand, 'products' => $products]);
         } else {
             return redirect()->back();
         }
@@ -203,24 +187,18 @@ class HomeGetController extends HomeController
     public
     function get_product_size($sizeName)
     {
-        $getSizeId = PrSize::where('slug', $sizeName)->value('id');
-        $products = Product::where('pr_size', $getSizeId)->get();
-        $brands = PrBrand::all();
-        $categories = PrCategory::all();
-        $sizes = PrSize::all();
-        $colors = PrColor::all();
-        return view('frontend.shop-size', ['sizeName' => $sizeName, 'products' => $products, 'brands' => $brands, 'categories' => $categories, 'sizes' => $sizes, 'colors' => $colors]);
+        $getPrId = PrSize::where('size', $sizeName)->pluck('pr_id');
+        $products = Product::whereIn('id',$getPrId)->get();
+        return view('frontend.shop-size', ['sizeName' => $sizeName, 'products' => $products]);
     }
 
     public
-    function get_product_tags($tags)
+    function get_product_tags($selectedTags)
     {
-        $products = Product::where('pr_tags', 'LIKE', '%' . $tags . '%')->get();
-        $brands = PrBrand::all();
-        $categories = PrCategory::all();
-        $sizes = PrSize::all();
-        $colors = PrColor::all();
-        return view('frontend.shop-tags', ['tags' => $tags, 'products' => $products, 'brands' => $brands, 'categories' => $categories, 'sizes' => $sizes, 'colors' => $colors]);
+        $getProductId = PrTag::where('tag', 'LIKE', '%' . $selectedTags . '%')->first()->product_id;
+        $products = Product::where('id', $getProductId)->get();
+
+        return view('frontend.shop-tags', ['selectedTags' => $selectedTags, 'products' => $products]);
     }
 
 
@@ -333,12 +311,8 @@ class HomeGetController extends HomeController
     public
     function get_search(Request $request)
     {
-        $categories = PrCategory::all();
-        $brands = PrBrand::all();
-        $sizes = PrSize::all();
-        $colors = PrColor::all();
         $result = $request->get('result');
         $products = Product::where('pr_name', 'LIKE', $result . '%')->orderBy('id', 'desc')->get();
-        return view('frontend.search-result', ['products' => $products, 'brands' => $brands, 'categories' => $categories, 'sizes' => $sizes, 'colors' => $colors]);
+        return view('frontend.search-result', ['products' => $products]);
     }
 }

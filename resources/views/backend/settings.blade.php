@@ -28,10 +28,31 @@
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="x_panel">
                         <div class="x_content">
-
-
+                            <button id="mobileVersionBtn" class="btn btn-info pull-right" onclick="sH()">Menu</button>
                             <div class="" role="tabpanel" data-example-id="togglable-tabs">
-                                <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                                <ul id="myTab" class="mobileVersion" role="tablist">
+                                    <li role="presentation" class="active"><a href="#tab_general" id="general-tab"
+                                                                              role="tab" data-toggle="tab"
+                                                                              aria-expanded="true">General Settings</a>
+                                    </li>
+                                    <li role="presentation" class=""><a href="#tab_contact" role="tab" id="contact-tab"
+                                                                        data-toggle="tab"
+                                                                        aria-expanded="false">Contact Settings</a>
+                                    </li>
+                                    <li role="presentation" class=""><a href="#tab_sm" role="tab"
+                                                                        id="sm-tab" data-toggle="tab"
+                                                                        aria-expanded="false">Social Media Settings</a>
+                                    </li>
+                                    <li role="presentation" class=""><a href="#tab_google" role="tab"
+                                                                        id="google-tab" data-toggle="tab"
+                                                                        aria-expanded="false">Google API</a>
+                                    </li>
+                                    <li role="presentation" class=""><a href="#tab_mail" role="tab"
+                                                                        id="mail-tab" data-toggle="tab"
+                                                                        aria-expanded="false">Mail Settings</a>
+                                    </li>
+                                </ul>
+                                <ul id="myTab" class="nav nav-tabs bar_tabs hidden-md hidden-sm hidden-xs" role="tablist">
                                     <li role="presentation" class="active"><a href="#tab_general" id="general-tab"
                                                                               role="tab" data-toggle="tab"
                                                                               aria-expanded="true">General Settings</a>
@@ -70,23 +91,38 @@
                                                     @endforeach
                                                 </ul>
                                             @endif
-                                            <div class="form-group">
-                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Current
-                                                    Logo</label>
-                                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <img src="/uploads/img/{{$settings[0]->logo}}" alt="">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Current
+                                                        Header / Footer logo</label>
+                                                    <div class="col-md-3 col-sm-3 col-xs-6">
+                                                        <img src="/uploads/img/Logo/{{$settings[0]->header_logo}}" style="border:2px solid #ddd;padding:10px">
+                                                    </div>
+
+                                                    <div class="col-md-3 col-sm-3 col-xs-6">
+                                                        <img src="/uploads/img/Logo/{{$settings[0]->footer_logo}}" style="border:2px solid #ddd;padding:10px">
+                                                    </div>
                                                 </div>
-                                            </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                                    >Change Header Logo</label>
+                                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                                        <input type="file" id="header_logo" name="header_logo"
+                                                               class="form-control col-md-7 col-xs-12">
+                                                        <input type="hidden" name="prevLogo" value="{{$settings[0]->header_logo}}">
+                                                    </div>
+                                                </div>
 
                                             <div class="form-group">
                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12"
-                                                >Logo</label>
+                                                >Change Footer Logo</label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <input type="file" id="logo" name="logo"
+                                                    <input type="file" id="footer_logo" name="footer_logo"
                                                            class="form-control col-md-7 col-xs-12">
-                                                    <input type="hidden" name="prevLogo" value="{{$settings[0]->logo}}">
+                                                    <input type="hidden" name="prevFooterLogo" value="{{$settings[0]->footer_logo}}">
                                                 </div>
                                             </div>
+
                                             {{Form::bsText('title','Web Page Title',$settings[0]->title)}}
                                             {{Form::bsText('keywords','Keywords',$settings[0]->keywords)}}
                                             {{Form::bsText('description','Description',$settings[0]->description)}}
@@ -219,6 +255,55 @@
     <!-- Switchery -->
     <link href="/backend/vendors/switchery/dist/switchery.min.css" rel="stylesheet">
 
+    <style>
+        #mobileVersionBtn {
+            display: none;
+            z-index: 100;
+        }
+
+        .mobileVersion {
+            width: 100%;
+            height: auto;
+            right: 20px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            margin-top: 40px;
+            padding: 0;
+            display: none;
+
+        }
+
+        .mobileVersion li {
+            border-bottom: 1px solid #eee;
+            background: #4da5df;
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .mobileVersion a {
+            color: #fff !important;
+        }
+
+        .mobileVersion a:hover, .mobileVersion a:focus {
+            text-decoration: underline;
+        }
+
+        @media screen and (max-width: 1200px) {
+            .dt-buttons, #datatable-buttons_filter {
+                display: none;
+            }
+
+            #mobileVersionBtn {
+                display: block;
+            }
+        }
+    </style>
+
 @endsection
 
 @section('js')
@@ -235,15 +320,25 @@
                         response.processTitle,
                         response.processDesc,
                         response.processStatus
-                    )
+                    ).then(()=>{
+                        location.reload();
+                    })
 
                 }
             })
         })
     </script>
 
-    {{--Slider switch--}}
-    <script src="/backend/vendors/switchery/dist/switchery.min.js"></script>
-    {{--/Slider switch--}}
+    {{--Product page mobile version menu btn function--}}
+    <script !src="">
+        function sH() {
+            $('.mobileVersion').fadeToggle()
+        }
+
+        $('.mobileVersion  li a').on('click', function () {
+            $('.mobileVersion').fadeOut()
+        })
+    </script>
+    {{--/Product page mobile version menu btn function--}}
 
 @endsection

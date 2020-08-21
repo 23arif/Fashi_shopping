@@ -37,7 +37,8 @@
                     <div class="col-lg-4">
                         <a href="{{$banner->link}}">
                             <div class="single-banner">
-                                <img src="/uploads/img/Banners/{{$banner->image}}" alt="{{$banner->title}}" width="573" height="322">
+                                <img src="/uploads/img/Banners/{{$banner->image}}" alt="{{$banner->title}}" width="573"
+                                     height="322">
                                 <div class="inner-text">
                                     <h4>{{$banner->title}}</h4>
                                 </div>
@@ -162,7 +163,8 @@
                                     </div>
                                     <ul>
                                         {{--                                        <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>--}}
-                                        <li class="quick-view"><a href="shop/product-details/{{$product->slug}}">+ Quick View</a></li>
+                                        <li class="quick-view"><a href="shop/product-details/{{$product->slug}}">+ Quick
+                                                View</a></li>
                                     </ul>
                                 </div>
                                 <div class="pi-text">
@@ -196,40 +198,42 @@
     <!-- Latest Blog Section Begin -->
     <section class="latest-blog spad">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="section-title">
-                        <h2>From The Blog</h2>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                @foreach($fromTheBlog->sortByDesc('id')->take(3) as $blog)
-                    @foreach($photos = Storage::disk('uploads')->files('img/blog/'.$blog->slug) as $photo)
-                    @endforeach
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-latest-blog">
-                            <img src="/uploads/{{$photo}}" width="100" height="150" alt="{{$blog->title}}">
-                            <div class="latest-text">
-                                <div class="tag-list">
-                                    <div class="tag-item">
-                                        <i class="fa fa-calendar-o"></i>
-                                        {{$blog->created_at->formatLocalized('%d')}} {{$blog->created_at->formatLocalized('%b')}}
-                                        ,{{$blog->created_at->formatLocalized('%Y')}}
-                                    </div>
-                                    <div class="tag-item">
-                                        <i class="fa fa-comment-o"></i>
-                                        {{$blog->comments->count()}}
-                                    </div>
-                                </div>
-                                <a href="/blog/@if(isset($blog->parent))@php($primaryCategory=$blog->parent)@if(isset($primaryCategory->parent))@php($doubleprimaryCategory= $primaryCategory->parent)@if(isset($doubleprimaryCategory->parent)){{$doubleprimaryCategory->parent->slug}}/@endif{{$primaryCategory->parent->slug}}/@endif{{$blog->parent->slug}}/@endif{{$blog->slug}}">
-                                    <h4>{{$blog->title}}</h4>
-                                </a>
-                            </div>
+            @if(count($fromTheBlog)>0)
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="section-title">
+                            <h2>From The Blog</h2>
                         </div>
                     </div>
-                @endforeach
-            </div>
+                </div>
+                <div class="row">
+                    @foreach($fromTheBlog->sortByDesc('id')->take(3) as $blog)
+                        @foreach($photos = Storage::disk('uploads')->files('img/blog/'.$blog->slug) as $photo)
+                        @endforeach
+                        <div class="col-lg-4 col-md-6">
+                            <div class="single-latest-blog">
+                                <img src="/uploads/{{$photo}}" width="100" height="150" alt="{{$blog->title}}">
+                                <div class="latest-text">
+                                    <div class="tag-list">
+                                        <div class="tag-item">
+                                            <i class="fa fa-calendar-o"></i>
+                                            {{$blog->created_at->formatLocalized('%d')}} {{$blog->created_at->formatLocalized('%b')}}
+                                            ,{{$blog->created_at->formatLocalized('%Y')}}
+                                        </div>
+                                        <div class="tag-item">
+                                            <i class="fa fa-comment-o"></i>
+                                            {{$blog->comments->count()}}
+                                        </div>
+                                    </div>
+                                    <a href="/blog/@if(isset($blog->parent))@php($primaryCategory=$blog->parent)@if(isset($primaryCategory->parent))@php($doubleprimaryCategory= $primaryCategory->parent)@if(isset($doubleprimaryCategory->parent)){{$doubleprimaryCategory->parent->slug}}/@endif{{$primaryCategory->parent->slug}}/@endif{{$blog->parent->slug}}/@endif{{$blog->slug}}">
+                                        <h4>{{$blog->title}}</h4>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
             <div class="benefit-items">
                 <div class="row">
                     <div class="col-lg-4">

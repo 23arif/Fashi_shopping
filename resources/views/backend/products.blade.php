@@ -34,19 +34,15 @@
                                                                     data-toggle="tab"
                                                                     aria-expanded="false">Add Product Brand</a>
                                 </li>
-                                <li role="presentation" class=""><a href="#addPrSize" role="tab" id="add-tab"
-                                                                    data-toggle="tab"
-                                                                    aria-expanded="false">Add Product Size</a>
-                                </li>
                             </ul>
                             <ul id="myTab" class="nav nav-tabs bar_tabs hidden-md hidden-sm hidden-xs" role="tablist">
                                 <li role="presentation" class="active"><a href="#list" id="list-tab"
-                                                                    role="tab" data-toggle="tab"
-                                                                    aria-expanded="true">Products List</a>
+                                                                          role="tab" data-toggle="tab"
+                                                                          aria-expanded="true">Products List</a>
                                 </li>
                                 <li role="presentation" class=""><a href="#add" role="tab" id="add-tab"
-                                                                          data-toggle="tab"
-                                                                          aria-expanded="false">Add Product</a>
+                                                                    data-toggle="tab"
+                                                                    aria-expanded="false">Add Product</a>
                                 </li>
                                 <li role="presentation" class=""><a href="#addCategory" role="tab" id="add-tab"
                                                                     data-toggle="tab"
@@ -56,13 +52,9 @@
                                                                     data-toggle="tab"
                                                                     aria-expanded="false">Add Product Brand</a>
                                 </li>
-                                <li role="presentation" class=""><a href="#addPrSize" role="tab" id="add-tab"
-                                                                    data-toggle="tab"
-                                                                    aria-expanded="false">Add Product Size</a>
-                                </li>
                             </ul>
                             <div id="myTabContent" class="tab-content">
-                                <div role="tabpanel" class="tab-pane fade active in" id="list"
+                                <div role="tabpanel" class="tab-pane fade  active in" id="list"
                                      aria-labelledby="list-tab">
 
                                     <table id="datatable-buttons" class="table table-striped table-bordered">
@@ -75,7 +67,7 @@
                                             <th>Color</th>
                                             <th>Previous price</th>
                                             <th>Last price</th>
-                                            <th>Brend</th>
+                                            <th>Brand</th>
                                             <th>Size</th>
                                             <th>Edit</th>
                                             <th>Delete</th>
@@ -95,7 +87,12 @@
                                                 <td><strike>{{$product->pr_prev_price}}</strike></td>
                                                 <td>{{$product->pr_last_price}}</td>
                                                 <td>{{$product->prBrand->name}}</td>
-                                                <td>{{strtoupper($product->prSize->size)}}</td>
+                                                <td>
+                                                    @foreach($product->prSize as $s)
+                                                        {{ $loop->first ? '' : ', ' }}
+                                                        {{$s->size}}&nbsp;
+                                                    @endforeach
+                                                </td>
                                                 <td>
                                                     <a href="{{route('adminEditProduct',['slug'=>$product->slug])}}"
                                                        class="btn btn-primary">Edit</a>
@@ -150,13 +147,15 @@
                                         <div class="form-group">
                                             <label for="pr_size"
                                                    class="control-label col-md-3 col-sm-3 col-xs-12">Size *</label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <select class="form-control" name="pr_size">
-                                                    @foreach($sizes->sortBy('id') as $size)
-                                                        <option
-                                                            value="{{$size->id}}">{{strtoupper($size->size)}}</option>
-                                                    @endforeach
 
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <select class="form-control" name="pr_size[]" multiple>
+                                                    <option value="xs">XS</option>
+                                                    <option value="s">S</option>
+                                                    <option value="m">M</option>
+                                                    <option value="l">L</option>
+                                                    <option value="xl">XL</option>
+                                                    <option value="xxl">XXL</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -175,7 +174,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
 
                                         <div class="form-group">
                                             <label
@@ -244,7 +242,7 @@
                                                    class="control-label col-md-3 col-sm-3 col-xs-12">Products SKU
                                                 *</label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input type="text" id="pr_sku" name="pr_sku" class="form-control"
+                                                <input type="number" id="pr_sku" name="pr_sku" class="form-control"
                                                        required>
                                             </div>
                                         </div>
@@ -252,7 +250,8 @@
                                         <div class="ln_solid"></div>
                                         <div class="form-group">
                                             <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                                <button type="submit" class="btn btn-success">Save product
+                                                <button type="submit" class="btn btn-success">
+                                                    Save product
                                                 </button>
                                             </div>
                                         </div>
@@ -320,29 +319,6 @@
                                         <div class="form-group">
                                             <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                                                 <button type="submit" class="btn btn-success">Save brand
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div role="tabpanel" class="tab-pane fade" id="addPrSize"
-                                     aria-labelledby="add-tab">
-                                    <form method="post" id="productSizeForm" class="form-horizontal form-label-left">
-                                        {{csrf_field()}}
-
-                                        <div class="form-group">
-                                            <label for="size"
-                                                   class="control-label col-md-3 col-sm-3 col-xs-12">Size *</label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input type="text" id="size" name="size"
-                                                       class="form-control" required>
-                                            </div>
-                                        </div>
-
-                                        <div class="ln_solid"></div>
-                                        <div class="form-group">
-                                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                                <button type="submit" class="btn btn-success">Save size
                                                 </button>
                                             </div>
                                         </div>
@@ -567,7 +543,7 @@
                                 response.processTitle,
                                 response.processDesc,
                                 response.processStatus
-                                ).then(() => {
+                            ).then(() => {
                                 location.reload();
                             });
                         }
@@ -597,7 +573,7 @@
                         response.processTitle,
                         response.processDesc,
                         response.processStatus
-                        ).then(() => {
+                    ).then(() => {
                         if (response.processStatus == "success") {
                             location.reload();
                         }
@@ -675,7 +651,7 @@
             $('.mobileVersion').fadeToggle()
         }
 
-        $('.mobileVersion').on('click', function () {
+        $('.mobileVersion  li a').on('click', function () {
             $('.mobileVersion').fadeOut()
         })
     </script>

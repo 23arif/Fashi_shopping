@@ -53,12 +53,10 @@ class AdminGetController extends AdminController
 
     public function get_products()
     {
-        $tags = Product::pluck('pr_tags');
         $products = Product::all();
         $categories = PrCategory::all();
         $brands = PrBrand::all();
-        $sizes = PrSize::all();
-        return view('backend.products', ['tags' => $tags, 'products' => $products, 'categories' => $categories, 'brands' => $brands, 'sizes' => $sizes]);
+        return view('backend.products', ['products' => $products, 'categories' => $categories, 'brands' => $brands]);
     }
 
     public function edit_product($slug)

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePrSizeTable extends Migration
+class CreatePrTagsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreatePrSizeTable extends Migration
      */
     public function up()
     {
-        Schema::create('pr_size', function (Blueprint $table) {
+        Schema::create('pr_tags', function (Blueprint $table) {
             $table->id();
-            $table->integer('pr_id');
-            $table->string('size');
-            $table->string('slug');
+            $table->integer('product_id');
+            $table->string('tag')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreatePrSizeTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pr_size');
+        Schema::dropIfExists('pr_tags');
     }
 }

@@ -427,7 +427,7 @@ ol {
 }
 
 .inner-header .logo {
-    padding: 12px 0;
+    /*padding: 12px 0;*/
 }
 
 .inner-header .logo a {
@@ -1031,7 +1031,7 @@ ol {
 }
 
 .product-large {
-    width: 442px;
+    /*width: 442px;*/
     height: 500px;
     margin-left: -15px;
     margin-right: -15px;

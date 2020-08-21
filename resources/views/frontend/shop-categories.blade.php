@@ -62,12 +62,11 @@
                                                     <li class="w-icon active"><a href="#"><i
                                                                 class="icon_bag_alt"></i></a>
                                                     </li>
-                                                    <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                                    <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
+                                                    <li class="quick-view"><a href="{{route('getProductDetails',['slug'=>$product->slug])}}">+ Quick View</a></li>
                                                 </ul>
                                             </div>
                                             <div class="pi-text">
-                                                <a href="/shop/product-details/{{$product->slug}}">
+                                                <a href="{{route('getProductDetails',['slug'=>$product->slug])}}">
                                                     <div class="catagory-name">{{$product->pr_name}}</div>
                                                 </a>
                                                 <div class="product-price">

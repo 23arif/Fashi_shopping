@@ -23,9 +23,7 @@ class CreateProductsTable extends Migration
             $table->float('pr_prev_price');
             $table->float('pr_last_price');
             $table->integer('pr_brand');
-            $table->integer('pr_size');
             $table->float('pr_weight');
-            $table->string('pr_tags');
             $table->integer('pr_sku');
             $table->string('slug');
             $table->timestamps();

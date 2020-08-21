@@ -37,41 +37,70 @@ class AdminPostController extends AdminController
 {
     public function post_settings(Request $request)
     {
-        if (isset($request->logo)) {
+        if (isset($request->header_logo)) {
 
             $validator = Validator::make($request->all(), [
-                'logo' => 'mimes:jpg,jpeg,png,gif',
+                'header_logo' => 'mimes:jpg,jpeg,png,gif',
+                'footer_logo' => 'mimes:jpg,jpeg,png,gif',
+                'url' => 'required | max:190',
+                'title' => 'required | max:190',
+                'description' => 'required',
+                'keywords' => 'required | max:190',
+                'phone' => 'required | max:30',
+                'gsm' => 'required | max:30',
+                'faks' => 'required | max:30',
+                'mail' => 'required | max:190',
+                'address' => 'required | max:190',
+                'recapctha' => 'required | max:190',
+                'map' => 'required | max:190',
+                'analystic' => 'required | max:190',
+                'facebook' => ' max:190',
+                'twitter' => ' max:190',
+                'linkedin' => ' max:190',
+                'instagram' => ' max:190',
+                'youtube' => ' max:190',
+                'smtp_user' => 'required | max:190',
+                'smtp_password' => 'required | max:190',
+                'smtp_host' => 'required | max:190',
+                'smtp_port' => 'required | max:190',
             ]);
 
             if ($validator->fails()) {
-                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Images extentions must be "jpg,jpeg,png,gif" !']);
+                return response(['processStatus' => 'warning', 'processTitle' => 'Warning', 'processDesc' => 'Images extentions must be "jpg,jpeg,png,gif" !']);
             }
-            $logo = $request->file('logo');
-            $logo_extention = $request->file('logo')->getClientOriginalExtension();
-            $logo_name = 'logo.' . $logo_extention;
-            Storage::disk('uploads')->makeDirectory('img');
-            Image::make($logo->getRealPath())->resize(222, 108)->save('uploads/img/' . $logo_name);
+            $headerLogo = $request->file('header_logo');
+            $footerLogo = $request->file('footer_logo');
+            $headerLogoExtention = $request->file('header_logo')->getClientOriginalExtension();
+            $footerLogoExtention = $request->file('footer_logo')->getClientOriginalExtension();
+            $headerLogoName = 'header-logo.' . $headerLogoExtention;
+            $footerLogoName = 'footer-logo.' . $footerLogoExtention;
+            Storage::disk('uploads')->makeDirectory('img/Logo');
+            Image::make($headerLogo->getRealPath())->resize(150, 47)->save('uploads/img/Logo/' . $headerLogoName);
+            Image::make($footerLogo->getRealPath())->resize(90, 25)->save('uploads/img/Logo/' . $footerLogoName);
         }
         try {
-            $check = $request->slider;
-            if (!empty($check)) {
-                $request->merge(['slider' => '1']);
-            } else {
-                $request->merge(['slider' => '0']);
-            }
 
             unset($request['_token']);
-            if (isset($request->logo)) {
-                unset($request['prevLogo']);
+            if (isset($request->header_logo) || isset($request->footer_logo)) {
+                if (isset($request->header_logo)) {
+                    unset($request['prevLogo']);
 
-                Settings::where('id', 1)->update($request->all());
-                Settings::where('id', 1)->update(['logo' => $logo_name]);
+                    Settings::where('id', 1)->update($request->except('prevFooterLogo', 'header_logo', 'footer_logo'));
+                    Settings::where('id', 1)->update(['header_logo' => $headerLogoName]);
+                }
+                if (isset($request->footer_logo)) {
+                    unset($request['prevFooterLogo']);
+
+                    Settings::where('id', 1)->update($request->except('prevLogo', 'footer_logo', 'header_logo'));
+                    Settings::where('id', 1)->update(['footer_logo' => $footerLogoName]);
+                }
 
             } else {
-                $prevLogo = $request->prevLogo;
-                unset($request['prevLogo']);
+                $prevHeaderLogo = $request->prevLogo;
+                $prevFooterLogo = $request->prevFooterLogo;
+                unset($request['prevLogo'], $request['prevFooterLogo']);
                 Settings::where('id', 1)->update($request->all());
-                Settings::where('id', 1)->update(['logo' => $prevLogo]);
+                Settings::where('id', 1)->update(['header_logo' => $prevHeaderLogo, 'footer_logo' => $prevFooterLogo]);
             }
             return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Changes saved successfully !']);
 
@@ -203,21 +232,22 @@ class AdminPostController extends AdminController
         if ($request->pr_name) {
             $validator = Validator::make($request->all(), [
                 'photos.*' => 'mimes:jpeg,jpg,png',
-                'pr_category' => 'required | max:250',
-                'pr_brand' => 'required | max:250',
-                'pr_size' => 'required | max:250',
-                'pr_weight' => 'required | max:250',
-                'pr_name' => 'required | max:250',
+                'pr_category' => 'required | max:11',
+                'pr_brand' => 'required | max:11',
+                'pr_size' => 'required | max:11',
+                'pr_weight' => 'required ',
+                'pr_name' => 'required | max:190',
                 'pr_desc' => 'required',
-                'pr_color' => 'required | max:250',
-                'pr_tags' => 'required | max:250',
-                'pr_sku' => 'required | max:250',
-                'pr_last_price' => 'required | max:250',
+                'pr_color' => 'required | max:190',
+                'pr_tags' => 'required | max:190',
+                'pr_sku' => 'required | max:11',
+                'pr_last_price' => 'required',
 
             ]);
             if ($validator->fails()) {
-                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Fill the required fields !']);
+                return response(['processStatus' => 'warning', 'processTitle' => 'Warning', 'processDesc' => 'Fill the required fields !']);
             }
+
             foreach ($request->photos as $photo) {
                 $logo_extention = $photo->getClientOriginalExtension();
                 $date = Str::slug(Carbon::now());
@@ -229,7 +259,17 @@ class AdminPostController extends AdminController
 
             try {
                 $request->merge(['pr_prev_price' => $request->pr_last_price, 'slug' => $slug, 'seller_id' => Auth::id()]);
-                Product::create($request->all());
+                $tags = explode(',', $request->pr_tags);
+                $newProduct = Product::create($request->except('pr_tags'));
+                if ($newProduct) {
+                    foreach ($tags as $tag) {
+                        PrTag::create(['product_id' => $newProduct->id, 'tag' => $tag]);
+                    }
+                    foreach ($request->pr_size as $size) {
+                        $sizeSlug = Str::slug($size);
+                        PrSize::create(['pr_id' => $newProduct->id, 'size' => strtoupper($size), 'slug' => $sizeSlug]);
+                    }
+                }
                 return response(['processStatus' => 'success', 'processTitle' => 'Success', 'processDesc' => 'Congratulations , product added successfully !']);
             } catch (\Exception $e) {
                 return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Product could not added !', 'error' => $e]);
@@ -254,25 +294,6 @@ class AdminPostController extends AdminController
                 return response(['processStatus' => 'success', 'processTitle' => 'Success', 'processDesc' => 'Congratulations ,Product category created successfully !']);
             } catch (\Exception $e) {
                 return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Product Category could not created !', 'error' => $e]);
-            }
-        } elseif
-        ($request->size) {
-            $validator = Validator::make($request->all(), [
-                'size' => 'required|unique:pr_size'
-            ]);
-            if ($validator->fails()) {
-                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Fill the required fields correctly !']);
-            }
-
-            $slug = str::slug($request->size);
-
-
-            try {
-                $request->merge(['slug' => $slug]);
-                PrSize::create($request->all());
-                return response(['processStatus' => 'success', 'processTitle' => 'Success', 'processDesc' => 'Congratulations ,Product size created successfully !']);
-            } catch (\Exception $e) {
-                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Product size could not created !', 'error' => $e]);
             }
         } elseif
         ($request->brand_desc) {
@@ -300,6 +321,8 @@ class AdminPostController extends AdminController
                 Product::where('slug', $request->slug)->delete();
                 ProductComment::where('product_id', $getProductInfo->id)->delete();
                 Basket::where('product_id', $getProductInfo->id)->delete();
+                PrTag::where('product_id',$getProductInfo->id)->delete();
+                PrSize::where('pr_id',$getProductInfo->id)->delete();
                 return response(['processStatus' => 'success', 'processTitle' => 'Success', 'processDesc' => 'Congratulations ,Product deleted successfully !']);
             } catch (\Exception $e) {
                 return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Product could not deleted !', 'error' => $e]);
@@ -778,7 +801,7 @@ class AdminPostController extends AdminController
             return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Please fill all field correctly for update banner !']);
         }
         $date = Str::slug(Carbon::now());
-        $newslug = Str::slug($request->title).'-'.$date;
+        $newslug = Str::slug($request->title) . '-' . $date;
         $request->merge(['slug' => $newslug]);
 
         if (!empty($request->img)) {
@@ -787,7 +810,7 @@ class AdminPostController extends AdminController
             if ($deleteOldImage) {
                 $photo = $request->file('img');
                 $photo_extention = $request->file('img')->getClientOriginalExtension();
-                $photo_name = 'banner-' . $request->slug.'-'. $date . '.' . $photo_extention;
+                $photo_name = 'banner-' . $request->slug . '-' . $date . '.' . $photo_extention;
                 Storage::disk('uploads')->makeDirectory('img/Banners');
                 Image::make($photo->getRealPath())->resize(570, 503)->save('uploads/img/Banners/' . $photo_name);
             }

@@ -84,12 +84,10 @@
                                 {{--                                    </div>--}}
                                 {{--                                </div>--}}
                                 <div class="pd-size-choose">
-                                    @php($pr = explode(',',$products->pr_size))
-                                    @foreach($pr as $size)
+                                    @foreach($productSizes as $productSize)
                                         <div class="sc-item">
                                             <input type="radio" id="sm-size">
-                                            @php($sizeName = \App\PrSize::where('id',$size)->first())
-                                            <label for="sm-size">{{$sizeName->size}}</label>
+                                            <label for="sm-size">{{$productSize}}</label>
                                         </div>
                                     @endforeach
                                 </div>
@@ -109,7 +107,12 @@
                                 <ul class="pd-tags">
                                     <li><span>BRAND</span>: {{$products->prBrand->name}}</li>
                                     <li><span>CATEGORIES</span>: {{$products->prCategory->category_name}}</li>
-                                    <li><span>TAGS</span>: {{$products->pr_tags}}</li>
+                                    <li><span>TAGS</span>:
+                                        @foreach($products->prTags as $tag)
+                                            {{ $loop->first ? '' : ', ' }}
+                                            {{ucfirst($tag->tag)}}
+                                        @endforeach
+                                    </li>
                                 </ul>
                                 <div class="pd-share">
                                     <div class="p-code">Sku : #{{$products->pr_sku}}</div>
@@ -212,13 +215,20 @@
                                             <tr>
                                                 <td class="p-catagory">Weight</td>
                                                 <td>
-                                                    <div class="p-weight">{{$products->pr_weight}}</div>
+                                                    <div class="p-weight">
+                                                        {{number_format((float)$products->pr_weight,2,'.','')}} kq
+                                                    </div>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td class="p-catagory">Size</td>
                                                 <td>
-                                                    <div class="p-size">{{$products->prSize->size}}</div>
+                                                    <div class="p-size">
+                                                        @foreach($productSizes as $productSize)
+                                                            {{ $loop->first ? '' : ', ' }}
+                                                            {{$productSize}}
+                                                        @endforeach
+                                                    </div>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -350,52 +360,54 @@
     <!-- Product Shop Section End -->
 
     <!-- Related Products Section End -->
-    <div class="related-products spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="section-title">
-                        <h2>Related Products</h2>
+    @if(count($relatedProducts)>0)
+        <div class="related-products spad">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="section-title">
+                            <h2>Related Products</h2>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                @foreach($relatedProducts as $relatedProduct)
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                @foreach($photos = Storage::disk('uploads')->files('img/products/'.$relatedProduct->slug) as $photo)
-                                @endforeach
-                                <img src="/uploads/{{$photo}}" alt="{{$relatedProduct->pr_name}}">
-                                @if($relatedProduct->pr_last_price < $relatedProduct->pr_prev_price)
-                                    <div class="sale">Sale</div>
-                                @endif
-                                <div class="icon">
-                                    <i class="icon_heart_alt"></i>
-                                </div>
-                                <ul>
-                                    <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                    <li class="quick-view"><a href="{{$relatedProduct->slug}}">+ Quick View</a></li>
-                                </ul>
-                            </div>
-                            <div class="pi-text">
-                                <a href="{{$relatedProduct->slug}}">
-                                    <div class="catagory-name">{{$relatedProduct->pr_name}}</div>
-                                </a>
-                                <div class="product-price">
-                                    ${{$relatedProduct->pr_last_price}}
+                <div class="row">
+                    @foreach($relatedProducts as $relatedProduct)
+                        <div class="col-lg-3 col-sm-6">
+                            <div class="product-item">
+                                <div class="pi-pic">
+                                    @foreach($photos = Storage::disk('uploads')->files('img/products/'.$relatedProduct->slug) as $photo)
+                                    @endforeach
+                                    <img src="/uploads/{{$photo}}" alt="{{$relatedProduct->pr_name}}">
                                     @if($relatedProduct->pr_last_price < $relatedProduct->pr_prev_price)
-                                        <span>${{$relatedProduct->pr_prev_price}}</span>
+                                        <div class="sale">Sale</div>
                                     @endif
+                                    <div class="icon">
+                                        <i class="icon_heart_alt"></i>
+                                    </div>
+                                    <ul>
+                                        <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
+                                        <li class="quick-view"><a href="{{$relatedProduct->slug}}">+ Quick View</a></li>
+                                    </ul>
+                                </div>
+                                <div class="pi-text">
+                                    <a href="{{$relatedProduct->slug}}">
+                                        <div class="catagory-name">{{$relatedProduct->pr_name}}</div>
+                                    </a>
+                                    <div class="product-price">
+                                        ${{$relatedProduct->pr_last_price}}
+                                        @if($relatedProduct->pr_last_price < $relatedProduct->pr_prev_price)
+                                            <span>${{$relatedProduct->pr_prev_price}}</span>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                @endforeach
+                    @endforeach
 
+                </div>
             </div>
         </div>
-    </div>
+    @endif
     <!-- Related Products Section End -->
 @endsection
 

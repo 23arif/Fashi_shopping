@@ -29,7 +29,7 @@ Route::group(['prefix' => 'shop'], function () {
     Route::get('/', 'HomeGetController@get_shop')->name('shopPage');
     Route::post('/', 'HomePostController@post_add_to_cart_icon')->name('addToCartIcon');
     Route::post('/priceFilter', 'HomePostController@post_priceFilter')->name('priceFilter');
-    Route::get('/product-details/{slug}', 'HomeGetController@get_product_details');
+    Route::get('/product-details/{slug}', 'HomeGetController@get_product_details')->name('getProductDetails');
     Route::post('/product-details/{slug}', 'HomePostController@post_add_to_cart')->name('addToCart');
     Route::post('/product-details/{slug}/comment', 'HomePostController@post_product_comment')->name('productComment');
     Route::get('/category/{catName}', 'HomeGetController@get_product_category')->name('prCategory');
@@ -85,7 +85,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'Admin'], function () {
     });
     Route::group(['prefix' => 'products'], function () {
         Route::get('/', 'AdminGetController@get_products')->name('adminProductsPage');
-        Route::post('/', 'AdminPostController@post_products');
+        Route::post('/', 'AdminPostController@post_products')->name('adminPostProducts');
         Route::get('/edit-product/{slug}', 'AdminGetController@edit_product')->name('adminEditProduct');
         Route::post('/edit-product/{slug}', 'AdminPostController@post_edit_product')->name('adminPostEditProduct');
 

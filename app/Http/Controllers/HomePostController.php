@@ -151,16 +151,8 @@ class HomePostController extends HomeController
         $products = Product::whereBetween('pr_last_price', [intval($minamount), intval($maxamount)])->get();
 
 
-        $brands = PrBrand::all();
-        $categories = PrCategory::all();
-        $sizes = PrSize::all();
-        $colors = PrColor::all();
         return view('frontend.shop', [
             'filteredProducts' => $products,
-            'brands' => $brands,
-            'categories' => $categories,
-            'sizes' => $sizes,
-            'colors' => $colors,
             'filteredMaxAmount' => $maxamount,
             'filteredMinAmount' => $minamount
         ]);
