@@ -48,7 +48,7 @@ Route::group(['prefix' => 'shop'], function () {
 Route::group(['prefix' => 'blog'], function () {
     Route::get('/', 'HomeGetController@get_blog')->name('blogPage');
     Route::get('/author/{authorName}', 'HomeGetController@get_blog_author')->name('blogAuthorName');
-    Route::get('/tags/{tagName}', 'HomeGetController@get_blog_tags');
+    Route::get('/tags/{tagName}', 'HomeGetController@get_blog_tags')->name('blogTagsContent');
     Route::get('/search', 'HomeGetController@get_blog_search')->name('blogSearch');
     Route::get('/{slug}', 'HomeGetController@get_blog_content')->where('slug', '^[a-zA-Z0-9-_\/]+$');
     Route::post('/{slug}', 'HomePostController@post_blog_comment')->where('slug', '^[a-zA-Z0-9-_\/]+$');
@@ -94,7 +94,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'Admin'], function () {
         Route::get('/', 'AdminGetController@get_blog')->name('adminBlogPage');
         Route::post('/', 'AdminPostController@post_blog');
         Route::get('/edit-blog/{slug}', 'AdminGetController@get_edit_blog');
-        Route::post('/edit-blog/{slug}', 'AdminPostController@post_edit_blog');
+        Route::post('/edit-blog/{slug}', 'AdminPostController@post_edit_blog')->name('adminPostEditBlog');
     });
     Route::group(['prefix' => 'category'], function () {
         Route::get('/', 'AdminGetController@get_category')->name('adminCategoryPage');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Banner;
 use App\Basket;
 use App\Blog;
+use App\BlogTags;
 use App\Category;
 use App\Comment;
 use App\ContactComment;
@@ -115,15 +116,16 @@ class AdminPostController extends AdminController
 //        Add Blog Section
 
         if ($request->get('check') == 'blogForm') {
+
             $validator = Validator::make($request->all(), [
                 'photos[]' => 'nullable|mimes:jpg,jpeg,png,gif',
-                'title' => 'required|max:250',
-                'short_content' => 'max:250',
+                'title' => 'required|max:190',
+                'short_content' => 'max:190',
                 'description' => 'required',
-                'tags' => 'required|max:250',
+                'tags' => 'required|max:190',
             ]);
             if ($validator->fails()) {
-                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Fill the required fields !']);
+                return response(['processStatus' => 'warning', 'processTitle' => 'Warning', 'processDesc' => 'Fill the required fields !']);
             }
             $date = Str::slug(Carbon::now());
             $slug = Str::slug($request->title) . '-' . $date;
@@ -142,10 +144,14 @@ class AdminPostController extends AdminController
             }
 
             try {
-
+                $tags = explode(',', $request->tags);
                 $request->merge(['slug' => $slug, 'author' => $author]);
-
-                Blog::create($request->all());
+                $newBlog = Blog::create($request->except('tags'));
+                if ($newBlog) {
+                    foreach ($tags as $tag) {
+                        BlogTags::create(['blog_id' => $newBlog->id, 'tag' => $tag, 'slug' => Str::slug($tag)]);
+                    }
+                }
                 return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Blog added successfully !']);
             } catch (\Exception $e) {
                 return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Blog could not added !', $e]);
@@ -157,10 +163,12 @@ class AdminPostController extends AdminController
 //           Delete Blog Section
 
             try {
+                $getBlogInfo = Blog::where('slug', $request->slug)->first();
                 $deletingBlog = Blog::where('slug', $request->slug)->delete();
                 if ($deletingBlog) {
                     Storage::disk('uploads')->deleteDirectory('img/blog/' . $request->slug);
                     Comment::where('blog', $request->slug)->delete();
+                    BlogTags::where('blog_id', $getBlogInfo->id)->delete();
                     return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Blog deleted successfully !']);
                 }
             } catch (\Exception $e) {
@@ -172,58 +180,65 @@ class AdminPostController extends AdminController
 
     public function post_edit_blog($slug, Request $request)
     {
-        if (isset($request->photo)) {
-            try {
-                $getDirectoryName = explode('/', $request->photo, 4);
-                $allImagesQty = count(Storage::disk('uploads')->files('img/blog/' . $getDirectoryName[2]));
-                if ($allImagesQty > 1) {
-                    Storage::disk('uploads')->delete($request->photo);
-                    return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Image deleted successfully !']);
-                } else {
-                    return response(['processStatus' => 'info', 'processTitle' => 'Information', 'processDesc' => 'Blogs should have at least 1 picture !']);
+        if ($request->deletingTag) {
+            $deletingTag = Str::slug($request->deletingTag);
+            BlogTags::where('slug', $deletingTag)->delete();
+        } else {
+            if (isset($request->photo)) {
+                try {
+                    $getDirectoryName = explode('/', $request->photo, 4);
+                    $allImagesQty = count(Storage::disk('uploads')->files('img/blog/' . $getDirectoryName[2]));
+                    if ($allImagesQty > 1) {
+                        Storage::disk('uploads')->delete($request->photo);
+                        return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Image deleted successfully !']);
+                    } else {
+                        return response(['processStatus' => 'info', 'processTitle' => 'Information', 'processDesc' => 'Blogs should have at least 1 picture !']);
+                    }
+                } catch (\Exception $e) {
+                    return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Image could not deleted !', 'error' => $e]);
                 }
-            } catch (\Exception $e) {
-                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Image could not deleted !', 'error' => $e]);
-            }
 
-        }
-        $validator = Validator::make($request->all(), [
-            'photos[].' => 'image|mimes:jpg,jpeg,png,gif',
-            'title' => 'required|max:250',
-            'short_content' => 'max:250',
-            'description' => 'required',
-            'tags' => 'required|max:250',
-            'category' => 'required',
-        ]);
-        if ($validator->fails()) {
-            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Fill the required fields !']);
-        }
-        if (!isset($request->photo)) {
-            $photos = $request->file('photos');
-            if (!empty($photos)) {
-                foreach ($photos as $photo) {
-                    $photo_extention = $photo->getClientOriginalExtension();
-                    $photo_name = rand(1, 9999) . rand(1, 9999) . rand(1, 9999) . '.' . $photo_extention;
-                    Storage::disk('uploads')->makeDirectory('img/blog/' . $slug);
-                    Storage::disk('uploads')->put('img/blog/' . $slug . '/' . $photo_name, file_get_contents($photo));
+            }
+            $validator = Validator::make($request->all(), [
+                'photos[].' => 'image|mimes:jpg,jpeg,png,gif',
+                'title' => 'required|max:250',
+                'short_content' => 'max:250',
+                'description' => 'required',
+                'tags' => 'required|max:250',
+                'category' => 'required',
+            ]);
+            if ($validator->fails()) {
+                return response(['processStatus' => 'warning', 'processTitle' => 'Warning', 'processDesc' => 'Fill the required fields !']);
+            }
+            if (!isset($request->photo)) {
+                $photos = $request->file('photos');
+                if (!empty($photos)) {
+                    foreach ($photos as $photo) {
+                        $photo_extention = $photo->getClientOriginalExtension();
+                        $photo_name = rand(1, 9999) . rand(1, 9999) . rand(1, 9999) . '.' . $photo_extention;
+                        Storage::disk('uploads')->makeDirectory('img/blog/' . $slug);
+                        Storage::disk('uploads')->put('img/blog/' . $slug . '/' . $photo_name, file_get_contents($photo));
+                    }
                 }
+
+                try {
+                    unset($request['_token']);
+                    $tags = explode(',', $request->tags);
+                    $getBlogId = Blog::where('slug', $slug)->first()->id;
+                    $updateBlog = Blog::where('slug', $slug)->update($request->except('tags', 'photos'));
+                    if ($updateBlog) {
+                        BlogTags::where('blog_id', $getBlogId)->delete();
+                        foreach ($tags as $tag) {
+                            BlogTags::create(['blog_id' => $getBlogId, 'tag' => $tag, 'slug' => Str::slug($tag)]);
+                        }
+                    }
+                    return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Blog updated successfully !']);
+
+                } catch (\Exception $e) {
+                    return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Blog could not updated !', 'error' => $e]);
+                }
+
             }
-
-            try {
-                Blog::where('slug', $slug)->update([
-                    'title' => $request->title,
-                    'short_content' => $request->short_content,
-                    'description' => $request->description,
-                    'tags' => $request->tags,
-                    'category' => $request->category,
-                ]);
-                return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Blog updated successfully !']);
-
-            } catch (\Exception $e) {
-                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Blog could not updated !', 'error' => $e]);
-            }
-
-
         }
     }
 
@@ -263,7 +278,7 @@ class AdminPostController extends AdminController
                 $newProduct = Product::create($request->except('pr_tags'));
                 if ($newProduct) {
                     foreach ($tags as $tag) {
-                        PrTag::create(['product_id' => $newProduct->id, 'tag' => $tag]);
+                        PrTag::create(['product_id' => $newProduct->id, 'tag' => $tag, 'slug' => Str::slug($tag)]);
                     }
                     foreach ($request->pr_size as $size) {
                         $sizeSlug = Str::slug($size);
@@ -321,8 +336,8 @@ class AdminPostController extends AdminController
                 Product::where('slug', $request->slug)->delete();
                 ProductComment::where('product_id', $getProductInfo->id)->delete();
                 Basket::where('product_id', $getProductInfo->id)->delete();
-                PrTag::where('product_id',$getProductInfo->id)->delete();
-                PrSize::where('pr_id',$getProductInfo->id)->delete();
+                PrTag::where('product_id', $getProductInfo->id)->delete();
+                PrSize::where('pr_id', $getProductInfo->id)->delete();
                 return response(['processStatus' => 'success', 'processTitle' => 'Success', 'processDesc' => 'Congratulations ,Product deleted successfully !']);
             } catch (\Exception $e) {
                 return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Product could not deleted !', 'error' => $e]);
@@ -345,6 +360,9 @@ class AdminPostController extends AdminController
             } catch (\Exception $e) {
                 return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Image could not deleted !', 'error' => $e]);
             }
+        } elseif ($request->deletingTag) {
+            $deletingTag = Str::slug($request->deletingTag);
+            PrTag::where('slug', $deletingTag)->delete();
         } else {
             $validator = Validator::make($request->all(), [
                 'photos[].' => 'mimes:jpeg,jpg,png',
@@ -361,7 +379,7 @@ class AdminPostController extends AdminController
 
             ]);
             if ($validator->fails()) {
-                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Fill the required fields !']);
+                return response(['processStatus' => 'warning', 'processTitle' => 'Warning', 'processDesc' => 'Fill the required fields !']);
             }
 
             $photos = $request->file('photos');
@@ -378,7 +396,21 @@ class AdminPostController extends AdminController
                 }
                 $pr_prev_price = Product::where('slug', $slug)->first()->pr_last_price;
                 $request->merge(['pr_prev_price' => $pr_prev_price]);
-                Product::where('slug', $slug)->update($request->except('photos'));
+                $tags = explode(',', $request->pr_tags);
+                $getPrId = Product::where('slug', $slug)->first()->id;
+                $updateProduct = Product::where('slug', $slug)->update($request->except('photos', 'pr_tags', 'pr_size'));
+                if ($updateProduct) {
+                    PrTag::where('product_id', $getPrId)->delete();
+                    foreach ($tags as $tag) {
+                        PrTag::create(['product_id' => $getPrId, 'tag' => $tag, 'slug' => Str::slug($tag)]);
+                    }
+
+                    PrSize::where('pr_id', $getPrId)->delete();
+                    foreach ($request->pr_size as $size) {
+                        $sizeSlug = Str::slug($size);
+                        PrSize::create(['pr_id' => $getPrId, 'size' => strtoupper($size), 'slug' => $sizeSlug]);
+                    }
+                }
                 return response(['processStatus' => 'success', 'processTitle' => 'Success', 'processDesc' => 'Congratulations , product updated successfully !']);
             } catch (\Exception $e) {
                 return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Product could not added !', 'error' => $e]);

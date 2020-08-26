@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
              DealsSeed::class,
              BannerSeed::class,
              LocalSeed::class,
+             UserStatusesSeed::class,
          ]);
     }
 }

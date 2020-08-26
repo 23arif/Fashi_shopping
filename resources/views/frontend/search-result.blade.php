@@ -50,12 +50,6 @@
                                                     <i class="icon_heart_alt"></i>
                                                 </div>
                                                 <ul>
-                                                    <li class="w-icon active">
-                                                        <a onclick="addToCartIconFnc('{{$product->slug}}')"
-                                                           style="cursor: pointer">
-                                                            <i class="icon_bag_alt"></i>
-                                                        </a>
-                                                    </li>
                                                     <li class="quick-view"><a href="#">+ Quick View</a></li>
                                                 </ul>
                                             </div>
@@ -139,50 +133,7 @@
     <script src="/js/sweetalert2.min.js"></script>
 
     <script !src="">
-        var basketCounter = parseInt($('#basketCounter').html());
-
-        function addToCartIconFnc(slug) {
-            var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-            $.ajax({
-                type: 'POST',
-                url: '{{route('addToCartIcon')}}',
-
-                data: {
-                    'slug': slug,
-                    '_token': CSRF_TOKEN
-                },
-                success: function (response) {
-                    if (response.increase) {
-                        basketCounter += 1;
-                        $('#basketCounter').html(basketCounter);
-                    }
-                    Swal.fire({
-                        title: 'A new item has been added to your Shopping Cart.',
-                        icon: 'success',
-                        html: 'You now have ' + basketCounter + ' items in your Shopping Cart.',
-                        showCloseButton: true,
-                        showCancelButton: true,
-                        focusConfirm: false,
-                        confirmButtonColor: '#f39313',
-                        confirmButtonText:
-                            'View Shopping Cart',
-                        cancelButtonText:
-                            'Countinue Shopping',
-                        customClass: 'swal-wide'
-                    }).then(function (result) {
-                        if (result.value) {
-                            location.href = '{{route('shoppingCartPage')}}'
-                        }
-                    })
-                    if (basketCounter > 0) {
-                        $('#cartEmptyAlert').hide()
-                    }
-                }
-            })
-        }
-
-
-        // Change price filter number to filtered number
+            // Change price filter number to filtered number
             @if(isset($filteredMaxAmount))
         var filteredMaxNumber = '${{$filteredMaxAmount}}';
         var filteredMinNumber = '${{$filteredMinAmount}}';

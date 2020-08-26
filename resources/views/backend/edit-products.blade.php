@@ -104,17 +104,28 @@
                                 <div class="form-group">
                                     <label for="pr_size"
                                            class="control-label col-md-3 col-sm-3 col-xs-12">Size *</label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <select class="form-control" name="pr_size">
-                                            <option
-                                                value="{{$product->prSize->id}}">{{strtoupper($product->prSize->size)}}</option>
-                                            @foreach($sizes->sortBy('id') as $size)
-                                                @if(strtoupper($size->size) !=strtoupper($product->prSize->size))
-                                                    <option
-                                                        value="{{$size->id}}">{{strtoupper($size->size)}}</option>
-                                                @endif
-                                            @endforeach
+                                    {{--                                    <div class="col-md-6 col-sm-6 col-xs-12">--}}
+                                    {{--                                        <select class="form-control" name="pr_size">--}}
+                                    {{--                                            <option--}}
+                                    {{--                                                value="{{$product->prSize->id}}">{{strtoupper($product->prSize->size)}}</option>--}}
+                                    {{--                                            @foreach($sizes->sortBy('id') as $size)--}}
+                                    {{--                                                @if(strtoupper($size->size) !=strtoupper($product->prSize->size))--}}
+                                    {{--                                                    <option--}}
+                                    {{--                                                        value="{{$size->id}}">{{strtoupper($size->size)}}</option>--}}
+                                    {{--                                                @endif--}}
+                                    {{--                                            @endforeach--}}
 
+                                    {{--                                        </select>--}}
+                                    {{--                                    </div>--}}
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <select class="form-control" name="pr_size[]" multiple>
+                                            <option value="xs">XS</option>
+                                            <option value="s">S</option>
+                                            <option value="m">M</option>
+                                            <option value="l">L</option>
+                                            <option value="xl">XL</option>
+                                            <option value="xxl">XXL</option>
+                                            <option value="xxxl">XXXL</option>
                                         </select>
                                     </div>
                                 </div>
@@ -123,16 +134,18 @@
                                     <label for="pr_desc"
                                            class="control-label col-md-3 col-sm-3 col-xs-12">Description *</label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <textarea name="pr_desc" id="pr_desc" rows="5"
-                                                          class="form-control col-md-6 col-sm-6 col-xs-12 ckeditor">{{$product->pr_desc}}</textarea>
+                                    <textarea name="pr_desc" id="pr_desc" rows="5"
+                                              class="form-control col-md-6 col-sm-6 col-xs-12 ckeditor">{{$product->pr_desc}}</textarea>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="tags_1" class="control-label col-md-3 col-sm-3 col-xs-12">Product Tags*</label>
+                                    <label for="tags"
+                                           class="control-label col-md-3 col-sm-3 col-xs-12">Tags *</label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <input name="pr_tags" id="tags_1" type="text"
-                                               class="tags form-control" value="{{$product->pr_tags}}"/>
+                                        <input type="text" id="tags"
+                                               class="form-control col-md-6 col-sm-6 col-xs-12" name="pr_tags"
+                                               value="{{(new App\Http\Controllers\AdminGetController)->getTags($product->prTags)}}" data-role="tagsinput">
                                     </div>
                                 </div>
 
@@ -210,6 +223,10 @@
     <link href="/backend/vendors/mjolnic-bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css" rel="stylesheet">
     <link href="/backend/vendors/cropper/dist/cropper.min.css" rel="stylesheet">
     <!--/Bootstrap Colorpicker -->
+
+    {{--    Bootstap Tags Input--}}
+    <link rel="stylesheet" href="\bootstrap-tagsinput-latest\src\bootstrap-tagsinput.css">
+    {{--/Bootstap Tags Input--}}
 @endsection
 
 @section('js')
@@ -275,28 +292,6 @@
     <script src="/js/ckeditor/ckeditor.js"></script>
     {{--/Ckeditor--}}
 
-    <!-- jQuery Tags Input -->
-    <script src="/backend/vendors/jquery.tagsinput/src/jquery.tagsinput.js"></script>
-    <script>
-        function onAddTag(tag) {
-            alert("Added a tag: " + tag);
-        }
-
-        function onRemoveTag(tag) {
-            alert("Removed a tag: " + tag);
-        }
-
-        function onChangeTag(input, tag) {
-            alert("Changed a tag: " + tag);
-        }
-
-        $(document).ready(function () {
-            $('#tags_1').tagsInput({
-                width: 'auto'
-            });
-        });
-    </script>
-    <!-- /jQuery Tags Input -->
 
     <!-- Bootstrap Colorpicker -->
     <script src="/backend/vendors/mjolnic-bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
@@ -320,13 +315,8 @@
     </script>
     <!-- /Bootstrap Colorpicker -->
 
-    {{--Price input field--}}
-    <script>
-        webshims.setOptions('forms-ext', {
-            replaceUI: 'auto',
-            types: 'number'
-        });
-        webshims.polyfill('forms forms-ext');
-    </script>
-    {{--/Price input field--}}
+    {{--    Bootstrap Tags Input--}}
+    <script src="\bootstrap-tagsinput-latest\src\bootstrap-tagsinput.js"></script>
+    {{--/    Bootstrap Tags Input--}}
+
 @endsection

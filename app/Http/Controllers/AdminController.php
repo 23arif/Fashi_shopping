@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use Illuminate\Contracts\View\View;
+use App\Settings;
+use Illuminate\Support\Facades\View;
 
 class AdminController extends Controller
 {
@@ -15,6 +15,11 @@ class AdminController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $settings = Settings::all();
+
+        View::share([
+            'settings' => $settings,
+        ]);
     }
 
     /**

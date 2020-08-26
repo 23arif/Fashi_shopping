@@ -40,7 +40,7 @@
                                 <tbody>
                                 @foreach($orders as $order)
                                     <tr>
-                                        <td class=" first-row">{{$order->order_no}}</td>
+                                        <td class=" first-row">#{{$order->order_no}}</td>
                                         <td class=" first-row">
                                             ${{number_format((float)$order->order_total,2,'.','')}}</td>
                                         <td class=" first-row">{{$order->created_at->formatLocalized('%d')}} {{$order->created_at->formatLocalized('%b')}}

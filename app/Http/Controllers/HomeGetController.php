@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Banner;
 use App\Basket;
 use App\Blog;
+use App\BlogTags;
 use App\Category;
 use App\FAQs;
 use App\FaqTopic;
@@ -76,9 +77,16 @@ class HomeGetController extends HomeController
 
     public function get_blog_tags($tagName)
     {
-        $blogs = Blog::where('tags', 'LIKE', '%' . $tagName . '%')->orderBy('id', 'desc')->get();
+        $blogId = BlogTags::where('slug',$tagName)->first()->blog_id;
+        $blogs = Blog::where('id',$blogId)->orderBy('id', 'desc')->get();
+        $recentBlogs = Blog::orderBy('id', 'desc')->get();
         $categories = Category::where('up_category', '0')->get();
-        return view('frontend.blog')->with('blogs', $blogs)->with('categories', $categories);
+        return view('frontend.blog', ['blogs' => $blogs,
+            'categories' => $categories,
+            'recentBlogs' => $recentBlogs,
+            'blogs'=>$blogs
+        ]);
+
     }
 
     public function get_blog_content($slug)
@@ -130,7 +138,7 @@ class HomeGetController extends HomeController
             $comments = ProductComment::where('product_id', $products->id)->get();
             $relatedProducts = Product::where('pr_category', $products->pr_category)->where('slug', '!=', $slug)->get();
             $productRating = round(ProductComment::where('product_id', $products->id)->avg('rating'));
-            $productSizes = PrSize::where('pr_id', $products->id)->pluck('size');
+            $productSizes = PrSize::where('pr_id', $products->id)->get('size');
             return view('frontend.product', [
                 'products' => $products,
                 'payments' => $payments,

@@ -203,14 +203,6 @@
                                     {{csrf_field()}}
                                     <div id="reply"></div>
                                     <div class="row">
-                                        @if(!\Illuminate\Support\Facades\Auth::check())
-                                            <div class="col-lg-6">
-                                                <input type="text" placeholder="Name *" name="name" id="name">
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <input type="text" placeholder="Email *" name="email" id="email">
-                                            </div>
-                                        @endif
                                         <div class="col-lg-12">
                                                 <textarea placeholder="Comment *" name="content"
                                                           id="content"></textarea>
@@ -300,13 +292,7 @@
                     scrollTop: $(".leave-comment").offset().top
                 },
                 'slow');
-            @if(\Illuminate\Support\Facades\Auth::check())
             $('#content').focus().css('border', '2px solid #f39313');
-            @else
-            $('#name').focus();
-            $('#name , #email , #content').css('border', '2px solid #f39313');
-            @endif
-
         }
 
         $(document).ready(function () {

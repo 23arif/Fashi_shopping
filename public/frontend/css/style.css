@@ -422,6 +422,10 @@ ol {
     margin-left: 15px;
 }
 
+.header-top .ht-right .top-social a i:hover {
+    color: #e7ab3c;
+}
+
 .inner-header {
     padding: 39px 0;
 }
@@ -4439,7 +4443,8 @@ ol {
         padding-left: 15px;
         padding-right: 15px;
     }
-    .leave-comment .customize{
+
+    .leave-comment .customize {
         display: inherit;
     }
 }

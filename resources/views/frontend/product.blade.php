@@ -1,6 +1,7 @@
 @extends('frontend.app')
 @section('icerik')
     <title>Fashi | Product</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Breadcrumb Section Begin -->
     <div class="breacrumb-section">
         <div class="container">
@@ -83,16 +84,18 @@
                                 {{--                                        </div>--}}
                                 {{--                                    </div>--}}
                                 {{--                                </div>--}}
+                                <form action="{{route('addToCart',['slug'=>$products->slug])}}" method="post">
+
                                 <div class="pd-size-choose">
                                     @foreach($productSizes as $productSize)
                                         <div class="sc-item">
-                                            <input type="radio" id="sm-size">
-                                            <label for="sm-size">{{$productSize}}</label>
+                                            <input type="radio" id="{{$productSize->size}}_size" name="pr_size" value="{{$productSize->size}}">
+                                            <label for="{{$productSize->size}}_size" >{{$productSize->size}}</label>
                                         </div>
                                     @endforeach
                                 </div>
 
-                                <form action="{{route('addToCart',['slug'=>$products->slug])}}" method="post">
+{{--                                <form action="{{route('addToCart',['slug'=>$products->slug])}}" method="post">--}}
                                     @csrf
                                     <div class="quantity">
                                         <div class="pro-qty">
@@ -226,7 +229,7 @@
                                                     <div class="p-size">
                                                         @foreach($productSizes as $productSize)
                                                             {{ $loop->first ? '' : ', ' }}
-                                                            {{$productSize}}
+                                                            {{$productSize->size}}
                                                         @endforeach
                                                     </div>
                                                 </td>
@@ -509,76 +512,5 @@
                 }
             })
         })
-
-
-        // $(document).ready(function () {
-        //     $('.comment-form').ajaxForm({
-        //         success: function (response) {
-        //             Swal.fire(
-        //                 response.processTitle,
-        //                 response.processDesc,
-        //                 response.processStatus
-        //             )
-        //                 .then(function () {
-        //                     var repliedComment = $('#reply input').val();
-        //
-        //                     if ($('#reply input').attr('name') == 'primary_comment') {
-        //                         $('html,body').animate({
-        //                                 scrollTop: $('#' + repliedComment).offset().top
-        //                             },
-        //                             'slow');
-        //                     } else {
-        //                         $('html,body').animate({
-        //                                 scrollTop: $("#comments").offset().top
-        //                             },
-        //                             'slow');
-        //                     }
-        //                 })
-        //             if (response.processStatus == 'success') {
-        //                 var content = document.getElementById('content').value;
-        //                 if ($('#reply input').attr('name') == 'primary_comment') {
-        //                     var repliedComment = $('#reply input').val();
-        //                     var comment = '<div class="card card-inner">' +
-        //                         '<div class="card-body" style="border:1px solid #f39313!important">' +
-        //                         '<div class="row">' +
-        //                         '<div class="col-md-2">' +
-        //                         '<img src="/uploads/img/profileImages/default.png" class="img img-rounded img-fluid"/>' +
-        //                         '<p class="text-secondary text-center" style="font-size: 13px"><i class="fa fa-clock-o"> </i> Just now</p>' +
-        //                         '</div>' +
-        //                         '<div class="col-md-10">' +
-        //                         '<p>' +
-        //                         '<p style="color:#f39313"><strong>You</strong></p>' +
-        //                         '</p>' +
-        //                         '<p>' + content + '</p>' +
-        //                         '</div>' +
-        //                         '</div>' +
-        //                         '</div>' +
-        //                         '</div>';
-        //                     document.getElementById(repliedComment).innerHTML = comment;
-        //
-        //                 } else {
-        //                     var comment = '<div class="card">' +
-        //                         '<div class="card-body" style="border:1px solid #f39313!important">' +
-        //                         '<div class="row">' +
-        //                         '<div class="col-md-2">' +
-        //                         '<img src="/uploads/img/profileImages/default.png" class="img img-rounded img-fluid"/>' +
-        //                         '<p class="text-secondary text-center" style="font-size: 13px"><i class="fa fa-clock-o"> </i> Just now</p>' +
-        //                         '</div>' +
-        //                         '<div class="col-md-10">' +
-        //                         '<p>' +
-        //                         '<p style="color:#f39313"><strong>You</strong></p>' +
-        //                         '</p>' +
-        //                         '<p>' + content + '</p>' +
-        //                         '</div>' +
-        //                         '</div>' +
-        //                         '</div>' +
-        //                         '</div>';
-        //                     document.getElementById('comments').innerHTML = comment;
-        //                 }
-        //
-        //             }
-        //         }
-        //     })
-        // })
     </script>
 @endsection

@@ -31,6 +31,7 @@
                                 <th class="p-name">Product Name</th>
                                 <th>Price</th>
                                 <th>Quantity</th>
+                                <th>Size</th>
                                 <th>Total</th>
                                 <th><i class="ti-close"></i></th>
                             </tr>
@@ -60,6 +61,9 @@
                                                           onclick="incQtyy(this,'{{$fetch->product_id}}')">+</span>
                                                 </div>
                                             </div>
+                                        </td>
+                                        <td class="cart-title first-row text-center">
+                                            <h5><b>{{$fetch->pr_size}}</b></h5>
                                         </td>
                                         @php($eachTotal = intval($fetch->quantity) * $fetch->getProductInfo->pr_last_price)
                                         <td class="total-price first-row">$ {{$eachTotal}}</td>

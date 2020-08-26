@@ -59,9 +59,6 @@
                                                     <i class="icon_heart_alt"></i>
                                                 </div>
                                                 <ul>
-                                                    <li class="w-icon active"><a href="#"><i
-                                                                class="icon_bag_alt"></i></a>
-                                                    </li>
                                                     <li class="quick-view"><a href="{{route('getProductDetails',['slug'=>$product->slug])}}">+ Quick View</a></li>
                                                 </ul>
                                             </div>

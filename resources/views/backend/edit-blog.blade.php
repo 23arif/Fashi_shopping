@@ -60,21 +60,25 @@
                                            class="control-label col-md-3 col-sm-3 col-xs-12">Categories *</label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <select class="form-control" name="category">
+                                            <option value="{{$blog->category}}"
+                                                    selected>{{$blog->blogCategory->name}}</option>
                                             <option value="0">Other category</option>
                                             @foreach($categories as $category)
-                                                <option
-                                                    value="{{$category->id}}">{{$category->name}}</option>
-                                                @foreach($category->child as $secondary_category)
+                                                @if($category->id != $blog->category)
                                                     <option
-                                                        value="{{$secondary_category->id}}">{{$category->name}}
-                                                        -->{{$secondary_category->name}}</option>
-                                                    @foreach($secondary_category->child as $double_sec_category)
+                                                        value="{{$category->id}}">{{$category->name}}</option>
+                                                    @foreach($category->child as $secondary_category)
                                                         <option
-                                                            value="{{$double_sec_category->id}}">{{$category->name}}
-                                                            -->{{$secondary_category->name}}
-                                                            -->{{$double_sec_category->name}}</option>
+                                                            value="{{$secondary_category->id}}">{{$category->name}}
+                                                            -->{{$secondary_category->name}}</option>
+                                                        @foreach($secondary_category->child as $double_sec_category)
+                                                            <option
+                                                                value="{{$double_sec_category->id}}">{{$category->name}}
+                                                                -->{{$secondary_category->name}}
+                                                                -->{{$double_sec_category->name}}</option>
+                                                        @endforeach
                                                     @endforeach
-                                                @endforeach
+                                                @endif
                                             @endforeach
 
 
@@ -103,11 +107,14 @@
                                                           class="form-control col-md-6 col-sm-6 col-xs-12 ckeditor">{{$blog->description}}</textarea>
                                     </div>
                                 </div>
+
                                 <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tags *</label>
+                                    <label for="tags"
+                                           class="control-label col-md-3 col-sm-3 col-xs-12">Tags *</label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <input id="tags_1" type="text" class="tags form-control" name="tags"
-                                               value="{{$blog->tags}}"/>
+                                        <input type="text" id="tags"
+                                               class="form-control col-md-6 col-sm-6 col-xs-12" name="tags"
+                                               value="{{(new App\Http\Controllers\AdminGetController)->getTags($blog->blogTags)}}" data-role="tagsinput">
                                     </div>
                                 </div>
 
@@ -133,6 +140,11 @@
     <link rel="stylesheet" href="/css/sweetalert2.min.css">
     <link rel="stylesheet" href="/css/projectCustom.css">
     {{--/Sweet Alert--}}
+
+    {{--    Bootstap Tags Input--}}
+    <link rel="stylesheet" href="/bootstrap-tagsinput-latest/src/bootstrap-tagsinput.css">
+    {{--/Bootstap Tags Input--}}
+
 @endsection
 
 @section('js')
@@ -155,7 +167,7 @@
                         response.processTitle,
                         response.processDesc,
                         response.processStatus
-                        ).then(() => {
+                    ).then(() => {
                         if (response.processStatus == "success") {
                             location.reload();
                         }
@@ -183,7 +195,7 @@
                         response.processTitle,
                         response.processDesc,
                         response.processStatus
-                        ).then(() => {
+                    ).then(() => {
                         if (response.processStatus == "success") {
                             location.href = '{{route("adminBlogPage")}}';
                         }
@@ -198,26 +210,8 @@
     <script src="/js/ckeditor/ckeditor.js"></script>
     {{--/Ckeditor--}}
 
-    <!-- jQuery Tags Input -->
-    <script src="/backend/vendors/jquery.tagsinput/src/jquery.tagsinput.js"></script>
-    <script>
-        function onAddTag(tag) {
-            alert("Added a tag: " + tag);
-        }
+    {{--    Bootstrap Tags Input--}}
+    <script src="/bootstrap-tagsinput-latest/src/bootstrap-tagsinput.js"></script>
+    {{--/    Bootstrap Tags Input--}}
 
-        function onRemoveTag(tag) {
-            alert("Removed a tag: " + tag);
-        }
-
-        function onChangeTag(input, tag) {
-            alert("Changed a tag: " + tag);
-        }
-
-        $(document).ready(function () {
-            $('#tags_1').tagsInput({
-                width: 'auto'
-            });
-        });
-    </script>
-    <!-- /jQuery Tags Input -->
 @endsection

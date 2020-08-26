@@ -10,17 +10,12 @@ use App\FaqTopic;
 use App\Order;
 use App\OrderBilling;
 use App\OrderDetail;
-use App\PrBrand;
-use App\PrCategory;
-use App\PrColor;
 use App\Product;
 use App\ProductComment;
-use App\PrSize;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Str;
 use Validator;
 
@@ -29,25 +24,15 @@ class HomePostController extends HomeController
 {
     public function post_blog_comment(Request $request, $slug)
     {
-        if (Auth::check()) {
-            $validator = Validator::make($request->all(), [
-                'content' => 'required',
-            ]);
-        } else {
-            $validator = Validator::make($request->all(), [
-                'name' => 'required|max:250',
-                'email' => 'required|email',
-                'content' => 'required',
-            ]);
-        }
+        $validator = Validator::make($request->all(), [
+            'content' => 'required',
+        ]);
+
         if ($validator->fails()) {
             return response(['processStatus' => 'warning', 'processTitle' => 'Warning', 'processDesc' => 'Fill the required fields !']);
         }
         $category = explode('/', $slug); //Explodes category slugs
-        $request->merge(['blog' => $category[count($category) - 1]]);
-        if (Auth::check()) {
-            $request->merge(['user_id' => Auth::user()->id]);
-        }
+        $request->merge(['blog' => $category[count($category) - 1], 'user_id' => Auth::user()->id]);
         Comment::create($request->all());
         return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Comment sended successfully !']);
 
@@ -170,17 +155,20 @@ class HomePostController extends HomeController
 
 
                 if (Basket::where(['user_id' => intval($request->user_id), 'product_id' => intval($request->product_id)])->exists()) {
+                    if (Basket::where(['user_id' => intval($request->user_id), 'product_id' => intval($request->product_id), 'pr_size' => $request->pr_size])->exists()) {
+                        $lastQuantity = Basket::where(['user_id' => intval($request->user_id), 'product_id' => intval($request->product_id), 'pr_size' => $request->pr_size])->first()->quantity;
+                        $newQuantity = $lastQuantity + $request->quantity;
 
-                    $lastQuantity = Basket::where(['user_id' => intval($request->user_id), 'product_id' => intval($request->product_id)])->first()->quantity;
-                    $newQuantity = $lastQuantity + $request->quantity;
-                    $total_price_per_product = $product_id->pr_last_price * intval($newQuantity);
+                        Basket::where(['user_id' => intval($request->user_id), 'product_id' => intval($request->product_id), 'pr_size' => $request->pr_size])->update(['quantity' => $newQuantity]);
+                        return back()->with('addToCartMsg', 'Product added to cart successfully !');
+                    } else {
+                        $lastQuantity = Basket::where(['user_id' => intval($request->user_id), 'product_id' => intval($request->product_id)])->first()->quantity;
+                        $newQuantity = $lastQuantity + $request->quantity;
 
-                    Basket::where(['user_id' => intval($request->user_id), 'product_id' => intval($request->product_id)])->update(['quantity' => $newQuantity, 'total_price_per_product' => $total_price_per_product]);
-                    return back()->with('addToCartMsg', 'Product added to cart successfully !');
+                        Basket::create($request->all());
+                        return back()->with('addToCartMsg', 'Product added to cart successfully !');
+                    }
                 } else {
-                    $total_price_per_product = $product_id->pr_last_price * $request->quantity;
-                    $request->merge(['total_price_per_product' => $total_price_per_product]);
-
                     Basket::create($request->all());
                     return back()->with('addToCartMsg', 'Product added to cart successfully !');
                 }
@@ -192,61 +180,60 @@ class HomePostController extends HomeController
         }
     }
 
-    public function post_add_to_cart_icon(Request $request)
-    {
-        if (Auth::check()) {
-            $user_id = Auth::id();
-            $product_id = Product::where('slug', $request->slug)->first();
-
-            try {
-                $request->merge(['user_id' => $user_id, 'product_id' => $product_id->id, 'quantity' => 1]);
-
-
-                if (Basket::where(['user_id' => intval($request->user_id), 'product_id' => intval($request->product_id)])->exists()) {
-
-                    $lastQuantity = Basket::where(['user_id' => intval($request->user_id), 'product_id' => intval($request->product_id)])->first()->quantity;
-                    $newQuantity = $lastQuantity + $request->quantity;
-                    $total_price_per_product = $product_id->pr_last_price * intval($newQuantity);
-
-                    Basket::where(['user_id' => intval($request->user_id), 'product_id' => intval($request->product_id)])->update(['quantity' => $newQuantity, 'total_price_per_product' => $total_price_per_product]);
-                } else {
-                    $total_price_per_product = $product_id->pr_last_price * $request->quantity;
-                    $request->merge(['total_price_per_product' => $total_price_per_product]);
-
-                    Basket::create($request->all());
-                    return response(['increase' => 'increase']);
-                }
-            } catch (\Exception $e) {
-                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Could not added to cart!', 'error' => $e]);
-            }
-        } else {
-            try {
-                $product_id = Product::where('slug', $request->slug)->first()->id;
-                $basket = Cookie::get('basket');
-                if (empty($basket)) {
-                    Cookie::queue('basket[' . $product_id . ']', '1', strtotime('+1 day'));
-                    return response(['increase' => 'increase']);
-                } else {
-                    foreach ($basket as $key => $value) {
-                        if ($key == $product_id) {
-//                        $value+1;
-                            return 'increased qty';
-                        } elseif (empty($basket)) {
-                            Cookie::queue('basket[' . $product_id . ']', '1', strtotime('+1 day'));
-                            return response(['increase' => 'increase']);
-
-                        } else {
-                            Cookie::queue('basket[' . $product_id . ']', '1', strtotime('+1 day'));
-                            return response(['increase' => 'increase']);
-                        }
-                    }
-                }
-
-            } catch (\Exception $e) {
-                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Could not added to cart!', 'error' => $e]);
-            }
-        }
-    }
+//    public function post_add_to_cart_icon(Request $request)
+//    {
+//        if (Auth::check()) {
+//            $user_id = Auth::id();
+//            $product_id = Product::where('slug', $request->slug)->first();
+//
+//            try {
+//                $request->merge(['user_id' => $user_id, 'product_id' => $product_id->id, 'quantity' => 1]);
+//
+//
+//                if (Basket::where(['user_id' => intval($request->user_id), 'product_id' => intval($request->product_id)])->exists()) {
+//
+//                    $lastQuantity = Basket::where(['user_id' => intval($request->user_id), 'product_id' => intval($request->product_id)])->first()->quantity;
+//                    $newQuantity = $lastQuantity + $request->quantity;
+//                    $total_price_per_product = $product_id->pr_last_price * intval($newQuantity);
+//
+//                    Basket::where(['user_id' => intval($request->user_id), 'product_id' => intval($request->product_id)])->update(['quantity' => $newQuantity, 'total_price_per_product' => $total_price_per_product]);
+//                } else {
+//                    $total_price_per_product = $product_id->pr_last_price * $request->quantity;
+//                    $request->merge(['total_price_per_product' => $total_price_per_product]);
+//
+//                    Basket::create($request->all());
+//                    return response(['increase' => 'increase']);
+//                }
+//            } catch (\Exception $e) {
+//                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Could not added to cart!', 'error' => $e]);
+//            }
+//        } else {
+//            try {
+//                $product_id = Product::where('slug', $request->slug)->first()->id;
+//                $basket = Cookie::get('basket');
+//                if (empty($basket)) {
+//                    Cookie::queue('basket[' . $product_id . ']', '1', strtotime('+1 day'));
+//                    return response(['increase' => 'increase']);
+//                } else {
+//                    foreach ($basket as $key => $value) {
+//                        if ($key == $product_id) {
+//                            return 'increased qty';
+//                        } elseif (empty($basket)) {
+//                            Cookie::queue('basket[' . $product_id . ']', '1', strtotime('+1 day'));
+//                            return response(['increase' => 'increase']);
+//
+//                        } else {
+//                            Cookie::queue('basket[' . $product_id . ']', '1', strtotime('+1 day'));
+//                            return response(['increase' => 'increase']);
+//                        }
+//                    }
+//                }
+//
+//            } catch (\Exception $e) {
+//                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Could not added to cart!', 'error' => $e]);
+//            }
+//        }
+//    }
 
     public function post_shopping_cart(Request $request)
     {
@@ -318,7 +305,8 @@ class HomePostController extends HomeController
 
         try {
             $user_id = Auth::id();
-            $order_no = rand(1111111111, 9999999999);
+            $order_no = rand(11111111, 99999999);
+
             $totalPrice = 0;
             foreach (Basket::where('user_id', $user_id)->get() as $fetch) {
                 $totalPrice += $fetch->getProductInfo->pr_last_price * $fetch->quantity;
@@ -379,24 +367,24 @@ class HomePostController extends HomeController
 
     public function post_product_comment(Request $request, $slug)
     {
-            $validator = Validator::make($request->all(), [
-                'message' => 'required',
-            ]);
+        $validator = Validator::make($request->all(), [
+            'message' => 'required',
+        ]);
 
-            if ($validator->fails()) {
-                return response(['processStatus' => 'warning', 'processTitle' => 'Warning', 'processDesc' => 'Please fill required blanks !']);
-            }
+        if ($validator->fails()) {
+            return response(['processStatus' => 'warning', 'processTitle' => 'Warning', 'processDesc' => 'Please fill required blanks !']);
+        }
 
-            try {
-                $user_id = Auth::id();
-                $product_id = Product::where('slug', $slug)->first()->id;
-                $request->merge(['user_id' => $user_id, 'product_id' => $product_id,'comment'=>$request->message]);
-                ProductComment::create($request->all());
-                return response(['processStatus' => 'success', 'processTitle' => 'Successfully', 'processDesc' => 'Comment sent successfully !']);
+        try {
+            $user_id = Auth::id();
+            $product_id = Product::where('slug', $slug)->first()->id;
+            $request->merge(['user_id' => $user_id, 'product_id' => $product_id, 'comment' => $request->message]);
+            ProductComment::create($request->all());
+            return response(['processStatus' => 'success', 'processTitle' => 'Successfully', 'processDesc' => 'Comment sent successfully !']);
 
-            } catch (\Exception $e) {
-                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Comment could not sent !', 'error' => $e]);
-            }
+        } catch (\Exception $e) {
+            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Comment could not sent !', 'error' => $e]);
+        }
     }
 
 

@@ -63,8 +63,8 @@ class AdminGetController extends AdminController
     {
         $categories = PrCategory::all();
         $brands = PrBrand::all();
-        $sizes = PrSize::all();
         $getProduct = Product::where('slug', $slug)->first();
+        $sizes = PrSize::where('pr_id', $getProduct->id)->pluck('size');
         return view('backend.edit-products', ['product' => $getProduct, 'categories' => $categories, 'brands' => $brands, 'sizes' => $sizes]);
     }
 
@@ -118,24 +118,9 @@ class AdminGetController extends AdminController
     public function get_edit_user($getUser)
     {
         $u = User::where('slug', $getUser)->first();
-        $uStatus = $this->stt(intval($u->status));
-        $allStatuses = UserStatus::all();
+        $uStatus = UserStatus::where('status', $u->status)->first()->status_name;
+        $allStatuses = UserStatus::where('status', '!=', 9)->get();
         return view('backend.UserTable.edit-user', ['user' => $u, 'uStatus' => $uStatus, 'allStatuses' => $allStatuses]);
-    }
-
-    private function stt($status)
-    {
-        if ($status === 9) {
-            return 'Super Admin';
-        } elseif ($status === 8) {
-            return 'Admin';
-        } elseif ($status === 2) {
-            return 'Staff';
-        } elseif ($status === 1) {
-            return 'Editor';
-        } elseif ($status === 0) {
-            return 'User';
-        }
     }
 
     public function get_deals()
@@ -180,5 +165,14 @@ class AdminGetController extends AdminController
             return redirect()->back();
         }
     }
-}
 
+//    Function for fetch Product/Blog tags to Product/Blog edit page
+    public function getTags($tags)
+    {
+        foreach ($tags as $tag) {
+            echo $tag->tag . ',';
+        }
+    }
+//---    Function for fetch Product/Blog tags to Product/Blog edit page
+
+}

@@ -58,20 +58,21 @@
                                                 <td>{{$blog->id}}</td>
                                                 <td>{{$blog->title}}</td>
                                                 <td>{{$blog->user->name}}</td>
-                                                <td>{{$blog->category}}</td>
+                                                <td>{{$blog->blogCategory->name}}</td>
                                                 <td>{{$blog->hit}}</td>
                                                 <td>{{count($blog->comments)}}</td>
                                                 <td>
-                                                    {{$blog->created_at->formatLocalized('%d')}} {{$blog->created_at->formatLocalized('%b')}},{{$blog->created_at->formatLocalized('%Y')}}
+                                                    {{$blog->created_at->formatLocalized('%d')}} {{$blog->created_at->formatLocalized('%b')}}
+                                                    ,{{$blog->created_at->formatLocalized('%Y')}}
+                                                </td>
+                                                <td>
+                                                    <a href="blog/edit-blog/{{$blog->slug}}" class="btn btn-primary">Edit</a>
                                                 </td>
                                                 <td>
                                                     <meta name="csrf-token" content="{{ csrf_token() }}">
                                                     <button class="btn btn-danger" onclick="dlt('{{$blog->slug}}')">
                                                         Delete
                                                     </button>
-                                                </td>
-                                                <td>
-                                                    <a href="blog/edit-blog/{{$blog->slug}}" class="btn btn-primary">Edit</a>
                                                 </td>
                                             </tr>
                                             @php
@@ -149,10 +150,14 @@
                                                           class="form-control col-md-6 col-sm-6 col-xs-12 ckeditor"></textarea>
                                             </div>
                                         </div>
+
                                         <div class="form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Tags*</label>
+                                            <label for="tags"
+                                                   class="control-label col-md-3 col-sm-3 col-xs-12">Tags *</label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input id="tags_1" type="text" class="tags form-control" name="tags"/>
+                                                <input type="text" id="tags"
+                                                       class="form-control col-md-6 col-sm-6 col-xs-12" name="tags"
+                                                       value="" data-role="tagsinput">
                                             </div>
                                         </div>
 
@@ -189,6 +194,10 @@
     <link rel="stylesheet" href="/css/sweetalert2.min.css">
     <link rel="stylesheet" href="/css/projectCustom.css">
     {{--/Sweet Alert--}}
+
+    {{--    Bootstap Tags Input--}}
+    <link rel="stylesheet" href="/bootstrap-tagsinput-latest/src/bootstrap-tagsinput.css">
+    {{--/Bootstap Tags Input--}}
 @endsection
 
 @section('js')
@@ -291,6 +300,13 @@
 
     <!-- /Datatables -->
 
+    {{--Ckeditor--}}
+    <script src="/js/ckeditor/ckeditor.js"></script>
+    {{--/Ckeditor--}}
+
+    {{--    Bootstrap Tags Input--}}
+    <script src="/bootstrap-tagsinput-latest/src/bootstrap-tagsinput.js"></script>
+    {{--/    Bootstrap Tags Input--}}
 
     {{--Sweet Alert--}}
     <script src="/js/jquery.form.min.js"></script>
@@ -330,8 +346,8 @@
                                 response.processTitle,
                                 response.processDesc,
                                 response.processStatus
-                                ).then(()=>{
-                                    location.reload();
+                            ).then(() => {
+                                location.reload();
                             });
                         }
                     })
@@ -360,7 +376,7 @@
                         response.processTitle,
                         response.processDesc,
                         response.processStatus
-                        ).then(() => {
+                    ).then(() => {
                         if (response.processStatus == "success") {
                             location.reload();
                         }
@@ -370,35 +386,5 @@
         })
     </script>
     {{--/   For add blog page--}}
-
-    {{--/Sweet Alert--}}
-
-    {{--Ckeditor--}}
-    <script src="/js/ckeditor/ckeditor.js"></script>
-    {{--/Ckeditor--}}
-
-    <!-- jQuery Tags Input -->
-    <script src="/backend/vendors/jquery.tagsinput/src/jquery.tagsinput.js"></script>
-    <script>
-        function onAddTag(tag) {
-            alert("Added a tag: " + tag);
-        }
-
-        function onRemoveTag(tag) {
-            alert("Removed a tag: " + tag);
-        }
-
-        function onChangeTag(input, tag) {
-            alert("Changed a tag: " + tag);
-        }
-
-        $(document).ready(function () {
-            $('#tags_1').tagsInput({
-                width: 'auto'
-            });
-        });
-    </script>
-    <!-- /jQuery Tags Input -->
-
 
 @endsection

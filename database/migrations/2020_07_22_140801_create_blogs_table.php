@@ -19,7 +19,6 @@ class CreateBlogsTable extends Migration
             $table->string('short_content');
             $table->text('description');
             $table->integer('author');
-            $table->string('tags');
             $table->string('slug');
             $table->integer('category');
             $table->timestamps();
@@ -29,7 +28,7 @@ class CreateBlogsTable extends Migration
     /**
      * Reverse the migrations.
      *
-     * @return void
+     * @return voidw
      */
     public function down()
     {

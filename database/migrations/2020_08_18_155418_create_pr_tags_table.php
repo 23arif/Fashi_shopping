@@ -17,6 +17,7 @@ class CreatePrTagsTable extends Migration
             $table->id();
             $table->integer('product_id');
             $table->string('tag')->nullable();
+            $table->string('slug')->nullable();
             $table->timestamps();
         });
     }

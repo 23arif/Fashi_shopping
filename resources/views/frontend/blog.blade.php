@@ -50,8 +50,8 @@
 
                                                 <br>
                                                 <i class="fa fa-tags"></i>
-                                                @foreach(explode(',',$blog->tags) as $tag)
-                                                    <a href="/blog/tags/{{$tag}}" class="href">{{$tag}}</a>
+                                                @foreach($blog->blogTags as $tag)
+                                                    <a href="/blog/tags/{{$tag->slug}}" class="href">{{$tag->tags}}</a>
                                                 @endforeach
                                             </p>
                                         </div>
@@ -89,8 +89,8 @@
 
                                                 <br>
                                                 <i class="fa fa-tags"></i>
-                                                @foreach(explode(',',$searchedBlog->tags) as $tag)
-                                                    <a href="/blog/tags/{{$tag}}" class="href">{{$tag}}</a>
+                                                @foreach($searchedBlog->blogTags as $tag)
+                                                    <a href="/blog/tags/{{$tag->slug}}" class="href">{{$tag->tags}}</a>
                                                 @endforeach
                                             </p>
                                         </div>

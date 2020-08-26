@@ -156,6 +156,7 @@
                                                     <option value="l">L</option>
                                                     <option value="xl">XL</option>
                                                     <option value="xxl">XXL</option>
+                                                    <option value="xxxl">XXXL</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -169,7 +170,7 @@
                                                            step="0.01" data-number-to-fixed="2"
                                                            data-number-stepfactor="100"
                                                            class="form-control currency"
-                                                           id="c2" required/>
+                                                           id="pr_weight" required/>
                                                     <span class="input-group-addon">kq</span>
                                                 </div>
                                             </div>
@@ -223,17 +224,19 @@
                                                            step="0.01" data-number-to-fixed="2"
                                                            data-number-stepfactor="100"
                                                            class="form-control currency"
-                                                           id="c2" required/>
+                                                           id="pr_last_price" required/>
                                                     <span class="input-group-addon">$</span>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Tags*</label>
+                                            <label for="tags"
+                                                   class="control-label col-md-3 col-sm-3 col-xs-12">Tags *</label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input name="pr_tags" id="tags_1" type="text"
-                                                       class="tags form-control" required/>
+                                                <input type="text" id="tags"
+                                                       class="form-control col-md-6 col-sm-6 col-xs-12" name="pr_tags"
+                                                       value="" data-role="tagsinput">
                                             </div>
                                         </div>
 
@@ -353,6 +356,10 @@
     <link href="/backend/vendors/mjolnic-bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css" rel="stylesheet">
     <link href="/backend/vendors/cropper/dist/cropper.min.css" rel="stylesheet">
     <!--/Bootstrap Colorpicker -->
+
+    {{--    Bootstap Tags Input--}}
+    <link rel="stylesheet" href="/bootstrap-tagsinput-latest/src/bootstrap-tagsinput.css">
+    {{--/Bootstap Tags Input--}}
 
     <style>
         #mobileVersionBtn {
@@ -590,28 +597,9 @@
     <script src="/js/ckeditor/ckeditor.js"></script>
     {{--/Ckeditor--}}
 
-    <!-- jQuery Tags Input -->
-    <script src="/backend/vendors/jquery.tagsinput/src/jquery.tagsinput.js"></script>
-    <script>
-        function onAddTag(tag) {
-            alert("Added a tag: " + tag);
-        }
-
-        function onRemoveTag(tag) {
-            alert("Removed a tag: " + tag);
-        }
-
-        function onChangeTag(input, tag) {
-            alert("Changed a tag: " + tag);
-        }
-
-        $(document).ready(function () {
-            $('#tags_1').tagsInput({
-                width: 'auto'
-            });
-        });
-    </script>
-    <!-- /jQuery Tags Input -->
+    {{--    Bootstrap Tags Input--}}
+    <script src="/bootstrap-tagsinput-latest/src/bootstrap-tagsinput.js"></script>
+    {{--/    Bootstrap Tags Input--}}
 
     <!-- Bootstrap Colorpicker -->
     <script src="/backend/vendors/mjolnic-bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
@@ -634,16 +622,6 @@
         });
     </script>
     <!-- /Bootstrap Colorpicker -->
-
-    {{--Price input field--}}
-    <script>
-        webshims.setOptions('forms-ext', {
-            replaceUI: 'auto',
-            types: 'number'
-        });
-        webshims.polyfill('forms forms-ext');
-    </script>
-    {{--/Price input field--}}
 
     {{--Product page mobile version menu btn function--}}
     <script !src="">
