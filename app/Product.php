@@ -38,4 +38,9 @@ class Product extends Model
     {
         return $this->hasMany('App\PrTag', 'product_id', 'id');
     }
+
+    public function prStock()
+    {
+        return $this->hasOne('App\PrStock', 'pr_id', 'id');
+    }
 }

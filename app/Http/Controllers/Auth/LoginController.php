@@ -10,6 +10,7 @@ use Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\View;
 
 class LoginController extends Controller
@@ -44,6 +45,8 @@ class LoginController extends Controller
         $settings = Settings::all();
         $locales = Locale::all();
         $allDepartments = PrCategory::all();
+        $basketArray = Cookie::get('basket');
+
 
         $fullUrl = url()->current();
         $currentUrl = explode('/', $fullUrl);
@@ -66,7 +69,10 @@ class LoginController extends Controller
             'locales' => $locales,
             'allDepartments' => $allDepartments,
             'activeUrl' => $activeUrl,
-            'cartProducts' => $cartProducts, 'totalPrice' => $totalPrice
+            'cartProducts' => $cartProducts,
+            'totalPrice' => $totalPrice,
+            'basketArray' => $basketArray,
+
         ]);
 
 

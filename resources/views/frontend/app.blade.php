@@ -175,7 +175,6 @@
                                 <div class="select-items">
                                     <table>
                                         <tbody>
-
                                         @if(count($cartProducts) == 0)
                                             <div class="alert alert-info text-center h6" id="cartEmptyAlert">Cart is
                                                 empty.
@@ -273,7 +272,8 @@
             </div>
             <nav id="spcMenu" class="nav-menu mobile-menu">
                 <ul>
-                    <li {{$activeUrl =='127.0.0.1:8000' ? "class=active" : ' '}}><a href="{{route('homePage')}}">Home</a></li>
+                    <li {{$activeUrl =='127.0.0.1:8000' ? "class=active" : ' '}}><a
+                            href="{{route('homePage')}}">Home</a></li>
                     <li {{$activeUrl=='shop' ? "class=active" : ' '}}><a href="{{route('shopPage')}}">Shop</a></li>
                     <li {{$activeUrl=='blog' ? "class=active" : ' '}}><a href="{{route('blogPage')}}">Blog</a></li>
                     <li {{$activeUrl=='contact' ? "class=active" : ' '}}><a href="{{route('contactPage')}}">Contact</a>
@@ -297,7 +297,8 @@
             <div class="col-lg-3">
                 <div class="footer-left">
                     <div class="footer-logo">
-                        <a href="/"><img src="/uploads/img/Logo/{{$settings[0]->footer_logo}}" alt="{{$settings[0]->title}}"></a>
+                        <a href="/"><img src="/uploads/img/Logo/{{$settings[0]->footer_logo}}"
+                                         alt="{{$settings[0]->title}}"></a>
                     </div>
                     <ul>
                         <li>Address: {{$settings[0]->address}}</li>

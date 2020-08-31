@@ -51,7 +51,7 @@
                                                 <br>
                                                 <i class="fa fa-tags"></i>
                                                 @foreach($blog->blogTags as $tag)
-                                                    <a href="/blog/tags/{{$tag->slug}}" class="href">{{$tag->tags}}</a>
+                                                    <a href="/blog/tags/{{$tag->slug}}" class="href">{{$tag->tag}}</a>
                                                 @endforeach
                                             </p>
                                         </div>

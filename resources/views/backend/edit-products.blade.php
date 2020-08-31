@@ -104,28 +104,18 @@
                                 <div class="form-group">
                                     <label for="pr_size"
                                            class="control-label col-md-3 col-sm-3 col-xs-12">Size *</label>
-                                    {{--                                    <div class="col-md-6 col-sm-6 col-xs-12">--}}
-                                    {{--                                        <select class="form-control" name="pr_size">--}}
-                                    {{--                                            <option--}}
-                                    {{--                                                value="{{$product->prSize->id}}">{{strtoupper($product->prSize->size)}}</option>--}}
-                                    {{--                                            @foreach($sizes->sortBy('id') as $size)--}}
-                                    {{--                                                @if(strtoupper($size->size) !=strtoupper($product->prSize->size))--}}
-                                    {{--                                                    <option--}}
-                                    {{--                                                        value="{{$size->id}}">{{strtoupper($size->size)}}</option>--}}
-                                    {{--                                                @endif--}}
-                                    {{--                                            @endforeach--}}
-
-                                    {{--                                        </select>--}}
-                                    {{--                                    </div>--}}
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <select class="form-control" name="pr_size[]" multiple>
-                                            <option value="xs">XS</option>
-                                            <option value="s">S</option>
-                                            <option value="m">M</option>
-                                            <option value="l">L</option>
-                                            <option value="xl">XL</option>
-                                            <option value="xxl">XXL</option>
-                                            <option value="xxxl">XXXL</option>
+                                            @foreach($defaultSizes as $defaultSize)
+                                                @foreach($product->prSize as $size)
+                                                    @if($defaultSize->slug === $size->slug)
+                                                        <option value="{{$defaultSize->slug}}"
+                                                                selected>{{$defaultSize->size}}</option>
+                                                    @else
+                                                        <option value="{{$defaultSize->slug}}">{{$defaultSize->size}}</option>
+                                                    @endif
+                                                @endforeach
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -136,16 +126,6 @@
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                     <textarea name="pr_desc" id="pr_desc" rows="5"
                                               class="form-control col-md-6 col-sm-6 col-xs-12 ckeditor">{{$product->pr_desc}}</textarea>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="tags"
-                                           class="control-label col-md-3 col-sm-3 col-xs-12">Tags *</label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <input type="text" id="tags"
-                                               class="form-control col-md-6 col-sm-6 col-xs-12" name="pr_tags"
-                                               value="{{(new App\Http\Controllers\AdminGetController)->getTags($product->prTags)}}" data-role="tagsinput">
                                     </div>
                                 </div>
 
@@ -164,7 +144,8 @@
 
                                 <div class="form-group">
                                     <label for="pr_weight"
-                                           class="control-label col-md-3 col-sm-3 col-xs-12">Product Weight *</label>
+                                           class="control-label col-md-3 col-sm-3 col-xs-12">Product Weight
+                                        *</label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <input type="text" id="pr_weight" name="pr_weight"
                                                class="form-control col-md-6 col-sm-6 col-xs-12"
@@ -183,6 +164,27 @@
                                                    id="c2" value="{{$product->pr_last_price}}"/>
                                             <span class="input-group-addon">$</span>
                                         </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="tags"
+                                           class="control-label col-md-3 col-sm-3 col-xs-12">Tags *</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="text" id="tags"
+                                               class="form-control col-md-6 col-sm-6 col-xs-12" name="pr_tags"
+                                               value="{{(new App\Http\Controllers\AdminGetController)->getTags($product->prTags)}}"
+                                               data-role="tagsinput">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="stocks"
+                                           class="control-label col-md-3 col-sm-3 col-xs-12">Stock *</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="number" id="stocks" name="pr_stock" class="form-control"
+                                               value="{{$product->prStock->stock}}"
+                                               required>
                                     </div>
                                 </div>
 

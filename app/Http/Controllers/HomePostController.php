@@ -12,6 +12,7 @@ use App\OrderBilling;
 use App\OrderDetail;
 use App\Product;
 use App\ProductComment;
+use App\PrStock;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -148,32 +149,43 @@ class HomePostController extends HomeController
         if (Auth::check()) {
             $user_id = Auth::id();
             $product_id = Product::where('slug', $slug)->first();
+            $pr_stock = PrStock::where('pr_id', $product_id->id)->first()->stock;
+            if ($pr_stock > 0 and $pr_stock >= $request->quantity) {
+                try {
+                    $request->merge(['user_id' => $user_id, 'product_id' => $product_id->id]);
 
 
-            try {
-                $request->merge(['user_id' => $user_id, 'product_id' => $product_id->id]);
+                    if (Basket::where(['user_id' => intval($request->user_id), 'product_id' => intval($request->product_id)])->exists()) {
+                        if (Basket::where(['user_id' => intval($request->user_id), 'product_id' => intval($request->product_id), 'pr_size' => $request->pr_size])->exists()) {
+                            $lastQuantity = Basket::where(['user_id' => intval($request->user_id), 'product_id' => intval($request->product_id), 'pr_size' => $request->pr_size])->first()->quantity;
+                            $newQuantity = $lastQuantity + $request->quantity;
 
+                            $orderedProduct = Basket::where(['user_id' => intval($request->user_id), 'product_id' => intval($request->product_id), 'pr_size' => $request->pr_size])->update(['quantity' => $newQuantity]);
 
-                if (Basket::where(['user_id' => intval($request->user_id), 'product_id' => intval($request->product_id)])->exists()) {
-                    if (Basket::where(['user_id' => intval($request->user_id), 'product_id' => intval($request->product_id), 'pr_size' => $request->pr_size])->exists()) {
-                        $lastQuantity = Basket::where(['user_id' => intval($request->user_id), 'product_id' => intval($request->product_id), 'pr_size' => $request->pr_size])->first()->quantity;
-                        $newQuantity = $lastQuantity + $request->quantity;
-
-                        Basket::where(['user_id' => intval($request->user_id), 'product_id' => intval($request->product_id), 'pr_size' => $request->pr_size])->update(['quantity' => $newQuantity]);
-                        return back()->with('addToCartMsg', 'Product added to cart successfully !');
+                            if ($orderedProduct) {
+                            }
+                            PrStock::where('pr_id', $product_id->id)->update(['stock' => $pr_stock - $request->quantity]);
+                            return back()->with('addToCartMsg', 'Product added to cart successfully !');
+                        } else {
+                            $orderedProduct = Basket::create($request->all());
+                            if ($orderedProduct) {
+                                PrStock::where('pr_id', $product_id->id)->update(['stock' => $pr_stock - $request->quantity]);
+                            }
+                            return back()->with('addToCartSuccessMsg', 'Product added to cart successfully !');
+                        }
                     } else {
-                        $lastQuantity = Basket::where(['user_id' => intval($request->user_id), 'product_id' => intval($request->product_id)])->first()->quantity;
-                        $newQuantity = $lastQuantity + $request->quantity;
-
-                        Basket::create($request->all());
-                        return back()->with('addToCartMsg', 'Product added to cart successfully !');
+                        $orderedProduct = Basket::create($request->all());
+                        if ($orderedProduct) {
+                            PrStock::where('pr_id', $product_id->id)->update(['stock' => $pr_stock - $request->quantity]);
+                        }
+                        return back()->with('addToCartSuccessMsg', 'Product added to cart successfully !');
                     }
-                } else {
-                    Basket::create($request->all());
-                    return back()->with('addToCartMsg', 'Product added to cart successfully !');
+                } catch (\Exception $e) {
+                    return back()->with('addToCartWarningMsg', 'Please provide the missing information first!');
                 }
-            } catch (\Exception $e) {
-                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Could not added to cart!', 'error' => $e]);
+            } else {
+                return back()->with('addToCartInfoMsg', 'Unfortunately, the product that you want to order is now out-of-stock.');
+
             }
         } else {
             return 'not registeredd';
@@ -238,36 +250,86 @@ class HomePostController extends HomeController
     public function post_shopping_cart(Request $request)
     {
         if ($request->identifier == 'deleteSelectedProduct') {
+            $stock = PrStock::where(['pr_id' => $request->product_id])->first()->stock;
+            $getQty = Basket::where(['user_id' => Auth::id(), 'product_id' => $request->product_id, 'pr_size' => $request->pr_size])->first()->quantity;
             try {
-                Basket::where(['user_id' => Auth::id(), 'product_id' => $request->product_id])->delete();
-                return response(['processStatus' => 'success']);
-
+                $process = Basket::where(['user_id' => Auth::id(), 'product_id' => $request->product_id, 'pr_size' => $request->pr_size])->delete();
+                if ($process) {
+                    PrStock::where(['pr_id' => $request->product_id])->update(['stock' => $stock + $getQty]);
+                }
             } catch (\Exception $e) {
-                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Could not deleted!', 'error' => $e]);
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Something goes wrong. Please try later!']);
             }
 
         } elseif ($request->identifier == 'decQtyy') {
+            $stock = PrStock::where(['pr_id' => $request->pr_id])->first()->stock;
             try {
                 if ($request->newDecreasedQty == 'deleteProduct') {
-                    Basket::where(['user_id' => Auth::id(), 'product_id' => $request->pr_id])->delete();
+                    $process = Basket::where(['user_id' => Auth::id(), 'product_id' => $request->pr_id, 'pr_size' => $request->pr_size])->delete();
+                    if ($process) {
+                        PrStock::where(['pr_id' => $request->pr_id])->update(['stock' => $stock + 1]);
+                    }
                 } else {
-                    Basket::where(['user_id' => Auth::id(), 'product_id' => $request->pr_id])->update(['quantity' => $request->newDecreasedQty]);
+                    $process = Basket::where(['user_id' => Auth::id(), 'product_id' => $request->pr_id, 'pr_size' => $request->pr_size])->update(['quantity' => $request->newDecreasedQty]);
+                    if ($process) {
+                        PrStock::where(['pr_id' => $request->pr_id])->update(['stock' => $stock + 1]);
+                    }
                 }
             } catch (\Exception $e) {
-                return response(['error' => $e]);
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Something goes wrong. Please try later !']);
             }
 
         } elseif ($request->identifier == 'incQtyy') {
-            try {
-                Basket::where(['user_id' => Auth::id(), 'product_id' => $request->pr_id])->update(['quantity' => $request->newIncreasedQty]);
-            } catch (\Exception $e) {
-                return response(['error' => $e]);
+            $stock = PrStock::where(['pr_id' => $request->pr_id])->first()->stock;
+            if ($stock >= 1) {
+                try {
+                    $process = Basket::where(['user_id' => Auth::id(), 'product_id' => $request->pr_id, 'pr_size' => $request->pr_size])->update(['quantity' => $request->newIncreasedQty]);
+                    if ($process) {
+                        PrStock::where(['pr_id' => $request->pr_id])->update(['stock' => $stock - 1]);
+                        return response(['processStatus' => 'success']);
+                    }
+                } catch (\Exception $e) {
+                    return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Something goes wrong. Please try later !']);
+                }
+            } else {
+                return response(['processStatus' => 'info', 'processTitle' => 'Information', 'processDesc' => 'Unfortunately, the product that you want to increase quantity is now out-of-stock.']);
             }
         } elseif ($request->identifier == 'typeQty') {
-            try {
-                Basket::where(['user_id' => Auth::id(), 'product_id' => $request->product_id])->update(['quantity' => $request->typedQty]);
-            } catch (\Exception $e) {
-                return response(['error' => $e]);
+            $stock = PrStock::where(['pr_id' => $request->product_id])->first()->stock;
+            $currentQty = Basket::where(['user_id' => Auth::id(), 'product_id' => $request->product_id, 'pr_size' => $request->pr_size])->first()->quantity; //The current quantity,which selected product desc. page.
+            $differenceLastAndNewQty = $request->typedQty - $currentQty;
+            if ($request->typedQty == 0) {
+//                Delete product
+                try {
+                    $process = Basket::where(['user_id' => Auth::id(), 'product_id' => $request->product_id, 'pr_size' => $request->pr_size])->delete();
+                    if ($process) {
+                        PrStock::where(['pr_id' => $request->product_id])->update(['stock' => $stock + $currentQty]);
+                    }
+                } catch (\Exception $e) {
+                    return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Something goes wrong. Please try later !']);
+                }
+            } elseif ($stock >= $differenceLastAndNewQty and $differenceLastAndNewQty > 0) {
+//                Decrease stock , increase quantity
+                try {
+                    $process = Basket::where(['user_id' => Auth::id(), 'product_id' => $request->product_id, 'pr_size' => $request->pr_size])->update(['quantity' => $request->typedQty]);
+                    if ($process) {
+                        PrStock::where(['pr_id' => $request->product_id])->update(['stock' => $stock - $differenceLastAndNewQty]);
+                    }
+                } catch (\Exception $e) {
+                    return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Something goes wrong. Please try later !']);
+                }
+            } elseif ($stock >= $differenceLastAndNewQty and $differenceLastAndNewQty < 0) {
+//                Increase stock , decrease quantity
+                try {
+                    $process = Basket::where(['user_id' => Auth::id(), 'product_id' => $request->product_id, 'pr_size' => $request->pr_size])->update(['quantity' => $request->typedQty]);
+                    if ($process) {
+                        PrStock::where(['pr_id' => $request->product_id])->update(['stock' => $stock + abs($differenceLastAndNewQty)]);
+                    }
+                } catch (\Exception $e) {
+                    return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Something goes wrong. Please try later !']);
+                }
+            } elseif ($stock < $differenceLastAndNewQty) {
+                return response(['processStatus' => 'info', 'processTitle' => 'Information', 'processDesc' => 'Unfortunately, the product that you want to increase quantity is now out-of-stock.']);
             }
         }
     }

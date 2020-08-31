@@ -26,8 +26,12 @@
                     @include('frontend.modules.shop-side-bar')
                 </div>
                 <div class="col-lg-9">
-                    @if (\Session::has('addToCartMsg'))
-                        <div class="alert alert-info text-center">{{session()->get('addToCartMsg')}}</div>
+                    @if (\Session::has('addToCartSuccessMsg'))
+                        <div class="alert alert-success text-center">{{session()->get('addToCartSuccessMsg')}}</div>
+                    @elseif (\Session::has('addToCartWarningMsg'))
+                        <div class="alert alert-warning text-center">{{session()->get('addToCartWarningMsg')}}</div>
+                    @elseif(\Session::has('addToCartInfoMsg'))
+                        <div class="alert alert-info text-center">{{session()->get('addToCartInfoMsg')}}</div>
                     @endif
                     <div class="row">
                         <div class="col-lg-6">
@@ -85,24 +89,25 @@
                                 {{--                                    </div>--}}
                                 {{--                                </div>--}}
                                 <form action="{{route('addToCart',['slug'=>$products->slug])}}" method="post">
-
-                                <div class="pd-size-choose">
-                                    @foreach($productSizes as $productSize)
-                                        <div class="sc-item">
-                                            <input type="radio" id="{{$productSize->size}}_size" name="pr_size" value="{{$productSize->size}}">
-                                            <label for="{{$productSize->size}}_size" >{{$productSize->size}}</label>
-                                        </div>
-                                    @endforeach
-                                </div>
-
-{{--                                <form action="{{route('addToCart',['slug'=>$products->slug])}}" method="post">--}}
                                     @csrf
+                                    <div class="pd-size-choose">
+                                        @foreach($productSizes as $productSize)
+                                            <div class="sc-item">
+                                                <input type="radio" id="{{$productSize->size}}_size"
+                                                       name="pr_size"
+                                                       value="{{$productSize->size}}">
+                                                <label for="{{$productSize->size}}_size"
+                                                       class="sizeLabels">{{$productSize->size}}</label>
+                                            </div>
+                                        @endforeach
+                                    </div>
+
                                     <div class="quantity">
                                         <div class="pro-qty">
-                                            <input type="text" value="1" name="quantity">
+                                            <input type="number" value="1" name="quantity">
                                         </div>
-                                        <button class="primary-btn pd-cart" type="submit" style="border: none">Add To
-                                            Cart
+                                        <button class="primary-btn pd-cart" type="submit">
+                                            Add To Cart
                                         </button>
                                     </div>
                                 </form>
@@ -212,7 +217,8 @@
                                             <tr>
                                                 <td class="p-catagory">Availability</td>
                                                 <td>
-                                                    <div class="p-stock">22 in stock</div>
+                                                    <div
+                                                        class="p-stock">{{$products->PrStock->stock <= 0 ? 'Out-of-stock' : $products->PrStock->stock.' in stock'}}</div>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -481,15 +487,25 @@
             color: #FFED85;
         }
 
-
+        .pd-disabled {
+            background: #eec477 !important;
+            cursor: not-allowed;
+        }
     </style>
 @endsection
 
 @section('js')
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+            integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+            crossorigin="anonymous"></script>
     <script src="/js/jquery.form.min.js"></script>
     <script src="/js/sweetalert2.min.js"></script>
 
     <script>
+        // Product Comment Form
         $(document).ready(function () {
             $('#productCommentForm').ajaxForm({
                 beforeSubmit: function () {
@@ -511,6 +527,16 @@
                     })
                 }
             })
+        })
+
+        $(document).ready(function () {
+            $('.pd-cart:input[type="submit"]').addClass('pd-disabled').prop('disabled', true)
+
+            $('.sizeLabels').on('click', function () {
+                if ($('.sizeLabels').hasClass('active')) {
+                    $('.pd-cart:input[type="submit"]').prop('disabled', false).removeClass('pd-disabled');
+                }
+            });
         })
     </script>
 @endsection

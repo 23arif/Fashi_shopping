@@ -2315,8 +2315,19 @@ ol {
     float: left;
 }
 
+/* Disabling number input arrows for Chrome, Safari, Edge, Opera */
+.product-details .quantity .pro-qty input::-webkit-outer-spin-button, .product-details .quantity .pro-qty input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+/* Disabling number input arrows for Firefox */
+.product-details .quantity .pro-qty input::-webkit-outer-spin-button, .product-details .quantity .pro-qty input[type=number] {
+    -moz-appearance: textfield;
+}
+
 .product-details .quantity .primary-btn.pd-cart {
     padding: 14px 70px 10px;
+    border: none;
 }
 
 .product-details .pd-tags {

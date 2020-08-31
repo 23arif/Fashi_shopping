@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
              BannerSeed::class,
              LocalSeed::class,
              UserStatusesSeed::class,
+             DefaultSizeSeed::class
          ]);
     }
 }

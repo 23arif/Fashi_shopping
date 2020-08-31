@@ -7,6 +7,7 @@ use App\Blog;
 use App\Category;
 use App\ContactComment;
 use App\Deal;
+use App\DefaultSize;
 use App\FAQs;
 use App\Menu;
 use App\Order;
@@ -65,7 +66,10 @@ class AdminGetController extends AdminController
         $brands = PrBrand::all();
         $getProduct = Product::where('slug', $slug)->first();
         $sizes = PrSize::where('pr_id', $getProduct->id)->pluck('size');
-        return view('backend.edit-products', ['product' => $getProduct, 'categories' => $categories, 'brands' => $brands, 'sizes' => $sizes]);
+        $defaultSizes = DefaultSize::all();
+        return view('backend.edit-products', ['product' => $getProduct, 'categories' => $categories, 'brands' => $brands, 'sizes' => $sizes,
+            'defaultSizes'=>$defaultSizes,
+            ]);
     }
 
     public function get_blog()
@@ -173,6 +177,13 @@ class AdminGetController extends AdminController
             echo $tag->tag . ',';
         }
     }
-//---    Function for fetch Product/Blog tags to Product/Blog edit page
+
+    //    Function for fetch Product size
+    public function getPrSize($currentSizes)
+    {
+        foreach($currentSizes as $size){
+            return strtolower($size->size);
+        }
+    }
 
 }

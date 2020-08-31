@@ -21,6 +21,9 @@
     <!-- Shopping Cart Section Begin -->
     <section class="shopping-cart spad">
         <div class="container">
+            @if (session()->has('notif'))
+                <div class="alert alert-success text-center">{{session()->get('notif')}}</div>
+            @endif
             <div class="row">
                 <div class="col-lg-12">
                     <div class="cart-table">
@@ -52,13 +55,17 @@
                                         <td class="qua-col first-row">
                                             <div class="quantity">
                                                 <div class="pro-qtyy">
-                                                    <span class="dec qtybtn"
-                                                          onclick="decQtyy(this,'{{$fetch->product_id}}')">-</span>
+                                                    <button class="dec qtybtn"
+                                                            onclick="decQtyy(this,'{{$fetch->product_id}}','{{$fetch->pr_size}}')">
+                                                        -
+                                                    </button>
                                                     <input id="productQuantity" type="text"
                                                            value="{{$fetch->quantity}}"
-                                                           onkeyup="typeQty(this,'{{$fetch->product_id}}')">
-                                                    <span class="inc qtybtn"
-                                                          onclick="incQtyy(this,'{{$fetch->product_id}}')">+</span>
+                                                           onchange="typeQty(this,'{{$fetch->product_id}}','{{$fetch->pr_size}}')">
+                                                    <button class="inc qtybtn"
+                                                            onclick="incQtyy(this,'{{$fetch->product_id}}','{{$fetch->pr_size}}')">
+                                                        +
+                                                    </button>
                                                 </div>
                                             </div>
                                         </td>
@@ -68,7 +75,7 @@
                                         @php($eachTotal = intval($fetch->quantity) * $fetch->getProductInfo->pr_last_price)
                                         <td class="total-price first-row">$ {{$eachTotal}}</td>
                                         <td class="close-td first-row"><i class="ti-close"
-                                                                          onclick="deleteSelectedProduct(this,'{{$fetch->product_id}}')"></i>
+                                                                          onclick="deleteSelectedProduct(this,'{{$fetch->product_id}}','{{$fetch->pr_size}}')"></i>
                                         </td>
                                     </tr>
 
@@ -215,6 +222,10 @@
             float: left;
         }
 
+        .dec, .inc {
+            border: 0px !important;
+            background: transparent !important;
+        }
     </style>
 @endsection
 
@@ -225,7 +236,7 @@
 
     <script !src="">
 
-        function typeQty(t, product_id) {
+        function typeQty(t, product_id, pr_size) {
             var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
             var typedQty = $(t).val();
             $.ajax({
@@ -235,24 +246,26 @@
                     '_token': CSRF_TOKEN,
                     'identifier': 'typeQty', // to identify fetch request
                     'product_id': product_id,
+                    'pr_size': pr_size,
                     'typedQty': typedQty
 
-                },
-                beforeSubmit: function () {
-                    Swal.fire({
-                        imageUrl: '/frontend/img/Infinity-1s-200px.svg',
-                        imageWidth: 400,
-                        imageHeight: 200,
-                        showConfirmButton: false
-                    })
-                },
-                success: function (response) {
-                    // location.reload();
+                },success: function (response) {
+                    if (response.processStatus == 'info' || response.processStatus == 'error') {
+                        Swal.fire(
+                            response.processTitle,
+                            response.processDesc,
+                            response.processStatus
+                        ).then(() => {
+                            location.reload();
+                        })
+                    } else {
+                        location.reload();
+                    }
                 }
             })
         }
 
-        function deleteSelectedProduct(t, product_id) {
+        function deleteSelectedProduct(t, product_id, pr_size) {
             var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
             $.ajax({
@@ -261,15 +274,27 @@
                 data: {
                     'identifier': 'deleteSelectedProduct', // to identify fetch request
                     'product_id': product_id,
+                    'pr_size': pr_size,
                     '_token': CSRF_TOKEN
                 },
                 success: function (response) {
-                    location.reload();
+                    if (response.processStatus == 'error') {
+                        Swal.fire(
+                            response.processTitle,
+                            response.processDesc,
+                            response.processStatus
+                        ).then(() => {
+                            location.reload();
+                        })
+                    } else {
+                        location.reload();
+                    }
                 }
             })
         }
 
-        function decQtyy(t, pr_id) {
+        function decQtyy(t, pr_id, pr_size) {
+            $(t).prop('disabled', true);
             var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
             var newDecreasedQty = parseInt($(t).next().val()) - 1;
             $(t).next().val(newDecreasedQty)
@@ -283,16 +308,29 @@
                 data: {
                     'identifier': 'decQtyy', // to identify fetch request
                     'pr_id': pr_id,
+                    'pr_size': pr_size,
                     'newDecreasedQty': newDecreasedQty,
                     '_token': CSRF_TOKEN
-                },
+                }
+                ,
                 success: function (response) {
-                    location.reload();
+                    if (response.processStatus == 'error') {
+                        Swal.fire(
+                            response.processTitle,
+                            response.processDesc,
+                            response.processStatus
+                        ).then(() => {
+                            location.reload();
+                        })
+                    } else {
+                        location.reload();
+                    }
                 }
             })
         }
 
-        function incQtyy(t, pr_id) {
+        function incQtyy(t, pr_id, pr_size) {
+            $(t).prop('disabled', true);
             var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
             var newIncreasedQty = parseInt($(t).prev().val()) + 1;
             $(t).prev().val(newIncreasedQty);
@@ -303,11 +341,22 @@
                 data: {
                     'identifier': 'incQtyy', // to identify fetch request
                     'pr_id': pr_id,
+                    'pr_size': pr_size,
                     'newIncreasedQty': newIncreasedQty,
                     '_token': CSRF_TOKEN
                 },
                 success: function (response) {
-                    location.reload();
+                    if (response.processStatus != 'success') {
+                        Swal.fire(
+                            response.processTitle,
+                            response.processDesc,
+                            response.processStatus
+                        ).then(() => {
+                            location.reload();
+                        })
+                    } else {
+                        location.reload();
+                    }
                 }
             })
         }

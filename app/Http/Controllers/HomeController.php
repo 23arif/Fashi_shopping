@@ -34,8 +34,8 @@ class HomeController extends Controller
         $sizes = PrSize::select('size')->groupBy('size')->pluck('size');
         $colors = PrColor::all();
         $tags = PrTag::select('tag')->groupBy('tag')->orderByRaw('CHAR_LENGTH(tag)')->pluck('tag');
-        $blogTags = BlogTags::select('tags')->groupBy('tags')->orderByRaw('CHAR_LENGTH(tags)')->pluck('tags');
-        $maxPrice = (Product::max('pr_last_price'))+1;
+        $blogTags = BlogTags::select('tag')->groupBy('tag')->orderByRaw('CHAR_LENGTH(tag)')->pluck('tag');
+        $maxPrice = (Product::max('pr_last_price')) + 1;
         $locales = Locale::all();
         $allDepartments = PrCategory::all();
         $deals = Deal::where('id', 1)->first();
@@ -45,16 +45,9 @@ class HomeController extends Controller
         $fullUrl = url()->current();
         $currentUrl = explode('/', $fullUrl);
         if (!isset($currentUrl[3])) {
-            $activeUrl ='127.0.0.1:8000';
-        }else{
-            $activeUrl =$currentUrl[3];
-        }
-
-        $cartProducts = Basket::where('user_id', Auth::id())->get();
-        $totalPrice = 0;
-
-        foreach (Basket::where('user_id', Auth::id())->get() as $fetch) {
-            $totalPrice += $fetch->getProductInfo->pr_last_price * $fetch->quantity;
+            $activeUrl = '127.0.0.1:8000';
+        } else {
+            $activeUrl = $currentUrl[3];
         }
 
         View::share([
@@ -72,8 +65,19 @@ class HomeController extends Controller
             'colors' => $colors,
             'tags' => $tags,
             'blogTags' => $blogTags,
-            'cartProducts' => $cartProducts, 'totalPrice' => $totalPrice
         ]);
+
+        view()->composer('*', function ($view) {
+            $cartProducts = Basket::where('user_id', Auth::id())->get();
+            $totalPrice = 0;
+
+            foreach (Basket::where('user_id', Auth::id())->get() as $fetch) {
+                $totalPrice += $fetch->getProductInfo->pr_last_price * $fetch->quantity;
+            }
+
+            $view->with(['cartProducts' => $cartProducts, 'totalPrice' => $totalPrice]);
+
+        });
     }
 
     /**

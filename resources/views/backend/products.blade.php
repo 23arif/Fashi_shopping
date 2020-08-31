@@ -69,6 +69,7 @@
                                             <th>Last price</th>
                                             <th>Brand</th>
                                             <th>Size</th>
+                                            <th>Stock</th>
                                             <th>Edit</th>
                                             <th>Delete</th>
                                         </tr>
@@ -93,6 +94,7 @@
                                                         {{$s->size}}&nbsp;
                                                     @endforeach
                                                 </td>
+                                                <td>{{$product->prStock->stock}}</td>
                                                 <td>
                                                     <a href="{{route('adminEditProduct',['slug'=>$product->slug])}}"
                                                        class="btn btn-primary">Edit</a>
@@ -236,7 +238,15 @@
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                 <input type="text" id="tags"
                                                        class="form-control col-md-6 col-sm-6 col-xs-12" name="pr_tags"
-                                                       value="" data-role="tagsinput">
+                                                       data-role="tagsinput">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="stocks"
+                                                   class="control-label col-md-3 col-sm-3 col-xs-12">Stock *</label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="number" id="stocks" name="pr_stock" class="form-control"  required>
                                             </div>
                                         </div>
 

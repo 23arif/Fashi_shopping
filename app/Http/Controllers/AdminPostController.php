@@ -20,6 +20,7 @@ use App\PrCategory;
 use App\Product;
 use App\ProductComment;
 use App\PrSize;
+use App\PrStock;
 use App\PrTag;
 use App\Settings;
 use App\Slider;
@@ -255,6 +256,7 @@ class AdminPostController extends AdminController
                 'pr_desc' => 'required',
                 'pr_color' => 'required | max:190',
                 'pr_tags' => 'required | max:190',
+                'pr_stock' => 'required | max:11',
                 'pr_sku' => 'required | max:11',
                 'pr_last_price' => 'required',
 
@@ -277,12 +279,12 @@ class AdminPostController extends AdminController
                 $tags = explode(',', $request->pr_tags);
                 $newProduct = Product::create($request->except('pr_tags'));
                 if ($newProduct) {
+                    PrStock::create(['pr_id'=>$newProduct->id,'stock'=>$request->pr_stock]);
                     foreach ($tags as $tag) {
                         PrTag::create(['product_id' => $newProduct->id, 'tag' => $tag, 'slug' => Str::slug($tag)]);
                     }
                     foreach ($request->pr_size as $size) {
-                        $sizeSlug = Str::slug($size);
-                        PrSize::create(['pr_id' => $newProduct->id, 'size' => strtoupper($size), 'slug' => $sizeSlug]);
+                        PrSize::create(['pr_id' => $newProduct->id, 'size' => strtoupper($size), 'slug' => Str::slug($size)]);
                     }
                 }
                 return response(['processStatus' => 'success', 'processTitle' => 'Success', 'processDesc' => 'Congratulations , product added successfully !']);
@@ -375,6 +377,7 @@ class AdminPostController extends AdminController
                 'pr_color' => 'required | max:250',
                 'pr_weight' => 'required | max:250',
                 'pr_last_price' => 'required | max:250',
+                'pr_stock' => 'required | max: 11',
                 'pr_sku' => 'required | max:250 ',
 
             ]);
@@ -398,8 +401,9 @@ class AdminPostController extends AdminController
                 $request->merge(['pr_prev_price' => $pr_prev_price]);
                 $tags = explode(',', $request->pr_tags);
                 $getPrId = Product::where('slug', $slug)->first()->id;
-                $updateProduct = Product::where('slug', $slug)->update($request->except('photos', 'pr_tags', 'pr_size'));
+                $updateProduct = Product::where('slug', $slug)->update($request->except('photos', 'pr_tags', 'pr_size','pr_stock'));
                 if ($updateProduct) {
+                    PrStock::where('pr_id',$getPrId)->update(['stock'=>$request->pr_stock]);
                     PrTag::where('product_id', $getPrId)->delete();
                     foreach ($tags as $tag) {
                         PrTag::create(['product_id' => $getPrId, 'tag' => $tag, 'slug' => Str::slug($tag)]);
@@ -407,8 +411,7 @@ class AdminPostController extends AdminController
 
                     PrSize::where('pr_id', $getPrId)->delete();
                     foreach ($request->pr_size as $size) {
-                        $sizeSlug = Str::slug($size);
-                        PrSize::create(['pr_id' => $getPrId, 'size' => strtoupper($size), 'slug' => $sizeSlug]);
+                        PrSize::create(['pr_id' => $getPrId, 'size' => strtoupper($size), 'slug' => Str::slug($size)]);
                     }
                 }
                 return response(['processStatus' => 'success', 'processTitle' => 'Success', 'processDesc' => 'Congratulations , product updated successfully !']);
