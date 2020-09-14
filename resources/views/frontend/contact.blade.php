@@ -202,10 +202,10 @@
                         if (response.processStatus == 'success') {
                             location.reload();
                         }
+
                     })
                 }
             })
         })
     </script>
 @endsection
-

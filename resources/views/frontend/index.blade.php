@@ -106,7 +106,7 @@
     <!-- Deal Of The Week Section Begin-->
     @if(\App\Deal::where('id',1)->first())
         @if($deals->enable_disable == 1)
-            <section class="deal-of-week set-bg spad" data-setbg="/frontend/img/time-bg.jpg">
+            <section class="deal-of-week set-bg spad" data-setbg="/uploads/img/DealsBanner/{{$deals->banner}}">
                 <div class="container">
                     <div class="col-lg-6 text-center">
                         <div class="section-title">
@@ -119,19 +119,19 @@
                         </div>
                         <div class="countdown-timer" id="countdown">
                             <div class="cd-item">
-                                <span>{{$deals->day}}</span>
+                                <span></span>
                                 <p>Days</p>
                             </div>
                             <div class="cd-item">
-                                <span>{{$deals->hourse}}</span>
+                                <span></span>
                                 <p>Hrs</p>
                             </div>
                             <div class="cd-item">
-                                <span>{{$deals->minute}}</span>
+                                <span></span>
                                 <p>Mins</p>
                             </div>
                             <div class="cd-item">
-                                <span>{{$deals->second}}</span>
+                                <span></span>
                                 <p>Secs</p>
                             </div>
                         </div>
@@ -314,4 +314,40 @@
 @endsection()
 
 @section('js')
+    <script>
+        // Set the date we're counting down to
+        // var countDownDate = new Date("Sep 11, 2020").getTime();
+        var d = new Date('{{$deals->date}}');
+        var yyy = d.getFullYear();
+        var mmm = String(d.getMonth() + 1).padStart(2, '0');
+        var ddd = String(d.getDate()+1).padStart(2, '0');
+        var countThis = mmm + '/' + ddd + '/' + yyy;
+
+        var countDownDate = new Date(countThis).getTime();
+        // Update the count down every 1 second
+        var x = setInterval(function () {
+
+            // Get today's date and time
+            var now = new Date().getTime();
+
+            // Find the distance between now and the count down date
+            var distance = countDownDate - now;
+
+            // Time calculations for days, hours, minutes and seconds
+            var days = String("0" + Math.floor(distance / (1000 * 60 * 60 * 24))).slice(-2);
+            var hours = String("0" + Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).slice(-2);
+            var minutes = String("0" + Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).slice(-2);
+            var seconds = String("0" + Math.floor((distance % (1000 * 60)) / 1000)).slice(-2);
+
+            // Output the result in an element with id="demo"
+            document.getElementById("countdown").innerHTML = "<div class='cd-item'><span>" + days + "</span> <p>Days</p> </div>" + "<div class='cd-item'><span>" + hours + "</span> <p>Hrs</p> </div>" + "<div class='cd-item'><span>" + minutes + "</span> <p>Mins</p> </div>" + "<div class='cd-item'><span>" + seconds + "</span> <p>Secs</p> </div>";
+
+            // If the count down is over, write some text
+            if (distance < 0) {
+                clearInterval(x);
+                $('.deal-of-week a').hide();
+                document.getElementById("countdown").innerHTML = "<div class='cd-item'><span>EXPIRED</span></div>";
+            }
+        }, 1000);
+    </script>
 @endsection()

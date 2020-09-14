@@ -104,7 +104,7 @@
 
                                     <div class="quantity">
                                         <div class="pro-qty">
-                                            <input type="number" value="1" name="quantity">
+                                            <input type="number" value="1" name="quantity" autocomplete="off">
                                         </div>
                                         <button class="primary-btn pd-cart" type="submit">
                                             Add To Cart

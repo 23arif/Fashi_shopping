@@ -21,10 +21,8 @@ class CreateDealsTable extends Migration
             $table->text('desc')->nullable();
             $table->float('price')->nullable();
             $table->string('pr_name')->nullable();
-            $table->integer('day')->nullable();
-            $table->integer('hourse')->nullable();
-            $table->integer('minute')->nullable();
-            $table->string('second')->nullable();
+            $table->date('date')->nullable();
+            $table->string('link')->nullable();
             $table->timestamps();
         });
     }

@@ -7,16 +7,19 @@ use App\Comment;
 use App\ContactComment;
 use App\FaqComment;
 use App\FaqTopic;
+use App\Mail\ContactMail;
 use App\Order;
 use App\OrderBilling;
 use App\OrderDetail;
 use App\Product;
 use App\ProductComment;
 use App\PrStock;
+use App\Settings;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Validator;
 
@@ -300,14 +303,19 @@ class HomePostController extends HomeController
             $differenceLastAndNewQty = $request->typedQty - $currentQty;
             if ($request->typedQty == 0) {
 //                Delete product
-                try {
-                    $process = Basket::where(['user_id' => Auth::id(), 'product_id' => $request->product_id, 'pr_size' => $request->pr_size])->delete();
-                    if ($process) {
-                        PrStock::where(['pr_id' => $request->product_id])->update(['stock' => $stock + $currentQty]);
+                if (is_null($request->typedQty)) {
+                    return response(['processStatus' => 'warning', 'processTitle' => 'Warning', 'processDesc' => 'Nothing typed to process.']);
+                } else {
+                    try {
+                        $process = Basket::where(['user_id' => Auth::id(), 'product_id' => $request->product_id, 'pr_size' => $request->pr_size])->delete();
+                        if ($process) {
+                            PrStock::where(['pr_id' => $request->product_id])->update(['stock' => $stock + $currentQty]);
+                        }
+                    } catch (\Exception $e) {
+                        return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Something goes wrong. Please try later !']);
                     }
-                } catch (\Exception $e) {
-                    return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Something goes wrong. Please try later !']);
                 }
+
             } elseif ($stock >= $differenceLastAndNewQty and $differenceLastAndNewQty > 0) {
 //                Decrease stock , increase quantity
                 try {
@@ -401,8 +409,8 @@ class HomePostController extends HomeController
             ]);
         } else {
             $validator = Validator::make($request->all(), [
-                'name' => 'required| max:250',
-                'email' => 'required| email |max:250',
+                'name' => 'required| max:190',
+                'email' => 'required| email |max:190',
                 'message' => 'required',
             ]);
         }
@@ -416,10 +424,32 @@ class HomePostController extends HomeController
             if (Auth::check()) {
                 $request->merge(['name' => Auth::user()->name, 'email' => Auth::user()->email]);
             }
-            $date = Carbon::now();
-            $slug = Str::slug($request->name . '-' . $date);
+            $systemInfo = Settings::where('id', 1)->first();
+
+            $data = array(
+                'name' => $request->name,
+                'email' => $request->email,
+                'message' => $request->message
+            );
+            Mail::to($systemInfo->mail)->send(new ContactMail($data));
+
+
+//            Save messages to database
+            $slug = Str::slug($request->name . '-' . now());
             $request->merge(['slug' => $slug]);
             ContactComment::create($request->all());
+
+
+//            Mail::send([], [], function ($message) use ($date, $request) {
+//                $systemInfo = Settings::where('id', 1)->first();
+//                $message->from($request->email, $request->name);
+//                $message->to($systemInfo->mail);
+//                $message->setBody('Message from :' . $request->name . '<br/>
+//                                   Sender mail :' . $request->email . '<br/>
+//                                   Message content :' . $request->message . '<br/>
+//                                   Message date :' . $date, 'text/html');
+//                $message->subject('Message from : ' . $request->name);
+//            });
 
             return response(['processStatus' => 'success', 'processTitle' => 'Successfully', 'processDesc' => 'Comment sent successfully !']);
         } catch (\Exception $e) {

@@ -59,8 +59,7 @@
                                                             onclick="decQtyy(this,'{{$fetch->product_id}}','{{$fetch->pr_size}}')">
                                                         -
                                                     </button>
-                                                    <input id="productQuantity" type="text"
-                                                           value="{{$fetch->quantity}}"
+                                                    <input id="productQuantity" type="number" value="{{$fetch->quantity}}"
                                                            onchange="typeQty(this,'{{$fetch->product_id}}','{{$fetch->pr_size}}')">
                                                     <button class="inc qtybtn"
                                                             onclick="incQtyy(this,'{{$fetch->product_id}}','{{$fetch->pr_size}}')">
@@ -107,13 +106,17 @@
                                             <td class="qua-col first-row">
                                                 <div class="quantity">
                                                     <div class="pro-qtyy">
-                                                    <span class="dec qtybtn"
-                                                          onclick="decQtyy(this)">-</span>
-                                                        <input id="productQuantity" type="text"
+                                                        <button class="dec qtybtn"
+                                                                onclick="decQtyy(this)">
+                                                            -
+                                                        </button>
+                                                        <input id="productQuantity" type="number"
                                                                value="{{$value}}"
-                                                               onkeyup="typeQty(this)">
-                                                        <span class="inc qtybtn"
-                                                              onclick="incQtyy(this)">+</span>
+                                                               onchange="typeQty(this)">
+                                                        <button class="inc qtybtn"
+                                                                onclick="incQtyy(this)">
+                                                            +
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </td>
@@ -226,6 +229,9 @@
             border: 0px !important;
             background: transparent !important;
         }
+
+
+
     </style>
 @endsection
 
@@ -249,7 +255,7 @@
                     'pr_size': pr_size,
                     'typedQty': typedQty
 
-                },success: function (response) {
+                }, success: function (response) {
                     if (response.processStatus == 'info' || response.processStatus == 'error') {
                         Swal.fire(
                             response.processTitle,

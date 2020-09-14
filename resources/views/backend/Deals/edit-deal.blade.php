@@ -43,22 +43,17 @@
 
                                     @if(isset($deals->banner))
                                         <div class="form-group">
-                                            <label for="dealBanner"
-                                                   class="control-label col-md-3 col-sm-3 col-xs-12">Current banner
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Current banner
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12"
                                                  style="border:2px solid #ddd;display: flex;justify-content: center;align-items: center;overflow: auto;height: 330px">
-                                                <img src="/uploads/img/DealsBanner/{{$deals->banner}}"
-                                                     alt="">
+                                                <img src="/uploads/img/DealsBanner/{{$deals->banner}}" >
                                             </div>
                                         </div>
                                     @endif
                                     <div class="form-group">
                                         <label for="dealBanner"
-                                               class="control-label col-md-3 col-sm-3 col-xs-12">Change banner
-                                            @if(!isset($deals->banner))
-                                                *
-                                            @endif
+                                               class="control-label col-md-3 col-sm-3 col-xs-12">Change banner *
                                         </label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <input type="file" id="dealBanner" name="dealBanner"
@@ -123,50 +118,13 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="duration"
+                                        <label for="durationDay"
                                                class="control-label col-md-3 col-sm-3 col-xs-12">Duration *</label>
-                                        <div class="col-md-1 col-sm-1 col-xs-1">
-                                            <input type="number" min="0" max="365" name="durationDay" id="durationDay"
-                                                   class="form-control" placeholder="Day"
-                                                   @if($deals)
-                                                   value="{{$deals->day}}"
-                                                   @else
-                                                   placeholder="Not data yet"
-                                                @endif
-                                            >
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input type="date" name="durationDate" id="durationDate" min="{{date('Y-m-d')}}"
+                                                   class="form-control"  value="{{$deals->date}}">
                                         </div>
-                                        <div class="col-md-1 col-sm-1 col-xs-1">
-                                            <input type="number" min="0" max="24" name="durationHourse"
-                                                   id="durationHourse"
-                                                   class="form-control" placeholder="Hourse"
-                                                   @if($deals)
-                                                   value="{{$deals->hourse}}"
-                                                   @else
-                                                   placeholder="Not data yet"
-                                                @endif
-                                            >
-                                        </div>
-                                        <div class="col-md-1 col-sm-1 col-xs-1">
-                                            <input type="number" min="0" max="60" name="durationMinute"
-                                                   id="durationMinute"
-                                                   class="form-control" placeholder="Minute"
-                                                   @if($deals)
-                                                   value="{{$deals->minute}}"
-                                                   @else
-                                                   placeholder="Not data yet"
-                                                @endif
-                                            >
-                                        </div>
-                                        <div class="col-md-1 col-sm-1 col-xs-1">
-                                            <input type="number" min="0" max="60" name="durationSeconds"
-                                                   id="durationSeconds" class="form-control" placeholder="Seconds"
-                                                   @if($deals)
-                                                   value="{{$deals->second}}"
-                                                   @else
-                                                   placeholder="Not data yet"
-                                                @endif
-                                            >
-                                        </div>
+
                                     </div>
 
                                     <div class="form-group">

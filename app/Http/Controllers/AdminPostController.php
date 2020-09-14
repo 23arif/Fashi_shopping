@@ -167,9 +167,9 @@ class AdminPostController extends AdminController
                 $getBlogInfo = Blog::where('slug', $request->slug)->first();
                 $deletingBlog = Blog::where('slug', $request->slug)->delete();
                 if ($deletingBlog) {
-                    Storage::disk('uploads')->deleteDirectory('img/blog/' . $request->slug);
                     Comment::where('blog', $request->slug)->delete();
                     BlogTags::where('blog_id', $getBlogInfo->id)->delete();
+                    Storage::disk('uploads')->deleteDirectory('img/blog/' . $request->slug);
                     return response(['processStatus' => 'success', 'processTitle' => 'Successful', 'processDesc' => 'Blog deleted successfully !']);
                 }
             } catch (\Exception $e) {
@@ -279,7 +279,7 @@ class AdminPostController extends AdminController
                 $tags = explode(',', $request->pr_tags);
                 $newProduct = Product::create($request->except('pr_tags'));
                 if ($newProduct) {
-                    PrStock::create(['pr_id'=>$newProduct->id,'stock'=>$request->pr_stock]);
+                    PrStock::create(['pr_id' => $newProduct->id, 'stock' => $request->pr_stock]);
                     foreach ($tags as $tag) {
                         PrTag::create(['product_id' => $newProduct->id, 'tag' => $tag, 'slug' => Str::slug($tag)]);
                     }
@@ -335,12 +335,16 @@ class AdminPostController extends AdminController
         ($request->slug) {
             try {
                 $getProductInfo = Product::where('slug', $request->slug)->first();
-                Product::where('slug', $request->slug)->delete();
-                ProductComment::where('product_id', $getProductInfo->id)->delete();
-                Basket::where('product_id', $getProductInfo->id)->delete();
-                PrTag::where('product_id', $getProductInfo->id)->delete();
-                PrSize::where('pr_id', $getProductInfo->id)->delete();
-                return response(['processStatus' => 'success', 'processTitle' => 'Success', 'processDesc' => 'Congratulations ,Product deleted successfully !']);
+                $process = Product::where('slug', $request->slug)->delete();
+                if ($process) {
+                    ProductComment::where('product_id', $getProductInfo->id)->delete();
+                    Basket::where('product_id', $getProductInfo->id)->delete();
+                    PrTag::where('product_id', $getProductInfo->id)->delete();
+                    PrSize::where('pr_id', $getProductInfo->id)->delete();
+                    Storage::disk('uploads')->deleteDirectory('img/products/' . $request->slug);
+
+                    return response(['processStatus' => 'success', 'processTitle' => 'Success', 'processDesc' => 'Congratulations ,Product deleted successfully !']);
+                }
             } catch (\Exception $e) {
                 return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Product could not deleted !', 'error' => $e]);
             }
@@ -401,9 +405,9 @@ class AdminPostController extends AdminController
                 $request->merge(['pr_prev_price' => $pr_prev_price]);
                 $tags = explode(',', $request->pr_tags);
                 $getPrId = Product::where('slug', $slug)->first()->id;
-                $updateProduct = Product::where('slug', $slug)->update($request->except('photos', 'pr_tags', 'pr_size','pr_stock'));
+                $updateProduct = Product::where('slug', $slug)->update($request->except('photos', 'pr_tags', 'pr_size', 'pr_stock'));
                 if ($updateProduct) {
-                    PrStock::where('pr_id',$getPrId)->update(['stock'=>$request->pr_stock]);
+                    PrStock::where('pr_id', $getPrId)->update(['stock' => $request->pr_stock]);
                     PrTag::where('product_id', $getPrId)->delete();
                     foreach ($tags as $tag) {
                         PrTag::create(['product_id' => $getPrId, 'tag' => $tag, 'slug' => Str::slug($tag)]);
@@ -640,15 +644,12 @@ class AdminPostController extends AdminController
             'desc' => 'required',
             'price' => 'required',
             'pr_name' => 'required| max:250',
-            'durationDay' => 'required | min:0 | max:365',
-            'durationHourse' => 'required | min:0 | max:24',
-            'durationMinute' => 'required | min:0 | max:60',
-            'durationSeconds' => 'required | min:0 | max:60',
+            'durationDate' => 'required',
             'link' => 'required | max:250'
         ]);
 
         if ($validator->fails()) {
-            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Please fill all field correctly for change banner !']);
+            return response(['processStatus' => 'warning', 'processTitle' => 'Warning', 'processDesc' => 'Please fill all field correctly for change banner !']);
         }
 
         $photo = $request->file('dealBanner');
@@ -662,22 +663,18 @@ class AdminPostController extends AdminController
 
             $request->merge(['banner' => $photo_name]);
             Deal::where('id', 1)->update([
-                'banner' => $request->banner,
+                'banner' => $photo_name,
                 'title' => $request->title,
                 'desc' => $request->desc,
                 'price' => $request->price,
                 'pr_name' => $request->pr_name,
-                'day' => $request->durationDay,
-                'hourse' => $request->durationHourse,
-                'minute' => $request->durationMinute,
-                'second' => $request->durationSeconds,
+                'date' => $request->durationDate,
                 'link' => $request->link,
             ]);
             return response(['processStatus' => 'success', 'processTitle' => 'Success', 'processDesc' => 'Congratulations , banner changed successfully!']);
         } catch (\Exception $e) {
             return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Banner  could not changed !', 'error' => $e]);
         }
-
     }
 
     public function post_switch_deal(Request $request)

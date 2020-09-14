@@ -532,7 +532,7 @@
             Swal.fire({
                 title: 'Are you sure?',
                 text: "The product will delete!",
-                icon: 'warning',
+                icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',

@@ -2316,12 +2316,15 @@ ol {
 }
 
 /* Disabling number input arrows for Chrome, Safari, Edge, Opera */
-.product-details .quantity .pro-qty input::-webkit-outer-spin-button, .product-details .quantity .pro-qty input::-webkit-inner-spin-button {
+.quantity .pro-qtyy input::-webkit-outer-spin-button,
+.quantity .pro-qtyy input::-webkit-inner-spin-button,
+.product-details .quantity .pro-qty input::-webkit-outer-spin-button,
+.product-details .quantity .pro-qty input::-webkit-inner-spin-button {
     -webkit-appearance: none;
 }
 
 /* Disabling number input arrows for Firefox */
-.product-details .quantity .pro-qty input::-webkit-outer-spin-button, .product-details .quantity .pro-qty input[type=number] {
+.product-details .quantity .pro-qty input[type=number],.quantity .pro-qtyy input[type=number]  {
     -moz-appearance: textfield;
 }
 
