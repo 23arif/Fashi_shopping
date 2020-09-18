@@ -2,13 +2,20 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Basket;
 use App\Http\Controllers\Controller;
+use App\Locale;
+use App\PrCategory;
 use App\Providers\RouteServiceProvider;
+use App\Settings;
 use App\User;
 use App\UserExtraInfo;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 
 class RegisterController extends Controller
@@ -40,6 +47,39 @@ class RegisterController extends Controller
      */
     public function showRegistrationForm()
     {
+        $settings = Settings::all();
+        $locales = Locale::all();
+        $allDepartments = PrCategory::all();
+        $basketArray = Cookie::get('basket');
+
+
+        $fullUrl = url()->current();
+        $currentUrl = explode('/', $fullUrl);
+        if (!isset($currentUrl[3])) {
+            $activeUrl ='127.0.0.1:8000';
+        }else{
+            $activeUrl =$currentUrl[3];
+        }
+
+        $cartProducts = Basket::where('user_id', \Illuminate\Support\Facades\Auth::id())->get();
+        $totalPrice = 0;
+
+        foreach (Basket::where('user_id', Auth::id())->get() as $fetch) {
+            $totalPrice += $fetch->getProductInfo->pr_last_price * $fetch->quantity;
+        }
+
+
+        View::share([
+            'settings' => $settings,
+            'locales' => $locales,
+            'allDepartments' => $allDepartments,
+            'activeUrl' => $activeUrl,
+            'cartProducts' => $cartProducts,
+            'totalPrice' => $totalPrice,
+            'basketArray' => $basketArray,
+
+        ]);
+
         return view('frontend.register');
     }
 

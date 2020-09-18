@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 Route::get('/', 'HomeController@index');
 Route::get('/', 'HomeGetController@get_index')->name('homePage');
+Route::post('/newsletter', 'HomePostController@post_newsletter_mails')->name('newsletterMails');
 Route::get('/index', 'HomeGetController@get_index_yonlendir');
 Route::post('/locale', 'HomePostController@post_locale');
 Route::get('/home', 'HomeGetController@get_index_yonlendir');
@@ -71,8 +72,8 @@ Route::group(['prefix' => 'faq'], function () {
 Route::group(['prefix' => 'admin', 'middleware' => 'Admin'], function () {
 
     Route::get('/', 'AdminGetController@get_index')->name('adminIndex');
-    Route::get('/settings', 'AdminGetController@get_settings')->name('adminSettingsPage');
-    Route::post('/settings', 'AdminPostController@post_settings');
+    Route::get('/settings', 'AdminGetController@get_settings')->name('adminSettingsPage')->middleware('OnlySuperAdmin');
+    Route::post('/settings', 'AdminPostController@post_settings')->middleware('OnlySuperAdmin');
 
     Route::group(['prefix' => 'slider'], function () {
         Route::get('/', 'AdminGetController@get_slider')->name('sliderPage');
@@ -132,7 +133,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'Admin'], function () {
         Route::get('/update-banner/{banner}', 'AdminGetController@get_update_banner')->name('updateBanner');
         Route::post('/update-banner/{banner}', 'AdminPostController@post_update_banner')->name('postUpdateBanner');
     });
-    Route::group(['prefix' => 'orders', 'middleware' => 'OnlySuperAdmin'], function () {
+    Route::group(['prefix' => 'orders'], function () {
         Route::get('/', 'AdminGetController@get_orders_table')->name('getOrdersTable');
 
     });
@@ -141,7 +142,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'Admin'], function () {
         Route::get('/', 'AdminGetController@get_messages_table')->name('adminMessagesPage');
         Route::post('/', 'AdminPostController@post_delete_message')->name('deleteMessage');
         Route::get('/{slug}', 'AdminGetController@get_read_message')->name('readMessage');
+    });
 
+    Route::group(['prefix' => 'newsletter'], function () {
+        Route::get('/', 'AdminGetController@get_newsletter_emails_table')->name('adminNewsletterEmailsPage');
+        Route::post('/', 'AdminPostController@post_select_emails_for_bulk')->name('adminSelectEmailsForBulk');
     });
 
 

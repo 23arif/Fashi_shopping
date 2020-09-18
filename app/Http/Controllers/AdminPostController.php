@@ -869,4 +869,8 @@ class AdminPostController extends AdminController
             return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Message could not deleted !', 'error' => $e]);
         }
     }
+
+    public function post_select_emails_for_bulk(Request $request){
+        return $request->all();
+    }
 }

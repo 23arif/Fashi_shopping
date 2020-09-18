@@ -351,10 +351,23 @@
                 <div class="newslatter-item">
                     <h5>Join Our Newsletter Now</h5>
                     <p>Get E-mail updates about our latest shop and special offers.</p>
-                    <form action="#" class="subscribe-form">
-                        <input type="text" placeholder="Enter Your Mail">
-                        <button type="button">Subscribe</button>
+                    <form action="{{route('newsletterMails')}}" method="post" class="subscribe-form">
+                        @csrf
+                        <input type="email" placeholder="Enter Your Mail"
+                               name="email" {{$errors->any() || session()->has('mailAdded') ? 'autofocus': ''}}>
+                        <button type="submit">Subscribe</button>
                     </form>
+                    <ul style="list-style: none">
+                        @if(session()->has('mailAdded'))
+                            <li class="text-success"><i class="fa fa-check"></i>&nbsp;{{session()->get('mailAdded')}}
+                            </li>
+                        @endif
+                        @if($errors->any())
+                            <li style="color:#e7ab3c">
+                                <i class="fa fa-warning"></i>&nbsp;{{ implode('', $errors->all(':message')) }}
+                            </li>
+                        @endif
+                    </ul>
                 </div>
             </div>
         </div>

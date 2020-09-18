@@ -8,6 +8,7 @@ use App\ContactComment;
 use App\FaqComment;
 use App\FaqTopic;
 use App\Mail\ContactMail;
+use App\NewsletterMail;
 use App\Order;
 use App\OrderBilling;
 use App\OrderDetail;
@@ -20,12 +21,31 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
 use Validator;
 
 
 class HomePostController extends HomeController
 {
+    public function post_newsletter_mails(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+        ]);
+
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator);
+        }
+        $process = NewsletterMail::create($request->all());
+        if ($process) {
+            return Redirect::back()->with('mailAdded','Congratulation, mail added to our newsletter.');
+        }else{
+            return Redirect::back()->withErrors($validator);
+        }
+
+    }
+
     public function post_blog_comment(Request $request, $slug)
     {
         $validator = Validator::make($request->all(), [

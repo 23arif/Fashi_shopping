@@ -10,6 +10,7 @@ use App\Deal;
 use App\DefaultSize;
 use App\FAQs;
 use App\Menu;
+use App\NewsletterMail;
 use App\Order;
 use App\PrBrand;
 use App\PrCategory;
@@ -68,8 +69,8 @@ class AdminGetController extends AdminController
         $sizes = PrSize::where('pr_id', $getProduct->id)->pluck('size');
         $defaultSizes = DefaultSize::all();
         return view('backend.edit-products', ['product' => $getProduct, 'categories' => $categories, 'brands' => $brands, 'sizes' => $sizes,
-            'defaultSizes'=>$defaultSizes,
-            ]);
+            'defaultSizes' => $defaultSizes,
+        ]);
     }
 
     public function get_blog()
@@ -155,7 +156,7 @@ class AdminGetController extends AdminController
 
     public function get_messages_table()
     {
-        $messages = ContactComment::all();
+        $messages = ContactComment::orderBy('check_message')->orderByDesc('created_at')->paginate(10);
         return view('backend.Messages.messages-table', ['messages' => $messages]);
     }
 
@@ -170,6 +171,16 @@ class AdminGetController extends AdminController
         }
     }
 
+    public function get_newsletter_emails_table()
+    {
+        $newsletterEmails = NewsletterMail::all();
+        return view('backend.Newsletter.newsletter-mails-table',compact('newsletterEmails'));
+    }
+
+
+
+
+//------------------------------------------------------------------------
 //    Function for fetch Product/Blog tags to Product/Blog edit page
     public function getTags($tags)
     {
@@ -181,7 +192,7 @@ class AdminGetController extends AdminController
     //    Function for fetch Product size
     public function getPrSize($currentSizes)
     {
-        foreach($currentSizes as $size){
+        foreach ($currentSizes as $size) {
             return strtolower($size->size);
         }
     }

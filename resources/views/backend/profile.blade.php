@@ -102,11 +102,11 @@
                                                                value="{{$data->name}}" required>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="surname"
-                                                               class="control-label">Surname</label>
-                                                        <input id="surname" class="form-control"
-                                                               type="text" name="surname"
-                                                               value="{{$data->surname}}">
+                                                        <label for="email"
+                                                               class="control-label">E-mail</label>
+                                                        <input id="email" class="form-control"
+                                                               type="email" name="email"
+                                                               value="{{$data->email}}" required>
                                                     </div>
 
                                                     <div class="form-group">
@@ -141,11 +141,11 @@
                                                 <div
                                                     class="formTwo col col-md-4 col-md-offset-2 col-sm-4 col-sm-offset-2 col-xs-8 col-xs-offset-2">
                                                     <div class="form-group">
-                                                        <label for="email"
-                                                               class="control-label">E-mail</label>
-                                                        <input id="email" class="form-control"
-                                                               type="email" name="email"
-                                                               value="{{$data->email}}" required>
+                                                        <label for="surname"
+                                                               class="control-label">Surname</label>
+                                                        <input id="surname" class="form-control"
+                                                               type="text" name="surname"
+                                                               value="{{$data->surname}}">
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="phone" class="control-label">Phone</label>

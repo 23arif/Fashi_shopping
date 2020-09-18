@@ -15,10 +15,9 @@
                                 <table id="messageTable" class="table table-striped table-bordered">
                                     <thead>
                                     <tr>
-                                        <th>#</th>
                                         <th>Name</th>
                                         <th>Email</th>
-                                        <th>Message</th>
+                                        <th style="width: 400px">Message</th>
                                         <th>Date</th>
                                         <th>Delete</th>
                                     </tr>
@@ -26,9 +25,7 @@
                                     <tbody>
                                     @foreach($messages as $message)
                                         <tr>
-                                            <td @if($message->check_message == 0) class="unreadMessage" @endif>
-                                                <a href="{{route('readMessage',['slug'=>$message->slug])}}">{{$loop->iteration}}</a>
-                                            </td>
+
                                             <td @if($message->check_message == 0) class="unreadMessage" @endif>
                                                 <a href="{{route('readMessage',['slug'=>$message->slug])}}">{{$message->name}}</a>
                                             </td>
@@ -45,12 +42,18 @@
                                             <td class="td-align"><i class="fa fa-trash"
                                                                     style="color:red;font-size: 18px;cursor:pointer"
                                                                     data-toggle="tooltip" data-placement="left"
-                                                                    title="Delete" onclick="dlt(this,'{{$message->slug}}')"></i>
+                                                                    title="Delete"
+                                                                    onclick="dlt(this,'{{$message->slug}}')"></i>
                                             </td>
                                         </tr>
                                     @endforeach
                                     </tbody>
                                 </table>
+                                @if(isset($message))
+                                    <div style="display:flex;justify-content:center">
+                                        {{$message->paginate(10)->links('vendor/pagination/default')}}
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -71,9 +74,11 @@
             text-align: center;
         }
 
-        .unreadMessage,.unreadMessage a {
-            font-weight: bold;
-            color: rgba(7, 7, 7, 0.73);
+        .unreadMessage, .unreadMessage a {
+            font-weight: 700;
+            font-size: 14px;
+            /*color: rgba(7, 7, 7, 0.73);*/
+            color: #2974b9;
         }
     </style>
 @endsection

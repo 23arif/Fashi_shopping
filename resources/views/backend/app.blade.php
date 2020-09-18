@@ -80,17 +80,22 @@
 
                         <ul class="nav side-menu">
                             <li><a href="{{route('adminIndex')}}"><i class="fa fa-home"></i> Home </a></li>
-                            <li><a href="{{route('adminSettingsPage')}}"><i class="fa fa-cog"></i> Settings </a></li>
+                            @if(\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->status() == 9)
+                                <li><a href="{{route('adminSettingsPage')}}"><i class="fa fa-cog"></i> Settings </a>
+                                </li>
+                            @endif
                             <li><a href="{{route('sliderPage')}}"><i class="fa fa-magic"></i> Slider </a></li>
                             <li><a href="{{route('adminProductsPage')}}"><i class="fa fa-shopping-basket"></i> Products
                                 </a></li>
-                            <li><a href="{{route('adminCategoryPage')}}"><i class="fa fa-newspaper-o"></i> Blog Category </a></li>
+                            <li><a href="{{route('adminCategoryPage')}}"><i class="fa fa-newspaper-o"></i> Blog Category
+                                </a></li>
                             <li><a href="{{route('adminBlogPage')}}"><i class="fa fa-newspaper-o"></i> Blog </a></li>
                             <li><a href="{{route('getDeal')}}"><i class="fa fa-gift"></i> Deals </a></li>
                             @if(\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->status() == 9)
                                 <li>
                                     <a href="{{route('getUserTable')}}"><i class="fa fa-users"></i> Users Table </a>
                                 </li>
+
                                 <li>
                                     <a href="{{route('getOrdersTable')}}"><i class="fa fa-list-alt"></i> Orders Table
                                     </a>
@@ -100,6 +105,10 @@
                             <li><a href="{{route('adminFaqPage')}}"><i class="fa fa-question-circle-o"></i> FAQs </a>
                             </li>
                             <li><a href="{{route('adminMessagesPage')}}"><i class="fa fa-envelope-o"></i> Messages </a>
+                            </li>
+                            <li>
+                                <a href="{{route('adminNewsletterEmailsPage')}}"><i class="fa fa-mail-reply-all"></i>
+                                    Newsletter </a>
                             </li>
 
                         </ul>
@@ -162,7 +171,7 @@
                                           <span><b>{{$message->name}}</b></span>
                                           <span class="time"> {{$message->created_at->diffForHumans()}}</span>
                                         </span>
-                                        <span class="message">
+                                            <span class="message">
                                             {{\Illuminate\Support\Str::limit($message->message,150,$end='...')}}
                                         </span>
                                         </a>
