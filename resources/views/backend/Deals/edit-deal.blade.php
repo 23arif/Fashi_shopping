@@ -53,11 +53,11 @@
                                     @endif
                                     <div class="form-group">
                                         <label for="dealBanner"
-                                               class="control-label col-md-3 col-sm-3 col-xs-12">Change banner *
+                                               class="control-label col-md-3 col-sm-3 col-xs-12">{{isset($deals->banner) ? 'Change banner' : 'Add banner *'}}
                                         </label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <input type="file" id="dealBanner" name="dealBanner"
-                                                   class="form-control col-md-6 col-sm-6 col-xs-12">
+                                                   class="form-control col-md-6 col-sm-6 col-xs-12" >
                                         </div>
                                     </div>
 
@@ -67,7 +67,7 @@
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <input type="text" id="title"
                                                    class="form-control col-md-6 col-sm-6 col-xs-12" name="title"
-                                                   @if($deals)
+                                                   @if($deals->title)
                                                    value="{{$deals->title}}"
                                                    @else
                                                    placeholder="Not data yet"
@@ -81,11 +81,11 @@
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <input type="text" id="desc"
                                                    class="form-control col-md-6 col-sm-6 col-xs-12" name="desc"
-                                                   @if($deals)
+                                                   @if($deals->desc)
                                                    value="{{$deals->desc}}"
                                                    @else
                                                    placeholder="Not data yet"
-                                                @endif>
+                                                @endif >
                                         </div>
                                     </div>
 
@@ -95,11 +95,11 @@
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <input type="number" name="price" id="price" min="0" step = '0.01'
                                                    class="form-control col-md-6 col-sm-6 col-xs-12"
-                                                   @if($deals)
+                                                   @if($deals->price)
                                                    value="{{$deals->price}}"
                                                    @else
                                                    placeholder="Not data yet"
-                                                @endif required>
+                                                @endif >
                                         </div>
                                     </div>
 
@@ -109,20 +109,20 @@
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <input type="text" name="pr_name" id="pr_name"
                                                    class="form-control col-md-6 col-sm-6 col-xs-12"
-                                                   @if($deals)
+                                                   @if($deals->pr_name)
                                                    value="{{$deals->pr_name}}"
                                                    @else
                                                    placeholder="Not data yet"
-                                                @endif>
+                                                @endif >
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="durationDay"
+                                        <label for="durationDate"
                                                class="control-label col-md-3 col-sm-3 col-xs-12">Duration *</label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <input type="date" name="durationDate" id="durationDate" min="{{date('Y-m-d')}}"
-                                                   class="form-control"  value="{{$deals->date}}">
+                                                   class="form-control"  value="{{$deals->date}}" >
                                         </div>
 
                                     </div>
@@ -133,11 +133,11 @@
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <input type="text" name="link" id="link"
                                                    class="form-control col-md-6 col-sm-6 col-xs-12"
-                                                   @if($deals)
+                                                   @if($deals->link)
                                                    value="{{$deals->link}}"
                                                    @else
                                                    placeholder="http://127.0.0.1:8000/shop/..."
-                                                @endif>
+                                                @endif >
                                         </div>
                                     </div>
 

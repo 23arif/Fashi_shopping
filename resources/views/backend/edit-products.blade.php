@@ -6,8 +6,8 @@
         <div class="">
             <div class="page-title">
                 <div class="title">
-                    <a href="/admin/blog"><h3 class="fa fa-arrow-circle-left"
-                                              style="font-size: 25px;float: left;margin-right:10px"></h3></a>
+                    <a href="/admin/products"><h3 class="fa fa-arrow-circle-left"
+                                                  style="font-size: 25px;float: left;margin-right:10px"></h3></a>
                     <h3 style="float:left;">Edit &nbsp;<u><b>{{$product->pr_name}}</b></u>&nbsp; Product.</h3>
 
                 </div>
@@ -107,14 +107,10 @@
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <select class="form-control" name="pr_size[]" multiple>
                                             @foreach($defaultSizes as $defaultSize)
-                                                @foreach($product->prSize as $size)
-                                                    @if($defaultSize->slug === $size->slug)
-                                                        <option value="{{$defaultSize->slug}}"
-                                                                selected>{{$defaultSize->size}}</option>
-                                                    @else
-                                                        <option value="{{$defaultSize->slug}}">{{$defaultSize->size}}</option>
-                                                    @endif
-                                                @endforeach
+                                                <option
+                                                    value="{{$defaultSize->slug}}" @foreach ($sizes as $size) {{strtolower($size) == $defaultSize->slug? 'selected' : ''}}@endforeach>
+                                                    {{$defaultSize->size}}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>

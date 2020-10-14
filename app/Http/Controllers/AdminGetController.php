@@ -68,7 +68,10 @@ class AdminGetController extends AdminController
         $getProduct = Product::where('slug', $slug)->first();
         $sizes = PrSize::where('pr_id', $getProduct->id)->pluck('size');
         $defaultSizes = DefaultSize::all();
-        return view('backend.edit-products', ['product' => $getProduct, 'categories' => $categories, 'brands' => $brands, 'sizes' => $sizes,
+        return view('backend.edit-products', ['product' => $getProduct,
+            'categories' => $categories,
+            'brands' => $brands,
+            'sizes' => $sizes,
             'defaultSizes' => $defaultSizes,
         ]);
     }
@@ -188,13 +191,4 @@ class AdminGetController extends AdminController
             echo $tag->tag . ',';
         }
     }
-
-    //    Function for fetch Product size
-    public function getPrSize($currentSizes)
-    {
-        foreach ($currentSizes as $size) {
-            return strtolower($size->size);
-        }
-    }
-
 }

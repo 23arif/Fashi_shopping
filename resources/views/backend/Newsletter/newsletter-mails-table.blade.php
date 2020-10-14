@@ -18,7 +18,8 @@
                                         <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th style="width: 40px">Select</th>
+                                            <th style="width: 40px"><input type="checkbox" id="selectAll"
+                                                                           onchange="slctAll()"></th>
                                             <th>Email</th>
                                             <th>Join Date</th>
                                         </tr>
@@ -27,7 +28,8 @@
                                         @foreach($newsletterEmails as $newsletterEmail)
                                             <tr>
                                                 <td>{{$loop->iteration}}</td>
-                                                <td><input type="checkbox" name="bulk[]" value="{{$newsletterEmail->email}}"></td>
+                                                <td><input type="checkbox" name="bulk[]"
+                                                           value="{{$newsletterEmail->email}}"></td>
                                                 <td>{{$newsletterEmail->email}}</td>
                                                 <td>{{$newsletterEmail->created_at}}</td>
                                             </tr>
@@ -50,6 +52,18 @@
 
 @section('js')
     <script !src="">
+        // Select All checkbox
+        function slctAll() {
+            if ($('#selectAll').prop('checked') == true) {
+                $('input[name="bulk[]"]').prop('checked', true)
+            } else {
+                $('input[name="bulk[]"]').prop('checked', false)
+            }
+        }
+
+        $('input[name="bulk[]"]').on('click', function () {
+            $('#selectAll').prop('checked', false)
+        })
 
     </script>
 @endsection

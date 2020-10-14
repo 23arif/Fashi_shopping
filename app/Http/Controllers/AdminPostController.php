@@ -638,43 +638,108 @@ class AdminPostController extends AdminController
 
     public function post_deals(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'dealBanner' => 'required | mimes:jpeg,jpg,png',
-            'title' => 'required | max:250',
-            'desc' => 'required',
-            'price' => 'required',
-            'pr_name' => 'required| max:250',
-            'durationDate' => 'required',
-            'link' => 'required | max:250'
-        ]);
-
-        if ($validator->fails()) {
-            return response(['processStatus' => 'warning', 'processTitle' => 'Warning', 'processDesc' => 'Please fill all field correctly for change banner !']);
-        }
-
-        $photo = $request->file('dealBanner');
-        $photo_extention = $request->file('dealBanner')->getClientOriginalExtension();
-        $photo_name = 'banner.' . $photo_extention;
-        Storage::disk('uploads')->makeDirectory('img/DealsBanner');
-        Storage::disk('uploads')->put('img/DealsBanner/' . $photo_name, file_get_contents($photo));
-
-        try {
-            unset($request['_token']);
-
-            $request->merge(['banner' => $photo_name]);
-            Deal::where('id', 1)->update([
-                'banner' => $photo_name,
-                'title' => $request->title,
-                'desc' => $request->desc,
-                'price' => $request->price,
-                'pr_name' => $request->pr_name,
-                'date' => $request->durationDate,
-                'link' => $request->link,
+        $dealB = Deal::where('id', 1)->first()->banner;
+        if ($dealB && !isset($request->dealBanner)) {
+            $validator = Validator::make($request->all(), [
+                'title' => 'required | max:250',
+                'desc' => 'required',
+                'price' => 'required',
+                'pr_name' => 'required| max:250',
+                'durationDate' => 'required',
+                'link' => 'required | max:250'
             ]);
-            return response(['processStatus' => 'success', 'processTitle' => 'Success', 'processDesc' => 'Congratulations , banner changed successfully!']);
-        } catch (\Exception $e) {
-            return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Banner  could not changed !', 'error' => $e]);
+            if ($validator->fails()) {
+                return response(['processStatus' => 'warning', 'processTitle' => 'Warning', 'processDesc' => 'Please fill all field correctly for change banner !']);
+            }
+
+            try {
+                unset($request['_token']);
+                Deal::where('id', 1)->update([
+                    'banner' => $dealB,
+                    'title' => $request->title,
+                    'desc' => $request->desc,
+                    'price' => $request->price,
+                    'pr_name' => $request->pr_name,
+                    'date' => $request->durationDate,
+                    'link' => $request->link,
+                ]);
+                return response(['processStatus' => 'success', 'processTitle' => 'Success', 'processDesc' => 'Congratulations , banner changed successfully!']);
+            } catch (\Exception $e) {
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Banner  could not changed !', 'error' => $e]);
+            }
+
+        } elseif (!$dealB && $request->dealBanner) {
+            $validator = Validator::make($request->all(), [
+                'dealBanner' => 'required | mimes:jpeg,jpg,png',
+                'title' => 'required | max:250',
+                'desc' => 'required',
+                'price' => 'required',
+                'pr_name' => 'required| max:250',
+                'durationDate' => 'required',
+                'link' => 'required | max:250'
+            ]);
+            if ($validator->fails()) {
+                return response(['processStatus' => 'warning', 'processTitle' => 'Warning', 'processDesc' => 'Please fill all field correctly for change banner !']);
+            }
+
+            try {
+                unset($request['_token']);
+
+                $photo = $request->file('dealBanner');
+                $photo_extention = $request->file('dealBanner')->getClientOriginalExtension();
+                $photo_name = 'banner.' . $photo_extention;
+                Storage::disk('uploads')->makeDirectory('img/DealsBanner');
+                Storage::disk('uploads')->put('img/DealsBanner/' . $photo_name, file_get_contents($photo));
+                Deal::where('id', 1)->update([
+                    'banner' => $photo_name,
+                    'title' => $request->title,
+                    'desc' => $request->desc,
+                    'price' => $request->price,
+                    'pr_name' => $request->pr_name,
+                    'date' => $request->durationDate,
+                    'link' => $request->link,
+                ]);
+                return response(['processStatus' => 'success', 'processTitle' => 'Success', 'processDesc' => 'Congratulations , banner changed successfully!']);
+            } catch (\Exception $e) {
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Banner  could not changed !', 'error' => $e]);
+            }
+        } else {
+            $validator = Validator::make($request->all(), [
+                'dealBanner' => 'required | mimes:jpeg,jpg,png',
+                'title' => 'required | max:250',
+                'desc' => 'required',
+                'price' => 'required',
+                'pr_name' => 'required| max:250',
+                'durationDate' => 'required',
+                'link' => 'required | max:250'
+            ]);
+            if ($validator->fails()) {
+                return response(['processStatus' => 'warning', 'processTitle' => 'Warning', 'processDesc' => 'Please fill all field correctly for change banner !']);
+            }
+
+            try {
+                unset($request['_token']);
+
+                $photo = $request->file('dealBanner');
+                $photo_extention = $request->file('dealBanner')->getClientOriginalExtension();
+                $photo_name = 'banner.' . $photo_extention;
+                Storage::disk('uploads')->makeDirectory('img/DealsBanner');
+                Storage::disk('uploads')->put('img/DealsBanner/' . $photo_name, file_get_contents($photo));
+                Deal::where('id', 1)->update([
+                    'banner' => $photo_name,
+                    'title' => $request->title,
+                    'desc' => $request->desc,
+                    'price' => $request->price,
+                    'pr_name' => $request->pr_name,
+                    'date' => $request->durationDate,
+                    'link' => $request->link,
+                ]);
+                return response(['processStatus' => 'success', 'processTitle' => 'Success', 'processDesc' => 'Congratulations , banner changed successfully!']);
+            } catch (\Exception $e) {
+                return response(['processStatus' => 'error', 'processTitle' => 'Error', 'processDesc' => 'Banner  could not changed !', 'error' => $e]);
+            }
         }
+
     }
 
     public function post_switch_deal(Request $request)
@@ -870,7 +935,8 @@ class AdminPostController extends AdminController
         }
     }
 
-    public function post_select_emails_for_bulk(Request $request){
+    public function post_select_emails_for_bulk(Request $request)
+    {
         return $request->all();
     }
 }
