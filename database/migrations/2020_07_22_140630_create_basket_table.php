@@ -19,6 +19,7 @@ class CreateBasketTable extends Migration
             $table->integer('product_id');
             $table->integer('quantity');
             $table->string('pr_size');
+            $table->string('pr_color');
             $table->timestamps();
         });
     }

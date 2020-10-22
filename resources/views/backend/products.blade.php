@@ -54,7 +54,7 @@
                                 </li>
                             </ul>
                             <div id="myTabContent" class="tab-content">
-                                <div role="tabpanel" class="tab-pane fade  active in" id="list"
+                                <div role="tabpanel" class="tab-pane fade active in" id="list"
                                      aria-labelledby="list-tab">
 
                                     <table id="datatable-buttons" class="table table-striped table-bordered">
@@ -208,21 +208,71 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Color *</label>
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Color</label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <div class="input-group demo2">
-                                                    <input name="pr_color" type="text" value="#038003"
-                                                           class="form-control" required/>
-                                                    <span class="input-group-addon"><i></i></span>
+                                                <div class="c-color-swatch">
+                                                    <input type="checkbox" name="pr_color[]" value="F9ED69" id="color-F9ED69" hidden/>
+                                                    <label class="c-color-swatch__item" for="color-F9ED69"
+                                                           style="background: #F9ED69"></label>
+
+                                                    <input type="checkbox" name="pr_color[]" value="F08A5D"
+                                                           id="color-F08A5D"
+                                                           hidden/>
+                                                    <label class="c-color-swatch__item" for="color-F08A5D"
+                                                           style="background: #F08A5D"></label>
+
+                                                    <input type="checkbox" name="pr_color[]" value="008000"
+                                                           id="color-008000"
+                                                           hidden/>
+                                                    <label class="c-color-swatch__item" for="color-008000"
+                                                           style="background: #008000"></label>
+
+                                                    <input type="checkbox" name="pr_color[]" value="ff0000"
+                                                           id="color-ff0000"
+                                                           hidden checked/>
+                                                    <label class="c-color-swatch__item" for="color-ff0000"
+                                                           style="background: #ff0000"></label>
+
+                                                    <input type="checkbox" name="pr_color[]" value="6A2C70"
+                                                           id="color-6A2C70"
+                                                           hidden/>
+                                                    <label class="c-color-swatch__item" for="color-6A2C70"
+                                                           style="background: #6A2C70"></label>
+
+                                                    <input type="checkbox" name="pr_color[]" value="2B3964"
+                                                           id="color-2B3964"
+                                                           hidden/>
+                                                    <label class="c-color-swatch__item" for="color-2B3964"
+                                                           style="background: #2B3964"></label>
+
+                                                    <input type="checkbox" name="pr_color[]" value="3482AA"
+                                                           id="color-3482AA"
+                                                           hidden/>
+                                                    <label class="c-color-swatch__item" for="color-3482AA"
+                                                           style="background: #3482AA"></label>
+                                                    <input type="checkbox" name="pr_color[]" value="000"
+                                                           id="color-000"
+                                                           hidden/>
+                                                    <label class="c-color-swatch__item" for="color-000"
+                                                           style="background: #000"></label>
                                                 </div>
                                             </div>
+                                            {{--                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Color *</label>--}}
+                                            {{--                                            <div class="col-md-6 col-sm-6 col-xs-12">--}}
+                                            {{--                                                <div class="input-group demo2">--}}
+                                            {{--                                                    <input name="pr_color" type="text" value="#038003"--}}
+                                            {{--                                                           class="form-control" required/>--}}
+                                            {{--                                                    <span class="input-group-addon"><i></i></span>--}}
+                                            {{--                                                </div>--}}
+                                            {{--                                            </div>--}}
                                         </div>
 
                                         <div class="form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Price *</label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                 <div class="input-group">
-                                                    <input name="pr_last_price" type="number" placeholder="0.00" min="0"
+                                                    <input name="pr_last_price" type="number" placeholder="0.00"
+                                                           min="0"
                                                            step="0.01" data-number-to-fixed="2"
                                                            data-number-stepfactor="100"
                                                            class="form-control currency"
@@ -237,7 +287,8 @@
                                                    class="control-label col-md-3 col-sm-3 col-xs-12">Tags *</label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                 <input type="text" id="tags"
-                                                       class="form-control col-md-6 col-sm-6 col-xs-12" name="pr_tags"
+                                                       class="form-control col-md-6 col-sm-6 col-xs-12"
+                                                       name="pr_tags"
                                                        data-role="tagsinput">
                                             </div>
                                         </div>
@@ -246,7 +297,8 @@
                                             <label for="stocks"
                                                    class="control-label col-md-3 col-sm-3 col-xs-12">Stock *</label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input type="number" id="stocks" name="pr_stock" class="form-control"  required>
+                                                <input type="number" id="stocks" name="pr_stock"
+                                                       class="form-control" required>
                                             </div>
                                         </div>
 
@@ -418,6 +470,41 @@
                 display: block;
             }
         }
+
+        /*/-------Color Picker---------/*/
+        .c-color-swatch {
+            display: table;
+            width: 100%;
+            height:31px ;
+            table-layout: fixed;
+            max-width: 100%;
+            border:1px solid #ccc
+        }
+
+        .c-color-swatch__item {
+            display: table-cell;
+            height: 16px;
+            line-height: 16px;
+            text-align: center;
+            user-select: none;
+            position: relative;
+            transition: transform 0.25s;
+        }
+
+        .c-color-swatch__item:hover {
+            z-index: 1;
+            transform: scale(1.5);
+        }
+
+        .c-color-swatch [type="checkbox"]:checked + label:after {
+            content: '\f00c';
+            font-size: 9px;
+            vertical-align: top;
+            line-height: 31px;
+            color: #fff;
+            font-family: FontAwesome;
+        }
+
     </style>
 @endsection
 

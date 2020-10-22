@@ -19,7 +19,6 @@ class CreateProductsTable extends Migration
             $table->string('pr_name');
             $table->text('pr_desc');
             $table->integer('pr_category');
-            $table->string('pr_color');
             $table->float('pr_prev_price');
             $table->float('pr_last_price');
             $table->integer('pr_brand');

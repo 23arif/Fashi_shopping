@@ -35,6 +35,7 @@
                                 <th>Price</th>
                                 <th>Quantity</th>
                                 <th>Size</th>
+                                <th>&nbsp;&nbsp;Color</th>
                                 <th>Total</th>
                                 <th><i class="ti-close"></i></th>
                             </tr>
@@ -47,7 +48,7 @@
                                     @endforeach
                                     <tr>
                                         <td class="cart-pic first-row"><img src="/uploads/{{$photo}}"
-                                                                            alt=""></td>
+                                                                            alt="{{$fetch->getProductInfo->pr_name}}"></td>
                                         <td class="cart-title first-row">
                                             <h5>{{$fetch->getProductInfo->pr_name}}</h5>
                                         </td>
@@ -59,7 +60,8 @@
                                                             onclick="decQtyy(this,'{{$fetch->product_id}}','{{$fetch->pr_size}}')">
                                                         -
                                                     </button>
-                                                    <input id="productQuantity" type="number" value="{{$fetch->quantity}}"
+                                                    <input id="productQuantity" type="number"
+                                                           value="{{$fetch->quantity}}"
                                                            onchange="typeQty(this,'{{$fetch->product_id}}','{{$fetch->pr_size}}')">
                                                     <button class="inc qtybtn"
                                                             onclick="incQtyy(this,'{{$fetch->product_id}}','{{$fetch->pr_size}}')">
@@ -71,8 +73,12 @@
                                         <td class="cart-title first-row text-center">
                                             <h5><b>{{$fetch->pr_size}}</b></h5>
                                         </td>
-                                        @php($eachTotal = intval($fetch->quantity) * $fetch->getProductInfo->pr_last_price)
-                                        <td class="total-price first-row">$ {{$eachTotal}}</td>
+                                        <td class="cart-title first-row text-center">
+                                            <div class="shoppingC-item">
+                                                <label style="background:{{'#'.$fetch->pr_color}}"></label>
+                                            </div>
+                                        </td>
+                                        <td class="total-price first-row">$ {{intval($fetch->quantity) * $fetch->getProductInfo->pr_last_price}}</td>
                                         <td class="close-td first-row"><i class="ti-close"
                                                                           onclick="deleteSelectedProduct(this,'{{$fetch->product_id}}','{{$fetch->pr_size}}')"></i>
                                         </td>
@@ -97,7 +103,7 @@
                                         @endforeach
                                         <tr>
                                             <td class="cart-pic first-row"><img src="/uploads/{{$photo}}"
-                                                                                alt=""></td>
+                                                                                alt="{{\App\Product::where('id',$key)->first()->pr_name}}"></td>
                                             <td class="cart-title first-row">
                                                 <h5>{{\App\Product::where('id',$key)->first()->pr_name}}</h5>
                                             </td>
@@ -118,6 +124,14 @@
                                                             +
                                                         </button>
                                                     </div>
+                                                </div>
+                                            </td>
+                                            <td class="cart-title first-row text-center">
+                                                <h5><b>size</b></h5>
+                                            </td>
+                                            <td class="cart-title first-row text-center">
+                                                <div class="shoppingC-item">
+                                                    <label style="background:{{'#'}}">Color</label>
                                                 </div>
                                             </td>
                                             <td class="total-price first-row">
@@ -230,8 +244,12 @@
             background: transparent !important;
         }
 
-
-
+        .shoppingC-item label {
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            margin-bottom: -4px;
+        }
     </style>
 @endsection
 

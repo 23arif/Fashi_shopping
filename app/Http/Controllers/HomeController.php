@@ -32,7 +32,7 @@ class HomeController extends Controller
         $brands = PrBrand::all();
         $categories = PrCategory::all();
         $sizes = PrSize::select('size')->groupBy('size')->pluck('size');
-        $colors = PrColor::all();
+        $colors = PrColor::select('color_code')->groupBy('color_code')->pluck('color_code');
         $tags = PrTag::select('tag')->groupBy('tag')->orderByRaw('CHAR_LENGTH(tag)')->pluck('tag');
         $blogTags = BlogTags::select('tag')->groupBy('tag')->orderByRaw('CHAR_LENGTH(tag)')->pluck('tag');
         $maxPrice = (Product::max('pr_last_price')) + 1;

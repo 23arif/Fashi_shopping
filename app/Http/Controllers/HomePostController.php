@@ -12,6 +12,7 @@ use App\NewsletterMail;
 use App\Order;
 use App\OrderBilling;
 use App\OrderDetail;
+use App\PrColor;
 use App\Product;
 use App\ProductComment;
 use App\PrStock;
@@ -39,8 +40,8 @@ class HomePostController extends HomeController
         }
         $process = NewsletterMail::create($request->all());
         if ($process) {
-            return Redirect::back()->with('mailAdded','Congratulation, mail added to our newsletter.');
-        }else{
+            return Redirect::back()->with('mailAdded', 'Congratulation, mail added to our newsletter.');
+        } else {
             return Redirect::back()->withErrors($validator);
         }
 
@@ -175,20 +176,20 @@ class HomePostController extends HomeController
             $pr_stock = PrStock::where('pr_id', $product_id->id)->first()->stock;
             if ($pr_stock > 0 and $pr_stock >= $request->quantity) {
                 try {
-                    $request->merge(['user_id' => $user_id, 'product_id' => $product_id->id]);
-
+                $request->merge(['user_id' => $user_id, 'product_id' => $product_id->id]);
+//                return $request->all();
 
                     if (Basket::where(['user_id' => intval($request->user_id), 'product_id' => intval($request->product_id)])->exists()) {
-                        if (Basket::where(['user_id' => intval($request->user_id), 'product_id' => intval($request->product_id), 'pr_size' => $request->pr_size])->exists()) {
-                            $lastQuantity = Basket::where(['user_id' => intval($request->user_id), 'product_id' => intval($request->product_id), 'pr_size' => $request->pr_size])->first()->quantity;
+                        if (Basket::where(['user_id' => intval($request->user_id), 'product_id' => intval($request->product_id), 'pr_size' => $request->pr_size, 'pr_color' => $request->pr_color])->exists()) {
+                            $lastQuantity = Basket::where(['user_id' => intval($request->user_id), 'product_id' => intval($request->product_id), 'pr_size' => $request->pr_size, 'pr_color' => $request->pr_color])->first()->quantity;
                             $newQuantity = $lastQuantity + $request->quantity;
 
-                            $orderedProduct = Basket::where(['user_id' => intval($request->user_id), 'product_id' => intval($request->product_id), 'pr_size' => $request->pr_size])->update(['quantity' => $newQuantity]);
+                            $orderedProduct = Basket::where(['user_id' => intval($request->user_id), 'product_id' => intval($request->product_id), 'pr_size' => $request->pr_size, 'pr_color' => $request->pr_color])->update(['quantity' => $newQuantity]);
 
                             if ($orderedProduct) {
+                                PrStock::where('pr_id', $product_id->id)->update(['stock' => $pr_stock - $request->quantity]);
+                                return back()->with('addToCartMsg', 'Product added to cart successfully !');
                             }
-                            PrStock::where('pr_id', $product_id->id)->update(['stock' => $pr_stock - $request->quantity]);
-                            return back()->with('addToCartMsg', 'Product added to cart successfully !');
                         } else {
                             $orderedProduct = Basket::create($request->all());
                             if ($orderedProduct) {

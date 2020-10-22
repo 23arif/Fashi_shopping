@@ -34,6 +34,7 @@ Route::group(['prefix' => 'shop'], function () {
     Route::post('/product-details/{slug}', 'HomePostController@post_add_to_cart')->name('addToCart');
     Route::post('/product-details/{slug}/comment', 'HomePostController@post_product_comment')->name('productComment');
     Route::get('/category/{catName}', 'HomeGetController@get_product_category')->name('prCategory');
+    Route::get('/color/{color}', 'HomeGetController@get_product_color')->name('prColor');
     Route::get('/size/{sizeName}', 'HomeGetController@get_product_size');
     Route::get('/tags/{tags}', 'HomeGetController@get_product_tags');
     Route::get('/brand/{brandName}', 'HomeGetController@get_product_brand');

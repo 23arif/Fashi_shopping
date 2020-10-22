@@ -71,25 +71,21 @@
                                         @endif
                                     </h4>
                                 </div>
-                                {{--                                <div class="pd-color">--}}
-                                {{--                                    <h6>Color</h6>--}}
-                                {{--                                    <div class="pd-color-choose">--}}
-                                {{--                                        <div class="cc-item">--}}
-                                {{--                                            <input type="radio" id="cc-black">--}}
-                                {{--                                            <label for="cc-black"></label>--}}
-                                {{--                                        </div>--}}
-                                {{--                                        <div class="cc-item">--}}
-                                {{--                                            <input type="radio" id="cc-yellow">--}}
-                                {{--                                            <label for="cc-yellow" class="cc-yellow"></label>--}}
-                                {{--                                        </div>--}}
-                                {{--                                        <div class="cc-item">--}}
-                                {{--                                            <input type="radio" id="cc-violet">--}}
-                                {{--                                            <label for="cc-violet" class="cc-violet"></label>--}}
-                                {{--                                        </div>--}}
-                                {{--                                    </div>--}}
-                                {{--                                </div>--}}
                                 <form action="{{route('addToCart',['slug'=>$products->slug])}}" method="post">
                                     @csrf
+                                    <div class="pd-color">
+                                        <h6>Color</h6>
+                                        <div class="pd-color-choose">
+                                            @foreach($productColors as $color)
+                                                <div class="cc-item">
+                                                    <input type="radio" id="pr-color-{{$color}}" name="pr_color"
+                                                           value="{{$color}}">
+                                                    <label for="pr-color-{{$color}}" style="background:{{'#'.$color}}"
+                                                           class="colorLabels"></label>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
                                     <div class="pd-size-choose">
                                         @foreach($productSizes as $productSize)
                                             <div class="sc-item">
@@ -242,7 +238,11 @@
                                             </tr>
                                             <tr>
                                                 <td class="p-catagory">Color</td>
-                                                <td><span class="cs-color"></span></td>
+                                                <td>
+                                                    @foreach($productColors as $color)
+                                                        <span class="cs-color" style="background:{{'#'.$color}}"></span>
+                                                    @endforeach
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td class="p-catagory">Sku</td>
@@ -491,6 +491,11 @@
             background: #eec477 !important;
             cursor: not-allowed;
         }
+
+        /*Product Color*/
+        .color-active {
+            border: 2px solid black;
+        }
     </style>
 @endsection
 
@@ -530,10 +535,26 @@
         })
 
         $(document).ready(function () {
+            //Color label selection
+            $('.colorLabels').on('click', function (event) {
+                $('.colorLabels').removeClass('color-active');
+                $target = $(event.target);
+                $target.addClass('color-active');
+                var id = $target.prev().attr('id');
+                $('#' + id).attr('checked', true);
+            });
+
+            // Size label selection
             $('.pd-cart:input[type="submit"]').addClass('pd-disabled').prop('disabled', true)
 
+            // Enable add to cart button
+            $('.colorLabels').on('click', function () {
+                if ($('.colorLabels').hasClass('color-active') && $('.sizeLabels').hasClass('active')) {
+                    $('.pd-cart:input[type="submit"]').prop('disabled', false).removeClass('pd-disabled');
+                }
+            });
             $('.sizeLabels').on('click', function () {
-                if ($('.sizeLabels').hasClass('active')) {
+                if ($('.sizeLabels').hasClass('active') && $('.colorLabels').hasClass('color-active')) {
                     $('.pd-cart:input[type="submit"]').prop('disabled', false).removeClass('pd-disabled');
                 }
             });

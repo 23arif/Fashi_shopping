@@ -77,14 +77,14 @@ class HomeGetController extends HomeController
 
     public function get_blog_tags($tagName)
     {
-        $blogId = BlogTags::where('slug',$tagName)->first()->blog_id;
-        $blogs = Blog::where('id',$blogId)->orderBy('id', 'desc')->get();
+        $blogId = BlogTags::where('slug', $tagName)->first()->blog_id;
+        $blogs = Blog::where('id', $blogId)->orderBy('id', 'desc')->get();
         $recentBlogs = Blog::orderBy('id', 'desc')->get();
         $categories = Category::where('up_category', '0')->get();
         return view('frontend.blog', ['blogs' => $blogs,
             'categories' => $categories,
             'recentBlogs' => $recentBlogs,
-            'blogs'=>$blogs
+            'blogs' => $blogs
         ]);
 
     }
@@ -139,6 +139,7 @@ class HomeGetController extends HomeController
             $relatedProducts = Product::where('pr_category', $products->pr_category)->where('slug', '!=', $slug)->get();
             $productRating = round(ProductComment::where('product_id', $products->id)->avg('rating'));
             $productSizes = PrSize::where('pr_id', $products->id)->get('size');
+            $productColors = PrColor::where('pr_id', $products->id)->pluck('color_code');
             return view('frontend.product', [
                 'products' => $products,
                 'payments' => $payments,
@@ -147,6 +148,7 @@ class HomeGetController extends HomeController
                 'comments' => $comments,
                 'productRating' => $productRating,
                 'productSizes' => $productSizes,
+                'productColors' => $productColors,
             ]);
         } else {
             return redirect()->back();
@@ -192,11 +194,19 @@ class HomeGetController extends HomeController
         }
     }
 
+    public function get_product_color($color){
+        $product_id = PrColor::where('color_code', $color)->pluck('pr_id');
+        $products = Product::whereIn('id', $product_id)->get();
+        return view('frontend.shop', [
+            'fltColorProducts' => $products
+        ]);
+    }
+
     public
     function get_product_size($sizeName)
     {
         $getPrId = PrSize::where('size', $sizeName)->pluck('pr_id');
-        $products = Product::whereIn('id',$getPrId)->get();
+        $products = Product::whereIn('id', $getPrId)->get();
         return view('frontend.shop-size', ['sizeName' => $sizeName, 'products' => $products]);
     }
 

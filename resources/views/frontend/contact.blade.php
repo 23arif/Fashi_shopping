@@ -25,9 +25,6 @@
                     src="{{$settings[0]->map}}"
                     height="610" style="border:0" allowfullscreen="">
                 </iframe>
-                <div class="icon">
-                    <i class="fa fa-map-marker"></i>
-                </div>
             </div>
         </div>
     </div>

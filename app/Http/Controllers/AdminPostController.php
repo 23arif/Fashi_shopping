@@ -17,6 +17,7 @@ use App\Menu;
 use App\Order;
 use App\PrBrand;
 use App\PrCategory;
+use App\PrColor;
 use App\Product;
 use App\ProductComment;
 use App\PrSize;
@@ -277,7 +278,7 @@ class AdminPostController extends AdminController
             try {
                 $request->merge(['pr_prev_price' => $request->pr_last_price, 'slug' => $slug, 'seller_id' => Auth::id()]);
                 $tags = explode(',', $request->pr_tags);
-                $newProduct = Product::create($request->except('pr_tags'));
+                $newProduct = Product::create($request->except('pr_tags','pr_color'));
                 if ($newProduct) {
                     PrStock::create(['pr_id' => $newProduct->id, 'stock' => $request->pr_stock]);
                     foreach ($tags as $tag) {
@@ -285,6 +286,9 @@ class AdminPostController extends AdminController
                     }
                     foreach ($request->pr_size as $size) {
                         PrSize::create(['pr_id' => $newProduct->id, 'size' => strtoupper($size), 'slug' => Str::slug($size)]);
+                    }
+                    foreach ($request->pr_color as $color) {
+                        PrColor::create(['pr_id' => $newProduct->id,'color_code'=>$color,'slug'=>Str::slug($color)]);
                     }
                 }
                 return response(['processStatus' => 'success', 'processTitle' => 'Success', 'processDesc' => 'Congratulations , product added successfully !']);

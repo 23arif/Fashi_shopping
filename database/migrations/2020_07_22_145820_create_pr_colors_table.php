@@ -15,7 +15,8 @@ class CreatePrColorsTable extends Migration
     {
         Schema::create('pr_colors', function (Blueprint $table) {
             $table->id();
-            $table->string('color_name');
+            $table->integer('pr_id');
+            $table->string('color_name')->nullable();
             $table->string('color_code');
             $table->string('slug');
             $table->timestamps();

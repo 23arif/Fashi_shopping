@@ -41,8 +41,10 @@
                             <div class="col-lg-5 col-md-5 text-right">
                                 @if(isset($products))
                                     <p>{{count($products->get())}} {{count($products->get())>1 ? 'Products' : 'Product'}}</p>
-                                @else
+                                @elseif(isset($filteredProducts))
                                     <p>{{count($filteredProducts)}} {{count($filteredProducts)>1 ? 'Products' : 'Product'}}</p>
+                                @elseif(isset($fltColorProducts))
+                                    <p>{{count($fltColorProducts)}} {{count($fltColorProducts)>1 ? 'Products' : 'Product'}}</p>
                                 @endif
                             </div>
 
@@ -51,39 +53,39 @@
                     <div class="product-list">
                         <div class="row">
                             @if(isset($products))
-                                    @foreach($products->paginate(6) as $product)
-                                        <div class="col-lg-4 col-sm-6">
-                                            <div class="product-item">
-                                                <div class="pi-pic">
-                                                    @foreach($photos = Storage::disk('uploads')->files('img/products/'.$product->slug) as $photo)
-                                                    @endforeach
-                                                    <img src="/uploads/{{$photo}}" alt="">
-                                                    @if($product->pr_last_price < $product->pr_prev_price)
-                                                        <div class="sale pp-sale">Sale</div>
-                                                    @endif
-                                                    <div class="icon">
-                                                        <i class="icon_heart_alt"></i>
-                                                    </div>
-                                                    <ul>
-                                                        <li class="quick-view"><a
-                                                                href="shop/product-details/{{$product->slug}}">+ Quick
-                                                                View</a></li>
-                                                    </ul>
+                                @foreach($products->paginate(6) as $product)
+                                    <div class="col-lg-4 col-sm-6">
+                                        <div class="product-item">
+                                            <div class="pi-pic">
+                                                @foreach($photos = Storage::disk('uploads')->files('img/products/'.$product->slug) as $photo)
+                                                @endforeach
+                                                <img src="/uploads/{{$photo}}" alt="">
+                                                @if($product->pr_last_price < $product->pr_prev_price)
+                                                    <div class="sale pp-sale">Sale</div>
+                                                @endif
+                                                <div class="icon">
+                                                    <i class="icon_heart_alt"></i>
                                                 </div>
-                                                <div class="pi-text">
-                                                    <a href="shop/product-details/{{$product->slug}}">
-                                                        <div class="catagory-name">{{$product->pr_name}}</div>
-                                                    </a>
-                                                    <div class="product-price">
-                                                        ${{$product->pr_last_price}}
-                                                        @if($product->pr_last_price < $product->pr_prev_price)
-                                                            <span>${{$product->pr_prev_price}}</span>
-                                                        @endif
-                                                    </div>
+                                                <ul>
+                                                    <li class="quick-view"><a
+                                                            href="shop/product-details/{{$product->slug}}">+ Quick
+                                                            View</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="pi-text">
+                                                <a href="shop/product-details/{{$product->slug}}">
+                                                    <div class="catagory-name">{{$product->pr_name}}</div>
+                                                </a>
+                                                <div class="product-price">
+                                                    ${{$product->pr_last_price}}
+                                                    @if($product->pr_last_price < $product->pr_prev_price)
+                                                        <span>${{$product->pr_prev_price}}</span>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
-                                    @endforeach
+                                    </div>
+                                @endforeach
                             @elseif(isset($filteredProducts))
                                 @foreach($filteredProducts->sortByDesc('id') as $product)
                                     <div class="col-lg-4 col-sm-6">
@@ -109,6 +111,40 @@
                                             </div>
                                             <div class="pi-text">
                                                 <a href="{{route('getProductDetails',['slug'=>$product->slug])}}">
+                                                    <div class="catagory-name">{{$product->pr_name}}</div>
+                                                </a>
+                                                <div class="product-price">
+                                                    ${{$product->pr_last_price}}
+                                                    @if($product->pr_last_price < $product->pr_prev_price)
+                                                        <span>${{$product->pr_prev_price}}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @elseif(isset($fltColorProducts))
+                                @foreach($fltColorProducts as $product)
+                                    <div class="col-lg-4 col-sm-6">
+                                        <div class="product-item">
+                                            <div class="pi-pic">
+                                                @foreach($photos = Storage::disk('uploads')->files('img/products/'.$product->slug) as $photo)
+                                                @endforeach
+                                                <img src="/uploads/{{$photo}}" alt="">
+                                                @if($product->pr_last_price < $product->pr_prev_price)
+                                                    <div class="sale pp-sale">Sale</div>
+                                                @endif
+                                                <div class="icon">
+                                                    <i class="icon_heart_alt"></i>
+                                                </div>
+                                                <ul>
+                                                    <li class="quick-view"><a
+                                                            href="shop/product-details/{{$product->slug}}">+ Quick
+                                                            View</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="pi-text">
+                                                <a href="shop/product-details/{{$product->slug}}">
                                                     <div class="catagory-name">{{$product->pr_name}}</div>
                                                 </a>
                                                 <div class="product-price">
